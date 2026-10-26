@@ -1,0 +1,248 @@
+@import "tailwindcss";
+
+:root {
+  /* Bulbula theme of the shared design system. River teal + marigold (the
+     Meskel daisy, adey abeba). Contrast checked 2026-10-26 — see README. */
+  --river: #0e3d47; /* dark sections, headings; white text 11.8:1 */
+  --river-soft: #165361;
+  --teal: #1f7a85; /* icons, pins; white text 5.0:1 */
+  --teal-text: #17646d; /* teal text on light 6.3:1 */
+  --marigold: #f2b134; /* primary buttons with river/ink text (6.3 / 8.5:1) */
+  --marigold-soft: #fbe3a6; /* highlights on river 9.4:1 */
+  --amber-text: #8a5300; /* marigold-family text on light 5.8:1 */
+  --page: #f7f5ef;
+  --raised: #ffffff;
+  --tint: #e7f1f0;
+  --ink: #10242a;
+  --muted: #4b5f63;
+  --border: #dce5e4;
+}
+
+@theme inline {
+  --color-river: var(--river);
+  --color-river-soft: var(--river-soft);
+  --color-teal: var(--teal);
+  --color-teal-text: var(--teal-text);
+  --color-marigold: var(--marigold);
+  --color-marigold-soft: var(--marigold-soft);
+  --color-amber-text: var(--amber-text);
+  --color-page: var(--page);
+  --color-raised: var(--raised);
+  --color-tint: var(--tint);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --font-sans: var(--font-inter), var(--font-ethiopic), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-jakarta), var(--font-ethiopic), ui-sans-serif, system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+}
+body {
+  background: var(--page);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+.font-display {
+  font-family: var(--font-display);
+}
+.container-x {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 1440px;
+  padding-inline: clamp(1rem, 5vw, 96px);
+}
+
+/* Motif: ripples, as on the river, behind dark sections — and a pin. */
+.ripples {
+  background-image:
+    radial-gradient(circle at 82% 38%, transparent 0 119px, rgba(242, 177, 52, 0.18) 120px 121.5px, transparent 123px),
+    radial-gradient(circle at 82% 38%, transparent 0 199px, rgba(251, 227, 166, 0.1) 200px 201px, transparent 202px),
+    radial-gradient(circle at 82% 38%, transparent 0 299px, rgba(255, 255, 255, 0.07) 300px 301px, transparent 302px),
+    radial-gradient(circle at 82% 38%, transparent 0 419px, rgba(255, 255, 255, 0.05) 420px 421px, transparent 422px),
+    radial-gradient(60% 70% at 85% 30%, rgba(31, 122, 133, 0.55), transparent 70%);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--teal-text);
+}
+.eyebrow::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 9999px 9999px 9999px 0;
+  transform: rotate(-45deg);
+  background: var(--marigold);
+}
+.eyebrow-on-dark {
+  color: var(--marigold-soft);
+}
+
+.action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--river);
+  text-decoration: underline;
+  text-decoration-color: var(--marigold);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+  transition: color 0.2s;
+}
+.action-link:hover {
+  color: var(--teal-text);
+}
+.action-link.on-dark {
+  color: #fff;
+}
+
+.btn {
+  display: inline-flex;
+  height: 3rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding-inline: 1.3rem;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
+}
+.btn:active {
+  transform: scale(0.98);
+}
+.btn-marigold {
+  background: var(--marigold);
+  color: var(--ink);
+}
+.btn-marigold:hover {
+  background: #e9a218;
+}
+.btn-river {
+  background: var(--river);
+  color: #fff;
+}
+.btn-river:hover {
+  background: var(--river-soft);
+}
+.btn-outline {
+  border: 1.5px solid var(--border);
+  background: var(--raised);
+  color: var(--river);
+}
+.btn-outline:hover {
+  border-color: var(--teal);
+}
+.btn-ghost-dark {
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+}
+.btn-ghost-dark:hover {
+  border-color: var(--marigold-soft);
+  color: var(--marigold-soft);
+}
+
+.field {
+  width: 100%;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: var(--raised);
+  padding: 0.7rem 0.9rem;
+  font-size: 15px;
+  color: var(--ink);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.field:focus {
+  outline: none;
+  border-color: var(--teal);
+  box-shadow: 0 0 0 4px rgba(31, 122, 133, 0.15);
+}
+.field::placeholder {
+  color: #7b8c8f;
+}
+.label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--river);
+}
+
+:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.rise-1 { animation-delay: 0.05s; }
+.rise-2 { animation-delay: 0.12s; }
+.rise-3 { animation-delay: 0.2s; }
+.rise-4 { animation-delay: 0.28s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rise { animation: none; }
+  html { scroll-behavior: auto; }
+}
+
+html[lang="am"] .eyebrow,
+html[lang="am"] .btn,
+html[lang="am"] .track-latin {
+  letter-spacing: 0.02em;
+}
+
+/* Leaflet pins (components/AreaMap.tsx). */
+.bb-pin {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 9999px 9999px 9999px 0;
+  transform: rotate(-45deg);
+  background: var(--teal);
+  border: 2px solid #fff;
+  box-shadow: 0 6px 14px -6px rgba(14, 61, 71, 0.7);
+}
+.bb-pin > span {
+  transform: rotate(45deg);
+  width: 10px;
+  height: 10px;
+  border-radius: 9999px;
+  background: #fff;
+}
+.bb-pin.community {
+  background: var(--river);
+}
+.bb-pin.claimed {
+  background: var(--marigold);
+}
+.bb-pin.active {
+  background: var(--marigold);
+  transform: rotate(-45deg) scale(1.25);
+  box-shadow: 0 0 0 4px rgba(242, 177, 52, 0.35), 0 8px 18px -6px rgba(14, 61, 71, 0.8);
+}
+.bb-pin.active > span {
+  background: var(--river);
+}
+.bb-pin.claimed > span {
+  background: var(--river);
+}
+.leaflet-popup-content {
+  font-family: var(--font-sans);
+  margin: 12px 14px;
+}

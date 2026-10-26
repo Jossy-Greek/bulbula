@@ -1,0 +1,8 @@
+# Never upload local secrets or the throwaway local database.
+.env*.local
+media/
+.agents/
+skills-lock.json
+.claude/
+assets/source/
+bulbula-local.*

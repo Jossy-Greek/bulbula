@@ -1,0 +1,16 @@
+node_modules
+.next
+next-env.d.ts
+*.tsbuildinfo
+.DS_Store
+.claude/
+.vercel
+.env*.local
+.env*
+.agents/
+skills-lock.json
+media/
+.agents/
+skills-lock.json
+media/
+bulbula-local.*
