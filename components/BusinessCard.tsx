@@ -96,7 +96,11 @@ export default function BusinessCard({
           <a href={l.mapsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex h-11 items-center gap-1.5 rounded-lg bg-tint px-3 text-[13px] font-semibold text-teal-text hover:bg-marigold-soft hover:text-river">
             <MapIcon className="h-3.5 w-3.5" aria-hidden="true" /> Google Maps
           </a>
-          {!l.claimed ? <span className="ml-auto rounded-full bg-page px-2.5 py-1 text-[11px] font-semibold text-muted ring-1 ring-border">{c.ui.unclaimed}</span> : null}
+          {l.unconfirmed ? (
+            <span className="ml-auto rounded-full bg-marigold-soft px-2.5 py-1 text-[11px] font-semibold text-amber-text">{c.ui.unconfirmed}</span>
+          ) : !l.claimed ? (
+            <span className="ml-auto rounded-full bg-page px-2.5 py-1 text-[11px] font-semibold text-muted ring-1 ring-border">{c.ui.unclaimed}</span>
+          ) : null}
         </div>
       </div>
     </li>

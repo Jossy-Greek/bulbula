@@ -31,6 +31,8 @@ export type Listing = {
   hours: string | null;
   photo: { url: string; alt: string } | null;
   claimed: boolean;
+  /** Published from research, not yet checked by phone or visit. */
+  unconfirmed: boolean;
   source: "osm" | "owner" | "admin";
   featured: boolean;
 };
@@ -102,6 +104,7 @@ function toListing(b: Business, locale: Locale): Listing {
     hours,
     photo: media?.url ? { url: media.sizes?.card?.url || media.url, alt: media.alt || b.name } : null,
     claimed: Boolean(b.claimed),
+    unconfirmed: Boolean(b.unconfirmed),
     source: (b.source as Listing["source"]) ?? "admin",
     featured: Boolean(b.featured),
   };

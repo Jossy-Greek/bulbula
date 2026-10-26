@@ -160,6 +160,10 @@ export interface Business {
    * The business has confirmed this listing.
    */
   claimed?: boolean | null;
+  /**
+   * Published from research (Google Maps etc.) without a call or visit. The site shows “Not yet confirmed”. Untick once checked.
+   */
+  unconfirmed?: boolean | null;
   featured?: boolean | null;
   source: 'osm' | 'owner' | 'admin';
   /**
@@ -221,6 +225,7 @@ export interface Category {
 export interface Media {
   id: number;
   alt?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -384,6 +389,7 @@ export interface BusinessesSelect<T extends boolean = true> {
   photo?: T;
   status?: T;
   claimed?: T;
+  unconfirmed?: T;
   featured?: T;
   source?: T;
   osmId?: T;
@@ -419,6 +425,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

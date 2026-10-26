@@ -124,6 +124,15 @@ export const Businesses: CollectionConfig = {
       defaultValue: false,
       admin: { position: "sidebar", description: "The business has confirmed this listing." },
     },
+    {
+      name: "unconfirmed",
+      type: "checkbox",
+      defaultValue: false,
+      admin: {
+        position: "sidebar",
+        description: "Published from research (Google Maps etc.) without a call or visit. The site shows “Not yet confirmed”. Untick once checked.",
+      },
+    },
     { name: "featured", type: "checkbox", defaultValue: false, admin: { position: "sidebar" } },
     {
       name: "source",

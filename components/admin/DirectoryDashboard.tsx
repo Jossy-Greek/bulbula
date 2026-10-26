@@ -77,6 +77,7 @@ export default async function DirectoryDashboard({ payload }: { payload: Payload
     { label: "No phone, website or social", items: published.filter((b) => !hasContact(b)) },
     { label: "No map pin", items: published.filter((b) => b.lat == null || b.lng == null) },
     { label: "No opening hours", items: published.filter((b) => !b.hours) },
+    { label: "Not yet confirmed (from research)", items: published.filter((b) => b.unconfirmed) },
   ];
   const perCat = (cats.docs as Category[]).map((c) => ({
     c,

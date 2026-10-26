@@ -65,6 +65,8 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
                   <>
                     <BadgeCheck className="h-3.5 w-3.5 text-marigold" aria-hidden="true" /> {c.ui.verified}
                   </>
+                ) : l.unconfirmed ? (
+                  c.ui.unconfirmed
                 ) : (
                   c.ui.unclaimed
                 )}
@@ -217,7 +219,11 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
               <div className="rounded-2xl bg-marigold-soft/60 p-6 ring-1 ring-marigold/40">
                 <p className="font-display text-lg font-bold text-river">{c.ui.claim}</p>
                 <p className="mt-1 text-sm text-ink/80">{c.ui.claimHint}</p>
-                {l.source === "osm" ? <p className="mt-2 text-xs text-muted">{c.ui.unclaimedHint}</p> : null}
+                {l.unconfirmed ? (
+                  <p className="mt-2 text-xs text-muted">{c.ui.unconfirmedHint}</p>
+                ) : l.source === "osm" ? (
+                  <p className="mt-2 text-xs text-muted">{c.ui.unclaimedHint}</p>
+                ) : null}
                 <Link href={`${localeHref(locale, "/add")}?claim=${l.slug}`} className="action-link mt-4">
                   {c.ui.claim} <ArrowUpRight className="h-4 w-4" />
                 </Link>

@@ -21,6 +21,8 @@ export type Content = {
     noResults: string;
     unclaimed: string;
     unclaimedHint: string;
+    unconfirmed: string;
+    unconfirmedHint: string;
     verified: string;
     call: string;
     website: string;
@@ -130,6 +132,8 @@ const en: Content = {
     noResults: "Nothing matches yet. Know a place that should be here? Add it.",
     unclaimed: "Unclaimed",
     unclaimedHint: "From public map data — not yet confirmed by the business.",
+    unconfirmed: "Not yet confirmed",
+    unconfirmedHint: "Found on Google Maps and not checked yet — call ahead or open it in Google Maps for details. Is this your business? Claim it to add your phone and hours.",
     verified: "Confirmed by owner",
     call: "Call",
     website: "Website",
@@ -280,6 +284,8 @@ const am: Content = {
     noResults: "እስካሁን የሚመሳሰል የለም። እዚህ መኖር ያለበት ቦታ ያውቃሉ? ያክሉት።",
     unclaimed: "ያልተረጋገጠ",
     unclaimedHint: "ከሕዝባዊ የካርታ መረጃ የተወሰደ — ንግዱ እስካሁን አላረጋገጠውም።",
+    unconfirmed: "ገና ያልተረጋገጠ",
+    unconfirmedHint: "ከGoogle ካርታ የተገኘ እና ገና ያልተረጋገጠ — ከመሄድዎ በፊት ይደውሉ ወይም በGoogle ካርታ ይክፈቱ። የእርስዎ ንግድ ነው? ስልክና የሥራ ሰዓት ለመጨመር ይረከቡት።",
     verified: "በባለቤቱ የተረጋገጠ",
     call: "ይደውሉ",
     website: "ድረ ገጽ",
