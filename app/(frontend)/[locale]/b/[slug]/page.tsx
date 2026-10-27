@@ -9,6 +9,7 @@ import MapLoader from "@/components/MapLoader";
 import SocialIcon from "@/components/SocialIcon";
 import OpenBadge from "@/components/OpenBadge";
 import ShareButtons from "@/components/ShareButtons";
+import GoogleReviews from "@/components/GoogleReviews";
 import { site } from "@/data/site";
 import { getContent, isLocale, locales } from "@/data/content";
 import { directionsUrl, externalUrl, getListing, getListings, googleMapsUrl, telHref } from "@/lib/directory";
@@ -142,6 +143,7 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
                 ) : null}
               </div>
             ) : null}
+            <GoogleReviews placeId={l.googlePlaceId} hasPhone={Boolean(l.phone)} ui={c.ui} locale={locale} />
             {l.lat != null && l.lng != null ? (
               <div>
                 <MapLoader

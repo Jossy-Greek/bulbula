@@ -23,6 +23,8 @@ export type Listing = {
   mapsLink: string | null;
   /** Google Maps link to show (see googleMapsUrl). */
   mapsUrl: string;
+  /** Google place ID from the stored Google Maps link (IDs may be stored; Google's content may not). */
+  googlePlaceId: string | null;
   /** Hours as stored (OSM syntax when parseable), for the live open/closed badge. */
   hoursSpec: string | null;
   facebook: string | null;
@@ -96,6 +98,7 @@ function toListing(b: Business, locale: Locale): Listing {
     phone2: b.phone2 ?? null,
     website: b.website ?? null,
     mapsLink: b.mapsLink ?? null,
+    googlePlaceId: b.mapsLink?.match(/[?&]query_place_id=([A-Za-z0-9_-]+)/)?.[1] ?? null,
     mapsUrl: googleMapsUrl({ lat: b.lat ?? null, lng: b.lng ?? null, name: b.name, mapsLink: b.mapsLink ?? null }),
     hoursSpec: b.hours ?? null,
     facebook: b.facebook ?? null,
