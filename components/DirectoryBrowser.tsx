@@ -10,25 +10,15 @@ import { isOpen, useMinute } from "./OpenBadge";
 import type { Content } from "@/data/content";
 import type { CategoryInfo, Listing } from "@/lib/directory";
 import { track } from "@/lib/track";
+import { matchesQuery } from "@/lib/search";
+import { metres } from "@/lib/geo";
+import { localeHref } from "@/lib/href";
+import Link from "next/link";
 
 function matches(l: Listing, q: string) {
-  const hay = `${l.name} ${l.category.name} ${l.landmark ?? ""} ${l.address ?? ""} ${l.description ?? ""}`.toLowerCase();
-  return q
-    .toLowerCase()
-    .split(/\s+/)
-    .filter(Boolean)
-    .every((w) => hay.includes(w));
+  return matchesQuery(`${l.name} ${l.category.name} ${l.landmark ?? ""} ${l.address ?? ""} ${l.description ?? ""}`, q);
 }
 
-/** Great-circle distance in metres. */
-function metres(a: { lat: number; lng: number }, b: { lat: number; lng: number }) {
-  const R = 6_371_000;
-  const rad = (d: number) => (d * Math.PI) / 180;
-  const dLat = rad(b.lat - a.lat);
-  const dLng = rad(b.lng - a.lng);
-  const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng / 2) ** 2;
-  return 2 * R * Math.asin(Math.sqrt(h));
-}
 
 const chip = (on: boolean) =>
   `flex h-11 flex-none items-center gap-2 whitespace-nowrap rounded-full px-4 text-[14px] font-semibold ring-1 transition-colors ${on ? "bg-river text-white ring-river" : "bg-raised text-river ring-border hover:ring-teal"}`;
@@ -50,6 +40,8 @@ export default function DirectoryBrowser({ listings, categories, c }: { listings
   const [locating, setLocating] = useState<"idle" | "busy" | "failed">("idle");
   const [active, setActive] = useState<string | null>(null);
   const [view, setView] = useState<"list" | "map">("list");
+  const [sort, setSort] = useState<"recommended" | "az">("recommended");
+  const PAGE = 24;
   const minute = useMinute(); // re-filter "open now" as the clock moves
   const mapBox = useRef<HTMLDivElement>(null);
 
@@ -81,8 +73,15 @@ export default function DirectoryBrowser({ listings, categories, c }: { listings
       .filter((l) => (!cat || l.category.slug === cat) && (!q.trim() || matches(l, q)) && (!openOnly || (minute !== null && isOpen(l.hoursSpec))))
       .map((l) => ({ l, d: me && l.lat != null && l.lng != null ? metres(me, { lat: l.lat, lng: l.lng }) : null }));
     if (me) list.sort((a, b) => (a.d ?? Infinity) - (b.d ?? Infinity));
+    else if (sort === "az") list.sort((a, b) => a.l.name.localeCompare(b.l.name));
     return list;
-  }, [listings, q, cat, openOnly, me, minute]);
+  }, [listings, q, cat, openOnly, me, minute, sort]);
+
+  // Show the first page; any change of filters starts again from one page.
+  const filterKey = `${q}|${cat}|${openOnly}|${Boolean(me)}|${sort}`;
+  const [page, setPage] = useState({ key: filterKey, n: PAGE });
+  const limit = page.key === filterKey ? page.n : PAGE;
+  const visible = shown.slice(0, limit);
 
   // Analytics: a search counts once typing settles (with its result count, so
   // searches that find nothing show up as gaps); a category pick counts at once.
@@ -202,13 +201,62 @@ export default function DirectoryBrowser({ listings, categories, c }: { listings
       <div className="mt-6 pb-20 lg:grid lg:pb-0 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.8fr)] lg:gap-6">
         <div className={view === "map" ? "hidden lg:block" : ""}>
           {shown.length ? (
-            <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
-              {shown.map(({ l, d }) => (
-                <BusinessCard key={l.id} l={l} c={c} distance={d} active={active === l.slug} onActive={setActive} />
-              ))}
-            </ul>
+            <>
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <p className="text-sm text-muted">{c.ui.showing.replace("{n}", String(visible.length)).replace("{t}", String(shown.length))}</p>
+                {!me ? (
+                  <div className="inline-flex rounded-xl border border-border bg-raised p-1" role="group" aria-label="Sort">
+                    {(["recommended", "az"] as const).map((k) => (
+                      <button
+                        key={k}
+                        type="button"
+                        aria-pressed={sort === k}
+                        onClick={() => setSort(k)}
+                        className={`h-9 rounded-lg px-3 text-[13px] font-semibold ${sort === k ? "bg-river text-white" : "text-muted hover:text-river"}`}
+                      >
+                        {k === "recommended" ? c.ui.sortRecommended : c.ui.sortAZ}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+              </div>
+              <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2">
+                {visible.map(({ l, d }) => (
+                  <BusinessCard key={l.id} l={l} c={c} distance={d} active={active === l.slug} onActive={setActive} />
+                ))}
+              </ul>
+              {shown.length > limit ? (
+                <button
+                  type="button"
+                  onClick={() => setPage({ key: filterKey, n: limit + PAGE })}
+                  className="btn btn-outline mt-5 w-full justify-center"
+                >
+                  {c.ui.showMore} ({shown.length - limit})
+                </button>
+              ) : null}
+            </>
           ) : (
-            <p className="rounded-2xl border border-dashed border-border bg-raised p-8 text-center text-muted">{c.ui.noResults}</p>
+            <div className="rounded-2xl border border-dashed border-border bg-raised p-8 text-center">
+              <p className="text-muted">{c.ui.noResults}</p>
+              <div className="mt-4 flex flex-wrap justify-center gap-2">
+                <button
+                  type="button"
+                  className="btn btn-outline"
+                  onClick={() => {
+                    setQ("");
+                    setCat("");
+                    setOpenOnly(false);
+                    setMe(null);
+                    sync({ q: "", c: "", open: false });
+                  }}
+                >
+                  {c.ui.clearFilters}
+                </button>
+                <Link href={localeHref(c.locale, "/add")} className="btn btn-river">
+                  {c.ui.addIt}
+                </Link>
+              </div>
+            </div>
           )}
         </div>
         <div ref={mapBox} className={`${view === "map" ? "block" : "hidden"} scroll-mt-20 lg:block`}>

@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Plus, Search } from "lucide-react";
+import { ArrowRight, Plus } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import SectionHeader from "@/components/SectionHeader";
 import BusinessCard from "@/components/BusinessCard";
 import CategoryIcon from "@/components/CategoryIcon";
 import MapLoader from "@/components/MapLoader";
+import HeroSearch from "@/components/HeroSearch";
 import { getContent, isLocale } from "@/data/content";
 import { getCategories, getListings, googleMapsUrl } from "@/lib/directory";
 import { localeHref } from "@/lib/href";
@@ -29,22 +30,20 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   return (
     <>
       <Nav c={c} />
-      <section className="ripples relative overflow-hidden bg-river text-white">
+      <section className="ripples relative z-10 overflow-x-clip bg-river text-white">
         <div className="container-x relative pb-14 pt-[calc(72px+4rem)] sm:pb-20 lg:pt-[calc(72px+5.5rem)]">
           <p className="eyebrow eyebrow-on-dark rise rise-1">{c.hero.eyebrow}</p>
           <h1 className="font-display rise rise-2 mt-5 max-w-3xl text-[2.6rem] font-extrabold leading-[1.04] tracking-tight sm:text-6xl lg:text-[68px]">{c.hero.title}</h1>
           <p className="rise rise-3 mt-5 max-w-xl text-[17px] leading-relaxed text-white/80">{c.hero.body}</p>
 
-          <form action={localeHref(locale, "/businesses")} className="rise rise-4 mt-9 flex max-w-2xl gap-2 rounded-2xl bg-white p-2 shadow-[0_24px_60px_-30px_rgba(0,0,0,0.6)]">
-            <label className="relative flex-1">
-              <span className="sr-only">{c.ui.search}</span>
-              <Search className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-muted" aria-hidden="true" />
-              <input name="q" type="search" placeholder={c.ui.searchShort} className="h-12 w-full rounded-xl bg-transparent pl-11 pr-3 text-[16px] text-ink placeholder:text-[#7b8c8f] focus:outline-none" />
-            </label>
-            <button type="submit" className="btn btn-marigold">
-              {c.ui.searchButton}
-            </button>
-          </form>
+          <div className="rise rise-4 relative z-30 mt-9">
+            <HeroSearch
+              locale={locale}
+              ui={c.ui}
+              categories={withCount.map((x) => ({ slug: x.slug, name: x.name, icon: x.icon, count: x.count }))}
+              places={listings.map((l) => ({ slug: l.slug, name: l.name, category: l.category.name, icon: l.category.icon }))}
+            />
+          </div>
 
           <ul className="rise rise-4 -mx-4 mt-4 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0">
             {withCount

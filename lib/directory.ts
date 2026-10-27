@@ -123,7 +123,15 @@ export async function getListings(locale: Locale): Promise<Listing[]> {
   });
   return res.docs
     .map((b) => toListing(b as Business, locale))
-    .sort((a, b) => Number(b.featured) - Number(a.featured) || Number(b.claimed) - Number(a.claimed) || a.name.localeCompare(b.name));
+    .sort(
+      // "Recommended": featured, then run by their owners, then confirmed, then reachable by phone, then by name.
+      (a, b) =>
+        Number(b.featured) - Number(a.featured) ||
+        Number(b.claimed) - Number(a.claimed) ||
+        Number(a.unconfirmed) - Number(b.unconfirmed) ||
+        Number(Boolean(b.phone)) - Number(Boolean(a.phone)) ||
+        a.name.localeCompare(b.name),
+    );
 }
 
 export async function getListing(slug: string, locale: Locale): Promise<Listing | null> {

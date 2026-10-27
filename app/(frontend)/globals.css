@@ -246,3 +246,16 @@ html[lang="am"] .track-latin {
   font-family: var(--font-sans);
   margin: 12px 14px;
 }
+
+/* Map clusters (components/AreaMap.tsx) */
+.bb-cluster {
+  display: grid;
+  place-items: center;
+  font: 800 14px/1 var(--font-sans, system-ui);
+  color: #fff;
+  background: var(--river);
+  border: 3px solid #fff;
+  border-radius: 9999px;
+  box-shadow: 0 0 0 4px rgba(14, 61, 71, 0.18), 0 8px 18px -8px rgba(14, 61, 71, 0.8);
+  cursor: pointer;
+}
