@@ -6,14 +6,12 @@ import { BadgeCheck, Clock, Map as MapIcon, MapPin, Navigation2, Phone } from "l
 import OpenBadge from "./OpenBadge";
 import { parseHours } from "@/lib/hours";
 import { telHref } from "@/lib/links";
+import { formatDistance } from "@/lib/geo";
 import CategoryIcon from "./CategoryIcon";
 import type { Content } from "@/data/content";
 import type { Listing } from "@/lib/directory";
 import { localeHref } from "@/lib/href";
 
-export function formatDistance(m: number) {
-  return m < 1000 ? `${Math.round(m / 10) * 10} m` : `${(m / 1000).toFixed(1)} km`;
-}
 
 /**
  * One listing in a grid. The name is a stretched link, so the whole card opens
@@ -98,7 +96,8 @@ export default function BusinessCard({
             <MapIcon className="h-3.5 w-3.5" aria-hidden="true" /> Google Maps
           </a>
           {l.unconfirmed ? (
-            <span className="ml-auto rounded-full bg-marigold-soft px-2.5 py-1 text-[11px] font-semibold text-amber-text">{c.ui.unconfirmed}</span>
+            // Quiet on purpose: most research listings carry it, so a loud badge would be noise. The page explains it.
+            <span className="ml-auto text-[11.5px] text-muted">{c.ui.unconfirmed}</span>
           ) : !l.claimed ? (
             <span className="ml-auto rounded-full bg-page px-2.5 py-1 text-[11px] font-semibold text-muted ring-1 ring-border">{c.ui.unclaimed}</span>
           ) : null}

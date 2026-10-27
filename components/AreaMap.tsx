@@ -2,8 +2,8 @@
 
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import { useEffect, useRef } from "react";
-import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { MapContainer, Marker, Popup, TileLayer, useMap, useMapEvents } from "react-leaflet";
 import type { Locale } from "@/data/content";
 import { site } from "@/data/site";
 
@@ -71,6 +71,68 @@ function FitToPoints({ points }: { points: MapPoint[] }) {
   return null;
 }
 
+function bubble(count: number) {
+  const size = count < 10 ? 34 : count < 50 ? 40 : 46;
+  return L.divIcon({
+    className: "",
+    html: `<div class="bb-cluster" style="width:${size}px;height:${size}px">${count}</div>`,
+    iconSize: [size, size],
+    iconAnchor: [size / 2, size / 2],
+  });
+}
+
+const CELL = 56; // px: pins closer than this on screen share a bubble
+const SPREAD_ZOOM = 18; // from here every pin shows on its own
+
+/**
+ * Groups nearby pins into numbered bubbles at the current zoom (no plugin:
+ * project to pixels, bucket into a grid). Tapping a bubble zooms to its places.
+ * The highlighted pin is never hidden inside a bubble.
+ */
+function Pins({ points, activeSlug, render }: { points: MapPoint[]; activeSlug: string | null; render: (p: MapPoint) => React.ReactNode }) {
+  const map = useMap();
+  const [zoom, setZoom] = useState(() => map.getZoom());
+  useMapEvents({ zoomend: () => setZoom(map.getZoom()) });
+
+  const groups = useMemo(() => {
+    if (zoom >= SPREAD_ZOOM || points.length < 12) return points.map((p) => [p]);
+    const cells = new Map<string, MapPoint[]>();
+    const out: MapPoint[][] = [];
+    for (const p of points) {
+      if (p.slug === activeSlug) {
+        out.push([p]);
+        continue;
+      }
+      const px = map.project([p.lat, p.lng], zoom);
+      const key = `${Math.floor(px.x / CELL)}:${Math.floor(px.y / CELL)}`;
+      const g = cells.get(key);
+      if (g) g.push(p);
+      else cells.set(key, [p]);
+    }
+    return [...out, ...cells.values()];
+  }, [points, zoom, activeSlug, map]);
+
+  return (
+    <>
+      {groups.map((g) =>
+        g.length === 1 ? (
+          render(g[0])
+        ) : (
+          <Marker
+            key={`c:${g.map((p) => p.slug).join("|")}`}
+            position={[g.reduce((s, p) => s + p.lat, 0) / g.length, g.reduce((s, p) => s + p.lng, 0) / g.length]}
+            icon={bubble(g.length)}
+            title={`${g.length} places`}
+            eventHandlers={{
+              click: () => map.fitBounds(L.latLngBounds(g.map((p) => [p.lat, p.lng])), { padding: [48, 48], maxZoom: SPREAD_ZOOM }),
+            }}
+          />
+        ),
+      )}
+    </>
+  );
+}
+
 /**
  * OpenStreetMap tiles with one pin per listing. Light use of the public tile
  * server with attribution follows its usage policy; switch providers if
@@ -112,7 +174,10 @@ export default function AreaMap({
         />
         <AutoResize points={points} fit={fit} />
         {fit ? <FitToPoints points={points} /> : null}
-        {points.map((p) => (
+        <Pins
+          points={points}
+          activeSlug={activeSlug}
+          render={(p) => (
           <Marker key={p.slug} position={[p.lat, p.lng]} icon={pin(p, p.slug === activeSlug)} zIndexOffset={p.slug === activeSlug ? 1000 : 0} title={p.name}>
             <Popup>
               <p style={{ fontWeight: 700, color: "#0e3d47", margin: 0 }}>{p.name}</p>
@@ -129,7 +194,8 @@ export default function AreaMap({
               </span>
             </Popup>
           </Marker>
-        ))}
+          )}
+        />
       </MapContainer>
     </div>
   );

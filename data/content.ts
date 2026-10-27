@@ -58,6 +58,16 @@ export type Content = {
     share: string;
     copied: string;
     copyLink: string;
+    showMore: string;
+    nearby: string;
+    /** "{c}" = category name. */
+    allInCategory: string;
+    /** "{n}" shown of "{t}". */
+    showing: string;
+    sortRecommended: string;
+    sortAZ: string;
+    clearFilters: string;
+    addIt: string;
     source: { osm: string; owner: string; admin: string };
     suggestEdit: string;
     days: string[];
@@ -167,6 +177,14 @@ const en: Content = {
     share: "Share",
     copied: "Link copied",
     copyLink: "Copy link",
+    showMore: "Show more",
+    nearby: "Nearby",
+    allInCategory: "All {c}",
+    showing: "Showing {n} of {t}",
+    sortRecommended: "Recommended",
+    sortAZ: "A–Z",
+    clearFilters: "Clear filters",
+    addIt: "Add a place",
     source: { osm: "Source: OpenStreetMap", owner: "Added by the business", admin: "Added by Bulbula Directory" },
     suggestEdit: "Suggest a correction",
     days: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
@@ -320,6 +338,14 @@ const am: Content = {
     share: "አጋራ",
     copied: "ሊንኩ ተቀድቷል",
     copyLink: "ሊንኩን ቅዳ",
+    showMore: "ተጨማሪ አሳይ",
+    nearby: "በአቅራቢያ",
+    allInCategory: "ሁሉም {c}",
+    showing: "ከ{t} {n} በማሳየት ላይ",
+    sortRecommended: "የሚመከሩ",
+    sortAZ: "ሀ–ፐ",
+    clearFilters: "ማጣሪያዎችን አጽዳ",
+    addIt: "ቦታ ያክሉ",
     source: { osm: "ምንጭ፦ OpenStreetMap", owner: "በንግዱ የተጨመረ", admin: "በቡልቡላ ማውጫ የተጨመረ" },
     suggestEdit: "እርማት ይጠቁሙ",
     days: ["ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ", "ዓርብ", "ቅዳሜ", "እሑድ"],

@@ -32,7 +32,9 @@ type Lead = {
 };
 
 const DRY = process.env.DRY_RUN === "1";
-const leads: Lead[] = JSON.parse(readFileSync(path.resolve(process.cwd(), "scripts/data/google-maps-leads-2026-10-26.json"), "utf8"));
+// LEADS_FILE picks a later research round (default: the first, 2026-10-26).
+const LEADS_FILE = process.env.LEADS_FILE ?? "scripts/data/google-maps-leads-2026-10-26.json";
+const leads: Lead[] = JSON.parse(readFileSync(path.resolve(process.cwd(), LEADS_FILE), "utf8"));
 
 const NEW_CATEGORIES = [
   { slug: "clinics", en: "Clinics & dental", am: "ክሊኒኮችና የጥርስ ሕክምና", group: "business", icon: "stethoscope", after: "pharmacies" },
@@ -135,7 +137,7 @@ for (const l of leads) {
       source: "admin",
       claimed: false,
       featured: false,
-      adminNotes: `Found on Google Maps 2026-10-26 as "${l.googleName}". Only the name, pin and Google link were recorded. Call or visit to confirm it is open, add phone and hours, then publish.`,
+      adminNotes: `Found on Google Maps (${path.basename(LEADS_FILE).match(/\d{4}-\d{2}-\d{2}/)?.[0] ?? "2026-10-26"}) as "${l.googleName}". Only the name, pin and Google link were recorded. Call or visit to confirm it is open, add phone and hours, then publish.`,
     },
   });
   if (l.am || l.landmarkAm) {

@@ -13,6 +13,7 @@ import { site } from "@/data/site";
 import { getContent, isLocale, locales } from "@/data/content";
 import { directionsUrl, externalUrl, getListing, getListings, googleMapsUrl, telHref } from "@/lib/directory";
 import { localeHref } from "@/lib/href";
+import { formatDistance, metres } from "@/lib/geo";
 
 export const revalidate = 300;
 // New listings published after a deploy are rendered on first visit.
@@ -37,6 +38,15 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
   const l = await getListing(slug, locale);
   if (!l) notFound();
   const maps = googleMapsUrl(l);
+  // Nearby: the closest other places with a pin (Google Maps "Nearby" pattern).
+  const here = l.lat != null && l.lng != null ? { lat: l.lat, lng: l.lng } : null;
+  const nearby = here
+    ? (await getListings(locale))
+        .filter((o) => o.slug !== l.slug && o.lat != null && o.lng != null)
+        .map((o) => ({ o, d: metres(here, { lat: o.lat!, lng: o.lng! }) }))
+        .sort((a, b) => a.d - b.d)
+        .slice(0, 6)
+    : [];
   const socials = (
     [
       ["Facebook", l.facebook],
@@ -45,8 +55,27 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
     ] as const
   ).filter(([, u]) => Boolean(u)) as [ "Facebook" | "Instagram" | "Telegram", string][];
 
+  // schema.org LocalBusiness from the facts we hold, so search engines understand the page.
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bulbula-directory.vercel.app";
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": l.category.group === "community" ? "Place" : "LocalBusiness",
+    name: l.name,
+    url: `${siteUrl}/${locale}/b/${l.slug}`,
+    ...(l.description && !l.generated ? { description: l.description } : {}),
+    address: { "@type": "PostalAddress", streetAddress: l.address ?? l.landmark ?? undefined, addressLocality: "Bole Bulbula, Addis Ababa", addressCountry: "ET" },
+    ...(here ? { geo: { "@type": "GeoCoordinates", latitude: here.lat, longitude: here.lng } } : {}),
+    ...(l.phone ? { telephone: l.phone } : {}),
+    ...(l.photo ? { image: l.photo.url } : {}),
+    hasMap: maps,
+    ...([l.website, l.facebook, l.instagram, l.telegram].some(Boolean)
+      ? { sameAs: [l.website, l.facebook, l.instagram, l.telegram].filter(Boolean).map((u) => externalUrl(u!)) }
+      : {}),
+  };
+
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />
       <Nav c={c} />
       <section className="ripples relative overflow-hidden bg-river text-white">
         <div className="container-x relative pb-10 pt-[calc(72px+2.5rem)] sm:pb-14">
@@ -231,6 +260,38 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
             ) : null}
           </aside>
         </div>
+
+        {nearby.length ? (
+          <section className="container-x mt-12" aria-labelledby="nearby">
+            <div className="flex flex-wrap items-end justify-between gap-3">
+              <h2 id="nearby" className="font-display text-2xl font-extrabold tracking-tight text-river">
+                {c.ui.nearby}
+              </h2>
+              <Link href={`${localeHref(locale, "/businesses")}?c=${l.category.slug}`} className="action-link">
+                {c.ui.allInCategory.replace("{c}", l.category.name)} <ArrowUpRight className="h-4 w-4" />
+              </Link>
+            </div>
+            <ul className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {nearby.map(({ o, d }) => (
+                <li key={o.slug} className="min-w-0">
+                  <Link
+                    href={localeHref(locale, `/b/${o.slug}`)}
+                    className="flex h-full items-center gap-3 rounded-2xl border border-border bg-raised p-4 transition-colors hover:border-teal"
+                  >
+                    <span className={`grid h-11 w-11 flex-none place-items-center rounded-xl ${o.category.group === "community" ? "bg-river text-white" : "bg-tint text-teal-text"}`}>
+                      <CategoryIcon name={o.category.icon} />
+                    </span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate font-display font-bold text-river">{o.name}</span>
+                      <span className="block truncate text-[13px] text-muted">{o.category.name}</span>
+                    </span>
+                    <span className="flex-none text-[13px] font-semibold text-teal-text">{formatDistance(d)}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ) : null}
       </main>
 
       {/* Phones: the three things people come for, always under the thumb (Yelp / Google Maps pattern). */}
