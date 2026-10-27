@@ -112,6 +112,9 @@ export default async function DirectoryDashboard({ payload }: { payload: Payload
             <Link href={`${ADMIN}/businesses/create`} className="bb-btn bb-btn--marigold">
               <Plus size={16} aria-hidden="true" /> Add a place
             </Link>
+            <Link href="/admin/analytics" className="bb-btn bb-btn--ghost">
+              Analytics
+            </Link>
             <a href="/" target="_blank" rel="noopener noreferrer" className="bb-btn bb-btn--ghost">
               View the site <ArrowUpRight size={16} aria-hidden="true" />
             </a>

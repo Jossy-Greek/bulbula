@@ -109,7 +109,7 @@ export type Content = {
     another: string;
     errors: { required: string; contact: string; consent: string; failed: string };
   };
-  aboutPage: { eyebrow: string; title: string; intro: string; sections: { title: string; body: string }[]; contactTitle: string };
+  aboutPage: { eyebrow: string; title: string; intro: string; sections: { title: string; body: string }[]; contactTitle: string; privacy: string };
   footer: { blurb: string; explore: string; contact: string; rights: string };
 };
 
@@ -255,6 +255,7 @@ const en: Content = {
       },
     ],
     contactTitle: "Questions or corrections",
+    privacy: "We count visits to improve the directory — anonymously: no cookies, no accounts, no IP addresses stored.",
   },
   footer: {
     blurb: "Businesses, services and community places in Bole Bulbula, Addis Ababa.",
@@ -407,6 +408,7 @@ const am: Content = {
       },
     ],
     contactTitle: "ጥያቄ ወይም እርማት",
+    privacy: "ማውጫውን ለማሻሻል ጉብኝቶችን ስማቸው ሳይታወቅ እንቆጥራለን፤ ኩኪ፣ መለያ ወይም የIP አድራሻ አናስቀምጥም።",
   },
   footer: {
     blurb: "በቦሌ ቡልቡላ፣ አዲስ አበባ ያሉ ንግዶች፣ አገልግሎቶችና የማህበረሰብ ቦታዎች።",

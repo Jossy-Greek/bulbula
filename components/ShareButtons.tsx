@@ -18,6 +18,7 @@ export default function ShareButtons({ name, ui }: { name: string; ui: Content["
     <div className="flex flex-wrap gap-2">
       <button
         type="button"
+        data-track="share"
         className={btn}
         onClick={async () => {
           if (navigator.share) {
@@ -32,6 +33,7 @@ export default function ShareButtons({ name, ui }: { name: string; ui: Content["
       <button
         type="button"
         className={btn}
+        data-track="telegram"
         aria-label="Telegram"
         onClick={() => window.open(`https://t.me/share/url?url=${encodeURIComponent(url())}&text=${encodeURIComponent(name)}`, "_blank", "noopener")}
       >
@@ -39,6 +41,7 @@ export default function ShareButtons({ name, ui }: { name: string; ui: Content["
       </button>
       <button
         type="button"
+        data-track="copy"
         className={btn}
         onClick={async () => {
           await navigator.clipboard?.writeText(url()).catch(() => {});

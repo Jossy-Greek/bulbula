@@ -8,6 +8,7 @@ import { vercelBlobStorage } from "@payloadcms/storage-vercel-blob";
 import sharp from "sharp";
 import { buildConfig } from "payload";
 
+import { AnalyticsEvents } from "./collections/AnalyticsEvents";
 import { Businesses } from "./collections/Businesses";
 import { Categories } from "./collections/Categories";
 import { Media } from "./collections/Media";
@@ -32,9 +33,13 @@ export default buildConfig({
     components: {
       graphics: { Logo: "/components/admin/Logo", Icon: "/components/admin/Icon" },
       beforeDashboard: ["/components/admin/DirectoryDashboard"],
+      afterNavLinks: ["/components/admin/AnalyticsNavLink"],
+      views: {
+        analytics: { Component: "/components/admin/AnalyticsView", path: "/analytics" },
+      },
     },
   },
-  collections: [Businesses, Categories, Media, Users],
+  collections: [Businesses, Categories, Media, Users, AnalyticsEvents],
   localization: {
     locales: [
       { code: "en", label: "English" },

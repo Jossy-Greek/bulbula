@@ -71,6 +71,7 @@ export interface Config {
     categories: Category;
     media: Media;
     users: User;
+    'analytics-events': AnalyticsEvent;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,6 +83,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
+    'analytics-events': AnalyticsEventsSelect<false> | AnalyticsEventsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -286,6 +288,38 @@ export interface User {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "analytics-events".
+ */
+export interface AnalyticsEvent {
+  id: number;
+  type: 'pageview' | 'action' | 'search' | 'filter';
+  path?: string | null;
+  /**
+   * Business slug, for business pages and actions.
+   */
+  slug?: string | null;
+  /**
+   * call · directions · maps · website · social · share · telegram · copy · claim
+   */
+  action?: string | null;
+  /**
+   * Search text, or the category slug for a filter.
+   */
+  query?: string | null;
+  results?: number | null;
+  locale?: string | null;
+  /**
+   * Telegram, Google, Facebook, Direct… (from utm_source or the referrer).
+   */
+  source?: string | null;
+  device?: string | null;
+  country?: string | null;
+  visitor?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
@@ -323,6 +357,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'users';
         value: number | User;
+      } | null)
+    | ({
+        relationTo: 'analytics-events';
+        value: number | AnalyticsEvent;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -486,6 +524,25 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "analytics-events_select".
+ */
+export interface AnalyticsEventsSelect<T extends boolean = true> {
+  type?: T;
+  path?: T;
+  slug?: T;
+  action?: T;
+  query?: T;
+  results?: T;
+  locale?: T;
+  source?: T;
+  device?: T;
+  country?: T;
+  visitor?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

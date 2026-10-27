@@ -37,6 +37,7 @@ export default function BusinessCard({
   const parseable = Boolean(parseHours(l.hoursSpec));
   return (
     <li
+      data-slug={l.slug}
       onMouseEnter={onActive ? () => onActive(l.slug) : undefined}
       onMouseLeave={onActive ? () => onActive(null) : undefined}
       className={`group relative flex flex-col overflow-hidden rounded-2xl border bg-raised transition-all duration-200 hover:-translate-y-0.5 hover:border-teal/40 hover:shadow-[0_18px_40px_-26px_rgba(14,61,71,0.5)] ${active ? "border-teal ring-2 ring-teal/30" : "border-border"}`}

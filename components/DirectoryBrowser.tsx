@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { List, LocateFixed, Map as MapIcon, Search, X } from "lucide-react";
 import BusinessCard from "./BusinessCard";
@@ -9,6 +9,7 @@ import MapLoader from "./MapLoader";
 import { isOpen, useMinute } from "./OpenBadge";
 import type { Content } from "@/data/content";
 import type { CategoryInfo, Listing } from "@/lib/directory";
+import { track } from "@/lib/track";
 
 function matches(l: Listing, q: string) {
   const hay = `${l.name} ${l.category.name} ${l.landmark ?? ""} ${l.address ?? ""} ${l.description ?? ""}`.toLowerCase();
@@ -82,6 +83,19 @@ export default function DirectoryBrowser({ listings, categories, c }: { listings
     if (me) list.sort((a, b) => (a.d ?? Infinity) - (b.d ?? Infinity));
     return list;
   }, [listings, q, cat, openOnly, me, minute]);
+
+  // Analytics: a search counts once typing settles (with its result count, so
+  // searches that find nothing show up as gaps); a category pick counts at once.
+  const settledQ = q.trim();
+  useEffect(() => {
+    if (settledQ.length < 2) return;
+    const t = setTimeout(() => track({ type: "search", query: settledQ, results: shown.length }), 1200);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- count the result size at the time the query settles
+  }, [settledQ]);
+  useEffect(() => {
+    if (cat) track({ type: "filter", query: cat });
+  }, [cat]);
 
   const points = shown
     .filter(({ l }) => l.lat != null && l.lng != null)

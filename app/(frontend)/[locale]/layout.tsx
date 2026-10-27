@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Inter, Noto_Sans_Ethiopic, Plus_Jakarta_Sans } from "next/font/google";
 import "../globals.css";
 import { getContent, isLocale, locales } from "@/data/content";
+import Tracker from "@/components/Tracker";
 
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], weight: ["500", "600", "700", "800"], variable: "--font-jakarta" });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
@@ -32,7 +33,10 @@ export default async function RootLayout({ children, params }: LayoutProps<"/[lo
   const fonts = [jakarta, inter, ethiopic].map((f) => f.variable).join(" ");
   return (
     <html lang={locale} data-scroll-behavior="smooth" className={`h-full ${fonts}`}>
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        <Tracker />
+      </body>
     </html>
   );
 }

@@ -53,6 +53,7 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
               </a>{" "}
               contributors, available under the Open Database License.
             </p>
+            <p className="mt-2 text-xs text-white/60">{a.privacy}</p>
           </section>
         </div>
       </main>
