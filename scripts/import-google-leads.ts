@@ -48,7 +48,7 @@ const TUKIYA_LINKS: Record<string, string> = {
 };
 
 const STOP = new Set(
-  "the and bole bulbula bulbulla bank branch bakery pastry pharmacy pharma coffee cafe restaurant bar salon beauty spa center centre clinic medium shop supermarket market mart school academy health gym fitness addis ababa ethiopia mazoria mazoriya mazorya mariam medhanialem condominium".split(" "),
+  "the and bole bulbula bulbulla bank branch bakery pastry pharmacy pharma coffee cafe restaurant bar salon beauty spa center centre clinic medium shop supermarket market mart school academy health gym fitness addis ababa ethiopia mazoria mazoriya mazorya mariam medhanialem condominium church chapel catholic orthodox evangelical mosque masjid monastery".split(" "),
 );
 const words = (s: string) =>
   new Set(
