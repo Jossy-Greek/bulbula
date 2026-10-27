@@ -26,11 +26,14 @@ type Entry = {
   landmark?: string;
   lat?: number;
   lng?: number;
+  /** Published, but shown as "Not yet confirmed" (sources disagree). */
+  unconfirmed?: boolean;
   note: string;
 };
 
 const DASHEN = "Dashen Bank branch list (Annex 2, PDF dated 2025-12-22, dashenbanksc.com), read 2026-10-26.";
 const NIB = "Nib International Bank, nibbanksc.com/branch-atms-pos, read 2026-10-26.";
+const AWASH = "Awash Bank, awashbank.com/branch-address (East Addis Ababa region) and /branch-locator, read 2026-10-27 (pages undated; footer ©2026).";
 const ADDISMAP =
   "addismap.com (data partly from OSM; collection date not stated), read 2026-10-26. Likely years old — confirm it still exists before approving.";
 
@@ -44,6 +47,11 @@ const ENTRIES: Entry[] = [
   { cat: "banks", en: "Nib International Bank — Bole Bulbula Branch", am: "ንብ ኢንተርናሽናል ባንክ — ቦሌ ቡልቡላ ቅርንጫፍ", status: "published", phone: "0114 71 4043", phone2: "0114 71 4734", landmark: "Bole Bulbula", note: NIB },
   { cat: "banks", en: "Nib International Bank — Bole Bulbula Mariam Mazoria Branch", am: "ንብ ኢንተርናሽናል ባንክ — ቦሌ ቡልቡላ ማርያም ማዞሪያ ቅርንጫፍ", status: "published", phone: "0114 71 4814", phone2: "0114 71 4780", landmark: "Bulbula Mariam Mazoria", note: NIB },
   { cat: "banks", en: "Nib International Bank — Bulbula 93 Mazoria Branch", am: "ንብ ኢንተርናሽናል ባንክ — ቡልቡላ 93 ማዞሪያ ቅርንጫፍ", status: "published", phone: "0114 71 4923", landmark: "93 Mazoria, Bole Bulbula", note: `${NIB} Listed as "Bulebula 93 Mazoria"; its second number (1141704269) is malformed and was left out.` },
+
+  // Awash Bank (added 2026-10-27 after I noticed it was missing).
+  { cat: "banks", en: "Awash Bank — Bole Bulbula Branch", am: "አዋሽ ባንክ — ቦሌ ቡልቡላ ቅርንጫፍ", status: "published", unconfirmed: true, phone: "0114 71 4321", landmark: "Bole Bulbula", note: `${AWASH} Fax 0114 71 4594; ATM listed. CONTRADICTION: Google Maps marks "Awash Bank Bole Bulbula Branch" at 8.9520843, 38.7902308 as permanently closed (2026-10-26) — it may have moved. Call to confirm, then untick "Not yet confirmed".` },
+  { cat: "banks", en: "Awash Bank — Bulbula Branch", am: "አዋሽ ባንክ — ቡልቡላ ቅርንጫፍ", status: "published", phone: "0114 71 4714", phone2: "0114 71 4832", landmark: "Bulbula", note: AWASH },
+  { cat: "banks", en: "Awash Bank — Bulbula 93 Mazoria Branch", am: "አዋሽ ባንክ — ቡልቡላ 93 ማዞሪያ ቅርንጫፍ", status: "published", phone: "0114 66 2354", landmark: "93 Mazoria, Bole Bulbula", note: `${AWASH} ATM listed.` },
 
   // Leads — pending until confirmed.
   { cat: "cafes-restaurants", en: "Gelatiamo Bole Bulbula", status: "pending", phone: "+251 93 595 5598", note: "Ice-cream shop. bekurguide.com/organization/gelatiamo-bole-bulbula (no address or hours), read 2026-10-26." },
@@ -86,6 +94,7 @@ for (const e of ENTRIES) {
       lat: e.lat,
       lng: e.lng,
       status: e.status,
+      unconfirmed: e.unconfirmed ?? false,
       source: "admin",
       claimed: false,
       featured: false,
