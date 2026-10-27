@@ -98,6 +98,17 @@ lib/hours.ts               opening-hours parser + open-now (Addis time)
 migrations/                Payload migrations (push is off)
 ```
 
+## Deploying
+
+Vercel project `yoseph4/bulbula` is connected to this repo (`Jossy-Greek/bulbula`):
+
+- **`main` is production.** Merging a pull request into `main` deploys
+  https://bulbula-directory.vercel.app (the build runs `payload migrate` first).
+- **Every other branch gets a preview deployment** with its own URL, posted on
+  the pull request. Preview builds use the same Neon database, so migrations in
+  a PR run against live data. Review them before pushing.
+- Direct pushes to `main` are blocked locally by the Synheart guard; open a PR.
+
 ## Commands
 
 ```bash
