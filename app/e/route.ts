@@ -1,6 +1,6 @@
-import { createHash } from "crypto";
 import { getPayload } from "payload";
 import config from "@payload-config";
+import { dailyVisitor } from "@/lib/visitor";
 
 /**
  * The analytics beacon. Public pages POST small JSON events here
@@ -10,7 +10,7 @@ import config from "@payload-config";
 
 const BOT = /bot|crawl|spider|slurp|preview|facebookexternalhit|telegram|whatsapp|headless|lighthouse|vercel|curl|wget|python|node-fetch|go-http/i;
 const TYPES = new Set(["pageview", "action", "search", "filter"]);
-const ACTIONS = new Set(["call", "directions", "maps", "website", "social", "share", "telegram", "copy", "claim", "add"]);
+const ACTIONS = new Set(["call", "directions", "maps", "website", "social", "share", "telegram", "copy", "claim", "add", "review"]);
 
 const clip = (v: unknown, n: number) => (typeof v === "string" ? v.slice(0, n) : undefined);
 
@@ -63,12 +63,7 @@ export async function POST(req: Request) {
   const action = clip(body.action, 20);
   if (type === "action" && (!action || !ACTIONS.has(action))) return new Response(null, { status: 400 });
 
-  const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0].trim() || req.headers.get("x-real-ip") || "0";
-  const day = new Date().toISOString().slice(0, 10);
-  const visitor = createHash("sha256")
-    .update(`${day}|${process.env.PAYLOAD_SECRET ?? ""}|${ip}|${ua}`)
-    .digest("hex")
-    .slice(0, 16);
+  const visitor = dailyVisitor(req.headers);
   const ownHost = new URL(req.url).hostname.replace(/^www\./, "");
 
   const payload = await getPayload({ config });

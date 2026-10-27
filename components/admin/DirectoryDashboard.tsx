@@ -1,8 +1,9 @@
 import Link from "next/link";
 import type { Payload } from "payload";
 import { ArrowUpRight, BadgeCheck, Clock, FolderTree, Globe, Inbox, MapPin, Phone, Plus, Search, Store } from "lucide-react";
-import type { Business, Category } from "@/payload-types";
+import type { Business, Category, Review } from "@/payload-types";
 import ReviewButtons from "./ReviewButtons";
+import ModerateReview from "./ModerateReview";
 
 const ADMIN = "/admin/collections";
 
@@ -51,10 +52,12 @@ function Facts({ b }: { b: Business }) {
  * verify), what each category holds, data gaps, and recent edits.
  */
 export default async function DirectoryDashboard({ payload }: { payload: Payload }) {
-  const [all, cats] = await Promise.all([
+  const [all, cats, waiting] = await Promise.all([
     payload.find({ collection: "businesses", locale: "en", limit: 2000, depth: 1, sort: "-createdAt" }),
     payload.find({ collection: "categories", locale: "en", limit: 100, depth: 0, sort: "order" }),
+    payload.find({ collection: "reviews", where: { status: { equals: "pending" } }, limit: 100, depth: 0, sort: "createdAt" }),
   ]);
+  const pendingReviews = waiting.docs as Review[];
   const docs = all.docs as Business[];
   const now = new Date();
   const published = docs.filter((b) => b.status === "published");
@@ -71,6 +74,7 @@ export default async function DirectoryDashboard({ payload }: { payload: Payload
     .map(([name, items]) => ({ name, items: items.sort((x, y) => x.name.localeCompare(y.name)) }))
     .sort((x, y) => y.items.length - x.items.length);
   const byName = new Map(docs.map((b) => [b.id, b.name]));
+  const bizOf = (r: Review) => docs.find((b) => b.id === (typeof r.business === "object" ? r.business.id : r.business));
   const share = published.length ? claimed.length / published.length : 0;
 
   const gaps = [
@@ -101,9 +105,11 @@ export default async function DirectoryDashboard({ payload }: { payload: Payload
           <h1 className="bb-hero__title">
             {submissions.length
               ? `${submissions.length} ${submissions.length === 1 ? "business is" : "businesses are"} waiting for you`
-              : leads.length
-                ? `${leads.length} leads to check`
-                : "Everything is reviewed"}
+              : pendingReviews.length
+                ? `${pendingReviews.length} ${pendingReviews.length === 1 ? "review is" : "reviews are"} waiting for you`
+                : leads.length
+                  ? `${leads.length} leads to check`
+                  : "Everything is reviewed"}
           </h1>
           <p className="bb-hero__summary">
             {published.length} places are live, {claimed.length} run by owners who claimed them. Leads come from research — call or visit before publishing.
@@ -142,6 +148,36 @@ export default async function DirectoryDashboard({ payload }: { payload: Payload
 
       <div className="bb-grid">
         <div className="bb-side">
+          {pendingReviews.length ? (
+            <section className="bb-card">
+              <header className="bb-card__head">
+                <h2>Reviews to approve</h2>
+                <p>Written by visitors. Publish fair ones, good or bad; reject spam, insults, personal details and adverts.</p>
+              </header>
+              <ul className="bb-queue">
+                {pendingReviews.map((r) => {
+                  const b = bizOf(r);
+                  return (
+                    <li key={r.id}>
+                      <div className="bb-queue__main">
+                        <span className="bb-queue__name">
+                          {"★".repeat(r.rating)}
+                          {"☆".repeat(5 - r.rating)} · {r.author}
+                        </span>
+                        <span className="bb-queue__meta">
+                          on {b ? <Link href={`${ADMIN}/businesses/${b.id}`}>{b.name}</Link> : "a removed place"} · {ago(r.createdAt, now)}
+                          {r.locale === "am" ? " · Amharic site" : ""}
+                        </span>
+                        {r.text ? <p className="bb-quote">{r.text}</p> : null}
+                      </div>
+                      <ModerateReview id={r.id} />
+                    </li>
+                  );
+                })}
+              </ul>
+            </section>
+          ) : null}
+
           <section className="bb-card">
             <header className="bb-card__head">
               <h2>Owner submissions</h2>

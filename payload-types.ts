@@ -68,6 +68,7 @@ export interface Config {
   blocks: {};
   collections: {
     businesses: Business;
+    reviews: Review;
     categories: Category;
     media: Media;
     users: User;
@@ -80,6 +81,7 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     businesses: BusinessesSelect<false> | BusinessesSelect<true>;
+    reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -259,6 +261,31 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews".
+ */
+export interface Review {
+  id: number;
+  business: number | Business;
+  rating: number;
+  /**
+   * First name, as the visitor typed it.
+   */
+  author: string;
+  status: 'pending' | 'published' | 'rejected';
+  text?: string | null;
+  /**
+   * Site language the review was written from.
+   */
+  locale?: string | null;
+  /**
+   * Daily-rotating hash; not a person's identity.
+   */
+  visitor?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -344,6 +371,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'businesses';
         value: number | Business;
+      } | null)
+    | ({
+        relationTo: 'reviews';
+        value: number | Review;
       } | null)
     | ({
         relationTo: 'categories';
@@ -440,6 +471,21 @@ export interface BusinessesSelect<T extends boolean = true> {
         relationship?: T;
       };
   adminNotes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "reviews_select".
+ */
+export interface ReviewsSelect<T extends boolean = true> {
+  business?: T;
+  rating?: T;
+  author?: T;
+  status?: T;
+  text?: T;
+  locale?: T;
+  visitor?: T;
   updatedAt?: T;
   createdAt?: T;
 }

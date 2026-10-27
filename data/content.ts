@@ -130,6 +130,30 @@ export type Content = {
   };
   aboutPage: { eyebrow: string; title: string; intro: string; sections: { title: string; body: string }[]; contactTitle: string; privacy: string };
   footer: { blurb: string; explore: string; contact: string; rights: string };
+  reviews: {
+    title: string;
+    /** "{n}" = number of reviews. */
+    count: string;
+    one: string;
+    none: string;
+    write: string;
+    yourRating: string;
+    /** Labels for 1 to 5 stars. */
+    stars: string[];
+    name: string;
+    text: string;
+    textHint: string;
+    submit: string;
+    sending: string;
+    thanks: string;
+    moderated: string;
+    /** "{n}" = number of reviews. */
+    showAll: string;
+    latestEyebrow: string;
+    latestTitle: string;
+    months: string[];
+    errors: { rating: string; name: string; links: string; already: string; failed: string };
+  };
 };
 
 const en: Content = {
@@ -297,6 +321,33 @@ const en: Content = {
     explore: "Explore",
     contact: "Contact",
     rights: "Map data © OpenStreetMap contributors.",
+  },
+  reviews: {
+    title: "Reviews",
+    count: "{n} reviews",
+    one: "1 review",
+    none: "No reviews yet. Been here? Tell your neighbours how it was.",
+    write: "Write a review",
+    yourRating: "Your rating",
+    stars: ["Poor", "Fair", "Good", "Very good", "Excellent"],
+    name: "Your first name",
+    text: "What was it like? (optional)",
+    textHint: "Be fair and specific: service, prices, opening times. No links or phone numbers.",
+    submit: "Send review",
+    sending: "Sending…",
+    thanks: "Thank you! Your review will appear once we've checked it.",
+    moderated: "Reviews are by visitors and checked before they appear.",
+    showAll: "Show all {n} reviews",
+    latestEyebrow: "From neighbours",
+    latestTitle: "Latest reviews",
+    months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+    errors: {
+      rating: "Choose a star rating.",
+      name: "Add your first name.",
+      links: "Please leave out links, usernames and phone numbers.",
+      already: "You've already reviewed this place today.",
+      failed: "Something went wrong. Please try again.",
+    },
   },
 };
 
@@ -466,6 +517,33 @@ const am: Content = {
     explore: "ያስሱ",
     contact: "ያግኙን",
     rights: "የካርታ መረጃ © OpenStreetMap አበርካቾች።",
+  },
+  reviews: {
+    title: "ግምገማዎች",
+    count: "{n} ግምገማዎች",
+    one: "1 ግምገማ",
+    none: "እስካሁን ግምገማ የለም። ሄደው ያውቃሉ? እንዴት እንደነበር ለጎረቤቶችዎ ይንገሩ።",
+    write: "ግምገማ ይጻፉ",
+    yourRating: "የእርስዎ ደረጃ",
+    stars: ["ደካማ", "መካከለኛ", "ጥሩ", "በጣም ጥሩ", "እጅግ በጣም ጥሩ"],
+    name: "የመጀመሪያ ስምዎ",
+    text: "እንዴት ነበር? (አማራጭ)",
+    textHint: "ፍትሃዊና ግልጽ ይሁኑ፦ አገልግሎት፣ ዋጋ፣ የሥራ ሰዓት። ሊንክ ወይም ስልክ ቁጥር አያስገቡ።",
+    submit: "ግምገማ ይላኩ",
+    sending: "በመላክ ላይ…",
+    thanks: "እናመሰግናለን! ግምገማዎ ከተረጋገጠ በኋላ ይታያል።",
+    moderated: "ግምገማዎቹ የጎብኚዎች ናቸው፤ ከመታየታቸው በፊት ይረጋገጣሉ።",
+    showAll: "ሁሉንም {n} ግምገማዎች ይመልከቱ",
+    latestEyebrow: "ከጎረቤቶች",
+    latestTitle: "የቅርብ ጊዜ ግምገማዎች",
+    months: ["ጃን", "ፌብ", "ማርች", "ኤፕሪ", "ሜይ", "ጁን", "ጁላይ", "ኦገ", "ሴፕ", "ኦክቶ", "ኖቬ", "ዲሴ"],
+    errors: {
+      rating: "እባክዎ የኮከብ ደረጃ ይምረጡ።",
+      name: "የመጀመሪያ ስምዎን ያስገቡ።",
+      links: "እባክዎ ሊንክ፣ የተጠቃሚ ስም ወይም ስልክ ቁጥር አያስገቡ።",
+      already: "ዛሬ ይህን ቦታ አስቀድመው ገምግመዋል።",
+      failed: "ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።",
+    },
   },
 };
 

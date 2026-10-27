@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ExternalLink, Phone, Star, TriangleAlert } from "lucide-react";
+import { ExternalLink, Phone, TriangleAlert } from "lucide-react";
+import Stars from "./Stars";
 import type { Content } from "@/data/content";
 import { telHref } from "@/lib/links";
 
@@ -85,16 +86,6 @@ function fetchDetails(placeId: string, language: string): Promise<Details> {
     memo.set(placeId, p);
   }
   return p;
-}
-
-function Stars({ value, size = 16 }: { value: number; size?: number }) {
-  return (
-    <span className="inline-flex" aria-hidden="true">
-      {[1, 2, 3, 4, 5].map((i) => (
-        <Star key={i} width={size} height={size} className={i <= Math.round(value) ? "fill-marigold text-marigold" : "text-border"} />
-      ))}
-    </span>
-  );
 }
 
 function ReviewItem({ r, ui }: { r: Review; ui: Content["ui"] }) {

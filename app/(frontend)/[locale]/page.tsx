@@ -8,9 +8,11 @@ import BusinessCard from "@/components/BusinessCard";
 import CategoryIcon from "@/components/CategoryIcon";
 import MapLoader from "@/components/MapLoader";
 import HeroSearch from "@/components/HeroSearch";
+import LatestReviews from "@/components/LatestReviews";
 import { getContent, isLocale } from "@/data/content";
 import { getCategories, getListings, googleMapsUrl } from "@/lib/directory";
 import { localeHref } from "@/lib/href";
+import { getLatestReviews } from "@/lib/reviews";
 
 // Admin edits refresh pages at once (lib/revalidate.ts); this is the fallback.
 export const revalidate = 300;
@@ -21,6 +23,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   const c = getContent(locale);
   const listings = await getListings(locale);
   const categories = await getCategories(locale, listings);
+  const latestReviews = await getLatestReviews(locale);
   const withCount = categories.filter((x) => x.count > 0);
   const points = listings
     .filter((l) => l.lat != null && l.lng != null)
@@ -125,6 +128,8 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             </ul>
           </div>
         </section>
+
+        <LatestReviews reviews={latestReviews} c={c} />
 
         <section className="bg-marigold">
           <div className="container-x flex flex-col gap-6 py-12 lg:flex-row lg:items-center lg:justify-between">

@@ -858,3 +858,12 @@ html[data-theme="light"] {
     grid-template-columns: 1fr;
   }
 }
+
+.bb-quote {
+  margin: 0.4rem 0 0;
+  padding-left: 0.75rem;
+  border-left: 3px solid #f2b134;
+  white-space: pre-line;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}

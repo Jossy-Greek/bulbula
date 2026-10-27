@@ -12,6 +12,7 @@ import { AnalyticsEvents } from "./collections/AnalyticsEvents";
 import { Businesses } from "./collections/Businesses";
 import { Categories } from "./collections/Categories";
 import { Media } from "./collections/Media";
+import { Reviews } from "./collections/Reviews";
 import { Users } from "./collections/Users";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -39,7 +40,7 @@ export default buildConfig({
       },
     },
   },
-  collections: [Businesses, Categories, Media, Users, AnalyticsEvents],
+  collections: [Businesses, Reviews, Categories, Media, Users, AnalyticsEvents],
   localization: {
     locales: [
       { code: "en", label: "English" },

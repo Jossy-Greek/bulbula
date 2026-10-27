@@ -10,11 +10,13 @@ import SocialIcon from "@/components/SocialIcon";
 import OpenBadge from "@/components/OpenBadge";
 import ShareButtons from "@/components/ShareButtons";
 import GoogleReviews from "@/components/GoogleReviews";
+import Reviews from "@/components/Reviews";
 import { site } from "@/data/site";
 import { getContent, isLocale, locales } from "@/data/content";
 import { directionsUrl, externalUrl, getListing, getListings, googleMapsUrl, telHref } from "@/lib/directory";
 import { localeHref } from "@/lib/href";
 import { formatDistance, metres } from "@/lib/geo";
+import { getReviews } from "@/lib/reviews";
 
 export const revalidate = 300;
 // New listings published after a deploy are rendered on first visit.
@@ -39,6 +41,7 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
   const l = await getListing(slug, locale);
   if (!l) notFound();
   const maps = googleMapsUrl(l);
+  const summary = await getReviews(l.id);
   // Nearby: the closest other places with a pin (Google Maps "Nearby" pattern).
   const here = l.lat != null && l.lng != null ? { lat: l.lat, lng: l.lng } : null;
   const nearby = here
@@ -69,6 +72,9 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
     ...(l.phone ? { telephone: l.phone } : {}),
     ...(l.photo ? { image: l.photo.url } : {}),
     hasMap: maps,
+    ...(summary.count
+      ? { aggregateRating: { "@type": "AggregateRating", ratingValue: Number(summary.average.toFixed(1)), reviewCount: summary.count, bestRating: 5, worstRating: 1 } }
+      : {}),
     ...([l.website, l.facebook, l.instagram, l.telegram].some(Boolean)
       ? { sameAs: [l.website, l.facebook, l.instagram, l.telegram].filter(Boolean).map((u) => externalUrl(u!)) }
       : {}),
@@ -143,6 +149,7 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
                 ) : null}
               </div>
             ) : null}
+            <Reviews slug={l.slug} summary={summary} c={c} />
             <GoogleReviews placeId={l.googlePlaceId} hasPhone={Boolean(l.phone)} ui={c.ui} locale={locale} />
             {l.lat != null && l.lng != null ? (
               <div>
