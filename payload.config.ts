@@ -34,7 +34,8 @@ export default buildConfig({
     components: {
       graphics: { Logo: "/components/admin/Logo", Icon: "/components/admin/Icon" },
       beforeDashboard: ["/components/admin/DirectoryDashboard"],
-      afterNavLinks: ["/components/admin/AnalyticsNavLink"],
+      beforeNavLinks: ["/components/admin/NavOverview"],
+      afterNavLinks: ["/components/admin/NavFooter"],
       actions: ["/components/admin/WaitingBell"],
       views: {
         analytics: { Component: "/components/admin/AnalyticsView", path: "/analytics" },
