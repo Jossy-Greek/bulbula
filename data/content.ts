@@ -60,6 +60,15 @@ export type Content = {
     copyLink: string;
     showMore: string;
     nearby: string;
+    googleTitle: string;
+    /** "{n}" = number of reviews. */
+    googleReviews: string;
+    readOnGoogle: string;
+    readMore: string;
+    showLess: string;
+    fromGoogle: string;
+    googleClosedPermanently: string;
+    googleClosedTemporarily: string;
     /** "{c}" = category name. */
     allInCategory: string;
     /** "{n}" shown of "{t}". */
@@ -179,6 +188,14 @@ const en: Content = {
     copyLink: "Copy link",
     showMore: "Show more",
     nearby: "Nearby",
+    googleTitle: "On Google Maps",
+    googleReviews: "{n} Google reviews",
+    readOnGoogle: "All reviews on Google Maps",
+    readMore: "Read more",
+    showLess: "Show less",
+    fromGoogle: "Rating, reviews and details from Google Maps, shown live. Reviews are by Google users.",
+    googleClosedPermanently: "Google Maps lists this place as permanently closed. Call before you go.",
+    googleClosedTemporarily: "Google Maps lists this place as temporarily closed.",
     allInCategory: "All {c}",
     showing: "Showing {n} of {t}",
     sortRecommended: "Recommended",
@@ -340,6 +357,14 @@ const am: Content = {
     copyLink: "ሊንኩን ቅዳ",
     showMore: "ተጨማሪ አሳይ",
     nearby: "በአቅራቢያ",
+    googleTitle: "በGoogle ካርታ",
+    googleReviews: "{n} የGoogle ግምገማዎች",
+    readOnGoogle: "ሁሉንም ግምገማዎች በGoogle ካርታ",
+    readMore: "ተጨማሪ ያንብቡ",
+    showLess: "ያሳንሱ",
+    fromGoogle: "ደረጃ፣ ግምገማዎችና ዝርዝሮች ከGoogle ካርታ በቀጥታ። ግምገማዎቹ የGoogle ተጠቃሚዎች ናቸው።",
+    googleClosedPermanently: "Google ካርታ ይህ ቦታ በቋሚነት እንደተዘጋ ይገልጻል። ከመሄድዎ በፊት ይደውሉ።",
+    googleClosedTemporarily: "Google ካርታ ይህ ቦታ ለጊዜው እንደተዘጋ ይገልጻል።",
     allInCategory: "ሁሉም {c}",
     showing: "ከ{t} {n} በማሳየት ላይ",
     sortRecommended: "የሚመከሩ",

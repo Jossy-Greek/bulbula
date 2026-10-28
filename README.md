@@ -147,3 +147,17 @@ ripples and a map pin. All text pairs measured ≥ 4.5:1.
 - Aberus Bakery was in OSM twice; seeded once.
 - Map data © OpenStreetMap contributors, ODbL. Credit stays on every map and
   OSM-sourced page.
+
+## Google rating and reviews (live)
+
+Business pages with a Google place ID (from the Google Maps link) show Google's
+rating, up to 5 reviews, phone, hours and website — fetched **live in the
+visitor's browser** with the Maps JavaScript API (Places library), credited to
+Google, never stored (Google's terms allow storing only the place ID).
+`components/GoogleReviews.tsx`.
+
+- Needs `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` (Production + Preview). Without it the
+  section doesn't render.
+- Cost: one *Place Details (Enterprise + Atmosphere)* request per business-page
+  view that scrolls to the section (Google lists $25 / 1,000, 1,000 free a
+  month). Keep a daily quota on the key in Google Cloud.
