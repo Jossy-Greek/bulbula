@@ -4,6 +4,7 @@ import { headers } from "next/headers";
 import { getPayload } from "payload";
 import config from "@payload-config";
 import { dailyVisitor } from "@/lib/visitor";
+import { adminUrl, notifyAdmin } from "@/lib/notify";
 
 export type ReviewState = { ok: boolean; error?: "rating" | "name" | "links" | "already" | "failed" };
 
@@ -60,6 +61,9 @@ export async function submitReview(_prev: ReviewState, form: FormData): Promise<
       overrideAccess: true,
       data: { business: business.id, rating, author, text: text || undefined, locale, visitor, status: "pending" },
     });
+    await notifyAdmin(
+      `⭐ New review: ${"★".repeat(rating)}${"☆".repeat(5 - rating)} on ${business.name} by ${author}${text ? `\n“${text.length > 200 ? `${text.slice(0, 200)}…` : text}”` : ""}\nPublish or reject: ${adminUrl("#reviews")}`,
+    );
     return { ok: true };
   } catch (e) {
     console.error("submitReview failed", e);
