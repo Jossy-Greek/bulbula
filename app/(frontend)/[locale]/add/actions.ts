@@ -2,6 +2,7 @@
 
 import { getPayload } from "payload";
 import config from "@payload-config";
+import { adminUrl, notifyAdmin } from "@/lib/notify";
 
 export type AddState = { ok: boolean; error?: "required" | "contact" | "consent" | "failed" };
 
@@ -76,6 +77,11 @@ export async function submitBusiness(_prev: AddState, form: FormData): Promise<A
         data: { ...(am.name ? { name: am.name } : {}), ...(am.description ? { description: am.description } : {}) },
       });
     }
+    const cat = await payload.findByID({ collection: "categories", id: category, depth: 0 }).catch(() => null);
+    const who = `${yourName} (${(["owner", "manager", "customer"] as const).find((r) => r === form.get("relationship")) ?? "owner"})`;
+    await notifyAdmin(
+      `🏪 ${claims ? "Claim" : "New business"}: ${nameEn}${cat ? ` — ${cat.name}` : ""}\nFrom ${who}\nApprove or reject: ${adminUrl("#submissions")}`,
+    );
     return { ok: true };
   } catch (e) {
     console.error("submitBusiness failed", e);

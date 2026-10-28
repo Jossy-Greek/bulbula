@@ -49,10 +49,29 @@ phones (most visitors):
 
 ## Admin dashboard
 
-Two queues: **owner submissions** (Approve publishes; owner/manager → claimed;
-a claim retires the old listing) and **leads to verify** (from research;
-Publish / Discard, never marked claimed), each with its source note. Also:
-category coverage bars, gaps (no contact / pin / hours), recent edits.
+Laid out after the French Chamber workspace, in Bulbula's colours: header with
+one main action ("Review now" when something waits), four numbers (live places,
+waiting for you, leads, visitors in the last 7 days), **Needs attention** (only
+real, non-zero work), then the queues: **new businesses** (Approve publishes;
+owner/manager → claimed; a claim retires the old listing), **reviews to approve**
+and **leads to verify** (Publish / Discard, never claimed). Side: quick actions,
+category coverage, gaps, recent edits. A bell in the admin header shows how
+many submissions and reviews wait, on every admin page.
+
+### Notifications (Telegram)
+
+Each new business submission, claim and visitor review sends a Telegram
+message with a link to the dashboard. Off until both variables are set:
+
+1. In Telegram, talk to **@BotFather** → `/newbot` → copy the token.
+2. Send your new bot any message (or add it to a group and post there).
+3. `TELEGRAM_BOT_TOKEN=… npx tsx scripts/telegram-chat-id.ts` prints the chat id.
+4. In Vercel → Settings → Environment Variables, add `TELEGRAM_BOT_TOKEN`
+   (sensitive) and `TELEGRAM_CHAT_ID` for Production, then redeploy.
+
+Messages carry the place name, category and the submitter's name and role
+(never their phone number). A failed send is logged and ignored; the
+dashboard is still the source of truth.
 
 `scripts/import-research.ts` loads the 2026-10-26 desk research: 7 bank
 branches published from the banks' own lists, 12 leads pending. It skips
