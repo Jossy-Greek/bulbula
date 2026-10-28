@@ -27,6 +27,7 @@ const localDb = process.env.BULBULA_LOCAL_DB === "1";
 export default buildConfig({
   secret: process.env.PAYLOAD_SECRET || "",
   admin: {
+    dateFormat: "d MMM yyyy, HH:mm",
     user: Users.slug,
     theme: "light",
     importMap: { baseDir: path.resolve(dirname) },

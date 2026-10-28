@@ -34,7 +34,7 @@ export const Reviews: CollectionConfig = {
     {
       type: "row",
       fields: [
-        { name: "rating", type: "number", required: true, min: 1, max: 5, admin: { width: "25%" } },
+        { name: "rating", type: "number", required: true, min: 1, max: 5, admin: { width: "25%", components: { Cell: "/components/admin/cells/RatingCell" } } },
         { name: "author", type: "text", required: true, maxLength: 60, admin: { width: "45%", description: "First name, as the visitor typed it." } },
         {
           name: "status",
@@ -47,7 +47,7 @@ export const Reviews: CollectionConfig = {
             { label: "Published", value: "published" },
             { label: "Rejected", value: "rejected" },
           ],
-          admin: { width: "30%" },
+          admin: { width: "30%", components: { Cell: "/components/admin/cells/StatusCell" } },
         },
       ],
     },

@@ -36,6 +36,15 @@ html[data-theme="light"] {
 .nav__wrap {
   gap: 0;
 }
+/* Our full-width rows carry their own padding: keep them inside the drawer
+   instead of widening it (which scrolled the whole nav sideways). */
+.nav__wrap,
+.nav__wrap * {
+  box-sizing: border-box;
+}
+.nav__scroll {
+  overflow-x: hidden;
+}
 .bb-nav {
   width: 100%;
   margin-bottom: 0.5rem;
@@ -1268,3 +1277,140 @@ a.bb-queue__name:hover {
   }
 }
 
+
+/* ---- List views ------------------------------------------------------------
+   Collection tables in the dashboard's language: a white card with hairline
+   rows (no zebra), uppercase eyebrow headers, the title column in river,
+   status and ownership as pills (components/admin/cells). */
+.collection-list .list-header h1,
+.collection-list__wrap h1 {
+  color: var(--bb-river);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+.collection-list .list-header .btn,
+.collection-list__wrap .list-header .btn {
+  border-radius: 2px;
+  background: var(--bb-river);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.collection-list .list-header .btn:hover {
+  background: var(--bb-river-soft);
+}
+.list-controls__wrap,
+.search-bar {
+  background: var(--bb-raised);
+  border: 1px solid var(--bb-border);
+  border-radius: 4px;
+}
+.list-controls .btn--style-pill,
+.search-bar .btn--style-pill {
+  --bg-color: var(--bb-tint);
+  --color: var(--bb-river);
+  --hover-bg: #d6e8e6;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+.collection-list .table {
+  margin-bottom: 1rem;
+}
+/* The card is drawn on <table>, not on .table: Payload widens .table past the
+   page gutter on narrow screens so wide lists can scroll sideways. */
+.collection-list .table table {
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--bb-raised);
+  border: 1px solid var(--bb-border);
+  border-radius: 4px;
+}
+.collection-list .table thead th {
+  padding-block: 0.85rem;
+  border-bottom: 1px solid var(--bb-border);
+  color: var(--bb-muted);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.collection-list .table th,
+.collection-list .table td {
+  min-width: 0;
+  vertical-align: middle;
+}
+.collection-list .table tbody tr,
+.collection-list .table tbody tr:nth-child(odd) {
+  background: transparent;
+  transition: background-color 0.15s ease;
+}
+.collection-list .table tbody tr + tr td {
+  border-top: 1px solid var(--bb-border);
+}
+.collection-list .table tbody tr:hover {
+  background: #f3f8f7;
+}
+.collection-list .table td:nth-child(2) {
+  min-width: 16rem;
+}
+.collection-list .table td:nth-child(2) a {
+  color: var(--bb-river);
+  font-weight: 700;
+  text-decoration: none;
+}
+.collection-list .table td:nth-child(2) a:hover {
+  color: var(--bb-teal-text);
+  text-decoration: underline;
+}
+.collection-list .table [class*="cell-updatedAt"],
+.collection-list .table [class*="cell-createdAt"] {
+  color: var(--bb-muted);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.collection-list .table .cell-source {
+  color: var(--bb-muted);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.bb-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.bb-pill--pending {
+  background: var(--bb-marigold-soft);
+  color: var(--bb-amber-text);
+}
+.bb-pill--published,
+.bb-pill--claimed {
+  background: var(--bb-tint);
+  color: var(--bb-teal-text);
+}
+.bb-pill--rejected {
+  background: #f6e1dc;
+  color: var(--bb-danger);
+}
+.bb-cell-none {
+  color: #a3b2b4;
+}
+.bb-cell-stars {
+  color: var(--bb-marigold);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+.bb-cell-stars span {
+  color: var(--bb-border);
+}
