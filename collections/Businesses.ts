@@ -116,13 +116,17 @@ export const Businesses: CollectionConfig = {
         { label: "Published", value: "published" },
         { label: "Rejected", value: "rejected" },
       ],
-      admin: { position: "sidebar" },
+      admin: { position: "sidebar", components: { Cell: "/components/admin/cells/StatusCell" } },
     },
     {
       name: "claimed",
       type: "checkbox",
       defaultValue: false,
-      admin: { position: "sidebar", description: "The business has confirmed this listing." },
+      admin: {
+        position: "sidebar",
+        description: "The business has confirmed this listing.",
+        components: { Cell: "/components/admin/cells/ClaimedCell" },
+      },
     },
     {
       name: "unconfirmed",
