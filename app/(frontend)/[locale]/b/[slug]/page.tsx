@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, BadgeCheck, Clock, ExternalLink, Globe, Info, Map as MapIcon, MapPin, Navigation, Phone } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, BadgeCheck, Banknote, Clock, ExternalLink, Globe, Info, ListChecks, Map as MapIcon, MapPin, Navigation, Phone, UtensilsCrossed } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CategoryIcon from "@/components/CategoryIcon";
@@ -11,6 +11,8 @@ import OpenBadge from "@/components/OpenBadge";
 import ShareButtons from "@/components/ShareButtons";
 import GoogleReviews from "@/components/GoogleReviews";
 import Reviews from "@/components/Reviews";
+import Stars from "@/components/Stars";
+import { services as serviceNames } from "@/data/services";
 import { site } from "@/data/site";
 import { getContent, isLocale, locales } from "@/data/content";
 import { directionsUrl, externalUrl, getListing, getListings, googleMapsUrl, telHref } from "@/lib/directory";
@@ -96,17 +98,31 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
             <div>
               <p className="text-sm font-semibold text-marigold-soft">{l.category.name}</p>
               <h1 className="font-display mt-1 text-[2.1rem] font-extrabold leading-tight tracking-tight sm:text-5xl">{l.name}</h1>
-              <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/20">
-                {l.claimed ? (
-                  <>
-                    <BadgeCheck className="h-3.5 w-3.5 text-marigold" aria-hidden="true" /> {c.ui.verified}
-                  </>
-                ) : l.unconfirmed ? (
-                  c.ui.unconfirmed
-                ) : (
-                  c.ui.unclaimed
-                )}
-              </p>
+              <div className="mt-3 flex flex-wrap items-center gap-2">
+                <p className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/20">
+                  {l.claimed ? (
+                    <>
+                      <BadgeCheck className="h-3.5 w-3.5 text-marigold" aria-hidden="true" /> {c.ui.verified}
+                    </>
+                  ) : l.unconfirmed ? (
+                    c.ui.unconfirmed
+                  ) : (
+                    c.ui.unclaimed
+                  )}
+                </p>
+                {l.google ? (
+                  <a
+                    href={maps}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/20 hover:bg-white/15"
+                  >
+                    <span className="text-sm font-extrabold text-white">{l.google.rating.toFixed(1)}</span>
+                    <Stars value={l.google.rating} size={12} />
+                    <span className="text-white/80">{c.ui.onGoogle.replace("{n}", String(l.google.count))}</span>
+                  </a>
+                ) : null}
+              </div>
             </div>
           </div>
           {/* On phones the sticky bottom bar carries these. */}
@@ -210,6 +226,45 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
                         <a href={telHref(p!)} className="font-semibold text-teal-text hover:underline">{p}</a>
                       </dd>
                     ))}
+                  </div>
+                </div>
+              ) : null}
+              {l.priceRange ? (
+                <div className="flex gap-3 p-5">
+                  <Banknote className="mt-0.5 h-5 w-5 flex-none text-teal" aria-hidden="true" />
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-muted">{c.ui.priceRange}</dt>
+                    <dd className="mt-1 text-ink">{l.priceRange}</dd>
+                  </div>
+                </div>
+              ) : null}
+              {l.menuLink ? (
+                <div className="flex gap-3 p-5">
+                  <UtensilsCrossed className="mt-0.5 h-5 w-5 flex-none text-teal" aria-hidden="true" />
+                  <div className="min-w-0">
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-muted">{c.ui.menu}</dt>
+                    <dd className="mt-1 truncate">
+                      <a href={externalUrl(l.menuLink)} target="_blank" rel="noopener noreferrer" className="font-semibold text-teal-text hover:underline">
+                        {l.menuLink.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                      </a>
+                    </dd>
+                  </div>
+                </div>
+              ) : null}
+              {l.services.length ? (
+                <div className="flex gap-3 p-5">
+                  <ListChecks className="mt-0.5 h-5 w-5 flex-none text-teal" aria-hidden="true" />
+                  <div>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-muted">{c.ui.servicesTitle}</dt>
+                    <dd className="mt-2">
+                      <ul className="flex flex-wrap gap-1.5">
+                        {l.services.map((s) => (
+                          <li key={s} className="rounded-full bg-tint px-2.5 py-1 text-xs font-semibold text-teal-text">
+                            {serviceNames[s][locale]}
+                          </li>
+                        ))}
+                      </ul>
+                    </dd>
                   </div>
                 </div>
               ) : null}

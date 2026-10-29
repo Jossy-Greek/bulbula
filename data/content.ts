@@ -69,6 +69,11 @@ export type Content = {
     fromGoogle: string;
     googleClosedPermanently: string;
     googleClosedTemporarily: string;
+    servicesTitle: string;
+    priceRange: string;
+    menu: string;
+    /** "{n}" = number of reviews. Shown next to a rating copied from Google Maps. */
+    onGoogle: string;
     /** "{c}" = category name. */
     allInCategory: string;
     /** "{n}" shown of "{t}". */
@@ -220,6 +225,10 @@ const en: Content = {
     fromGoogle: "Rating, reviews and details from Google Maps, shown live. Reviews are by Google users.",
     googleClosedPermanently: "Google Maps lists this place as permanently closed. Call before you go.",
     googleClosedTemporarily: "Google Maps lists this place as temporarily closed.",
+    servicesTitle: "Services",
+    priceRange: "Prices",
+    menu: "Menu",
+    onGoogle: "{n} reviews on Google",
     allInCategory: "All {c}",
     showing: "Showing {n} of {t}",
     sortRecommended: "Recommended",
@@ -416,6 +425,10 @@ const am: Content = {
     fromGoogle: "ደረጃ፣ ግምገማዎችና ዝርዝሮች ከGoogle ካርታ በቀጥታ። ግምገማዎቹ የGoogle ተጠቃሚዎች ናቸው።",
     googleClosedPermanently: "Google ካርታ ይህ ቦታ በቋሚነት እንደተዘጋ ይገልጻል። ከመሄድዎ በፊት ይደውሉ።",
     googleClosedTemporarily: "Google ካርታ ይህ ቦታ ለጊዜው እንደተዘጋ ይገልጻል።",
+    servicesTitle: "አገልግሎቶች",
+    priceRange: "ዋጋ",
+    menu: "ሜኑ",
+    onGoogle: "{n} ግምገማዎች በGoogle",
     allInCategory: "ሁሉም {c}",
     showing: "ከ{t} {n} በማሳየት ላይ",
     sortRecommended: "የሚመከሩ",

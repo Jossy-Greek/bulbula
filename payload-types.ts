@@ -158,6 +158,41 @@ export interface Business {
    * e.g. Mon–Sat 08:00–18:00
    */
   hours?: string | null;
+  services?:
+    | (
+        | 'dineIn'
+        | 'takeaway'
+        | 'delivery'
+        | 'reservations'
+        | 'appointments'
+        | 'outdoorSeating'
+        | 'wifi'
+        | 'coffee'
+        | 'breakfast'
+        | 'lunch'
+        | 'dinner'
+        | 'dessert'
+        | 'vegetarian'
+        | 'alcohol'
+        | 'kids'
+        | 'groups'
+        | 'toilet'
+        | 'wheelchair'
+        | 'cards'
+        | 'mobilePay'
+        | 'freeParking'
+        | 'parking'
+        | 'womenOwned'
+      )[]
+    | null;
+  /**
+   * Per person, e.g. ETB 200–400
+   */
+  priceRange?: string | null;
+  /**
+   * The business's own online menu, if any.
+   */
+  menuLink?: string | null;
   photo?: (number | null) | Media;
   status: 'pending' | 'published' | 'rejected';
   /**
@@ -169,6 +204,12 @@ export interface Business {
    */
   unconfirmed?: boolean | null;
   featured?: boolean | null;
+  googleRating?: number | null;
+  googleReviewCount?: number | null;
+  /**
+   * When phone, hours, services and rating were last copied from Google Maps.
+   */
+  googleCheckedAt?: string | null;
   source: 'osm' | 'owner' | 'admin';
   /**
    * e.g. n12345 / w678
@@ -454,11 +495,17 @@ export interface BusinessesSelect<T extends boolean = true> {
   instagram?: T;
   telegram?: T;
   hours?: T;
+  services?: T;
+  priceRange?: T;
+  menuLink?: T;
   photo?: T;
   status?: T;
   claimed?: T;
   unconfirmed?: T;
   featured?: T;
+  googleRating?: T;
+  googleReviewCount?: T;
+  googleCheckedAt?: T;
   source?: T;
   osmId?: T;
   claims?: T;

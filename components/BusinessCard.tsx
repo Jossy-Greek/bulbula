@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { BadgeCheck, Clock, Map as MapIcon, MapPin, Navigation2, Phone } from "lucide-react";
+import { BadgeCheck, Clock, Map as MapIcon, MapPin, Navigation2, Phone, Star } from "lucide-react";
 import OpenBadge from "./OpenBadge";
 import { parseHours } from "@/lib/hours";
 import { telHref } from "@/lib/links";
@@ -56,7 +56,20 @@ export default function BusinessCard({
                 {l.name}
               </Link>
             </h3>
-            <p className="mt-0.5 text-[13px] text-muted">{l.category.name}</p>
+            <p className="mt-0.5 flex flex-wrap items-center gap-x-1.5 text-[13px] text-muted">
+              {l.google ? (
+                <span className="inline-flex items-center gap-1 font-semibold text-ink">
+                  <Star className="h-3.5 w-3.5 fill-marigold text-marigold" aria-hidden="true" />
+                  {l.google.rating.toFixed(1)}
+                  <span className="font-normal text-muted">
+                    <span aria-hidden="true">({l.google.count})</span>
+                    <span className="sr-only">{c.ui.onGoogle.replace("{n}", String(l.google.count))}</span>
+                  </span>
+                  <span aria-hidden="true">·</span>
+                </span>
+              ) : null}
+              {l.category.name}
+            </p>
           </div>
           {l.claimed ? (
             <BadgeCheck className="ml-auto h-5 w-5 flex-none text-teal" aria-label={c.ui.verified} />

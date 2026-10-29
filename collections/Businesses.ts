@@ -1,3 +1,4 @@
+import { serviceKeys, services } from "@/data/services";
 import type { CollectionConfig, FieldAccess } from "payload";
 import { revalidateDirectory } from "@/lib/revalidate";
 
@@ -105,6 +106,25 @@ export const Businesses: CollectionConfig = {
         { name: "hours", type: "text", localized: true, admin: { description: "e.g. Mon–Sat 08:00–18:00" } },
       ],
     },
+    {
+      type: "collapsible",
+      label: "Services, prices and menu",
+      fields: [
+        {
+          name: "services",
+          type: "select",
+          hasMany: true,
+          options: serviceKeys.map((k) => ({ label: services[k].en, value: k })),
+        },
+        {
+          type: "row",
+          fields: [
+            { name: "priceRange", type: "text", admin: { width: "50%", description: "Per person, e.g. ETB 200–400" } },
+            { name: "menuLink", type: "text", admin: { width: "50%", description: "The business's own online menu, if any." } },
+          ],
+        },
+      ],
+    },
     { name: "photo", type: "upload", relationTo: "media" },
     {
       name: "status",
@@ -138,6 +158,10 @@ export const Businesses: CollectionConfig = {
       },
     },
     { name: "featured", type: "checkbox", defaultValue: false, admin: { position: "sidebar" } },
+    // A copy of the Google Maps rating, refreshed by scripts/import-google-details.ts.
+    { name: "googleRating", type: "number", min: 1, max: 5, admin: { position: "sidebar", step: 0.1 } },
+    { name: "googleReviewCount", type: "number", min: 0, admin: { position: "sidebar" } },
+    { name: "googleCheckedAt", type: "date", admin: { position: "sidebar", date: { pickerAppearance: "dayOnly" }, description: "When phone, hours, services and rating were last copied from Google Maps." } },
     {
       name: "source",
       type: "select",

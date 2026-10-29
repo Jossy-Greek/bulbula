@@ -2,6 +2,7 @@ import "server-only";
 import { getPayload } from "payload";
 import config from "@payload-config";
 import type { Locale } from "@/data/content";
+import type { Service } from "@/data/services";
 import type { Business, Category, Media } from "@/payload-types";
 
 /** What the public pages need about a listing — serialisable, so client components can take it. */
@@ -37,6 +38,11 @@ export type Listing = {
   unconfirmed: boolean;
   source: "osm" | "owner" | "admin";
   featured: boolean;
+  services: Service[];
+  priceRange: string | null;
+  menuLink: string | null;
+  /** Copied from Google Maps (see scripts/import-google-details.ts). */
+  google: { rating: number; count: number; checkedAt: string | null } | null;
 };
 
 export type CategoryInfo = { id: number; slug: string; name: string; group: "business" | "community"; icon: string; count: number };
@@ -110,6 +116,10 @@ function toListing(b: Business, locale: Locale): Listing {
     unconfirmed: Boolean(b.unconfirmed),
     source: (b.source as Listing["source"]) ?? "admin",
     featured: Boolean(b.featured),
+    services: (b.services ?? []) as Service[],
+    priceRange: b.priceRange ?? null,
+    menuLink: b.menuLink ?? null,
+    google: b.googleRating ? { rating: b.googleRating, count: b.googleReviewCount ?? 0, checkedAt: b.googleCheckedAt ?? null } : null,
   };
 }
 
