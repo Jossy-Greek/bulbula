@@ -121,6 +121,9 @@ function toOsmHours(rows: [string, string][] = []): string | null {
   const byDay = new Map(rows.map(([d, t]) => [d, t]));
   const specs = DAYS.map((d) => (byDay.has(d) ? dayRanges(byDay.get(d)!) : null));
   if (specs.some((s) => s === null)) return null; // anything we can't read exactly is left out
+  // Opening between midnight and 5 AM is almost always Ethiopian clock time typed into Google
+  // ("2:30" = 8:30 AM), which would make "Open now" wrong. Leave those for a call.
+  if (specs.some((s) => s && s !== "off" && s !== "00:00-24:00" && s.split(",").some((r) => r < "05:00"))) return null;
   if (specs.every((s) => s === "00:00-24:00")) return "24/7";
   if (specs.every((s) => s === "off")) return null;
   const rules: string[] = [];
@@ -190,8 +193,7 @@ for (const [id, r] of Object.entries(reads)) {
   }
   if (!DRY) {
     await payload.update({ collection: "businesses", id: b.id, locale: "en", data, overrideAccess: true });
-    // Hours are localised; the same OSM text is shown in Amharic by readableHours.
-    if (data.hours) await payload.update({ collection: "businesses", id: b.id, locale: "am", data: { hours: data.hours }, overrideAccess: true });
+    // Hours are written in English only: /am falls back to them and readableHours shows Amharic day names.
   }
 }
 if (closed.length) console.log(`\nGoogle says closed (left published — check by hand):\n  ${closed.join("\n  ")}`);
