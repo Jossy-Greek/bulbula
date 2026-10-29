@@ -3,17 +3,18 @@
 import { useEffect, useRef, useState } from "react";
 import { ExternalLink, Phone, TriangleAlert } from "lucide-react";
 import Stars from "./Stars";
-import type { Content } from "@/data/content";
+import { googleAmenities, type Content, type GoogleAmenity } from "@/data/content";
 import { telHref } from "@/lib/links";
 
 /**
- * Rating, reviews, phone and hours for one place, fetched live from Google
+ * Rating, reviews, phone, hours, photos, price level and services for one place, fetched live from Google
  * (Maps JavaScript API, Places library) in the visitor's browser.
  *
  * Google's terms: nothing here is stored on our side (only the place ID,
  * which may be stored); Google is credited; each review shows its author.
  * Cost: one Place Details request per page view, made only when the section
- * scrolls into view, and at most once per place per page session.
+ * scrolls into view, and at most once per place per page session; each photo
+ * shown is one more (Place Photo) request, so at most PHOTOS, loaded lazily.
  * Without NEXT_PUBLIC_GOOGLE_MAPS_API_KEY the section never renders.
  */
 
@@ -26,6 +27,7 @@ type Review = {
   relativePublishTimeDescription?: string;
   googleMapsURI?: string;
 };
+type Photo = { url: string; author?: { displayName: string; uri?: string } };
 type Details = {
   rating?: number;
   userRatingCount?: number;
@@ -35,10 +37,22 @@ type Details = {
   websiteURI?: string;
   googleMapsURI?: string;
   businessStatus?: string;
+  editorialSummary?: string;
+  priceLevel?: string;
+  photos?: Photo[];
+  amenities?: GoogleAmenity[];
+};
+
+// What the Places library returns for the fields below that need reshaping.
+type RawPlace = Record<string, unknown> & {
+  photos?: { getURI(o: { maxWidth?: number; maxHeight?: number }): string; authorAttributions?: { displayName: string; uri?: string }[] }[];
+  accessibilityOptions?: { hasWheelchairAccessibleEntrance?: boolean | null } | null;
+  paymentOptions?: { acceptsCreditCards?: boolean | null; acceptsDebitCards?: boolean | null } | null;
+  parkingOptions?: { hasFreeParkingLot?: boolean | null; hasFreeStreetParking?: boolean | null } | null;
 };
 
 // Minimal typings for the bits of the Maps JS API we use (no @types package).
-type PlacesLib = { Place: new (o: { id: string; requestedLanguage?: string }) => Details & { fetchFields(o: { fields: string[] }): Promise<unknown> } };
+type PlacesLib = { Place: new (o: { id: string; requestedLanguage?: string }) => Omit<Details, "photos" | "amenities"> & RawPlace & { fetchFields(o: { fields: string[] }): Promise<unknown> } };
 declare global {
   interface Window {
     google?: { maps?: { importLibrary?: (name: string) => Promise<unknown> } };
@@ -46,7 +60,21 @@ declare global {
   }
 }
 
-const FIELDS = ["rating", "userRatingCount", "reviews", "nationalPhoneNumber", "regularOpeningHours", "websiteURI", "googleMapsURI", "businessStatus"];
+const PHOTOS = 4;
+// Booleans read straight off the place; the last three come from nested options.
+const DIRECT = googleAmenities.filter((a) => a !== "wheelchairEntrance" && a !== "acceptsCards" && a !== "freeParking");
+const FIELDS = [
+  "rating", "userRatingCount", "reviews", "nationalPhoneNumber", "regularOpeningHours", "websiteURI", "googleMapsURI", "businessStatus",
+  "editorialSummary", "priceLevel", "photos", "accessibilityOptions", "paymentOptions", "parkingOptions", ...DIRECT,
+];
+
+function amenitiesOf(place: RawPlace): GoogleAmenity[] {
+  const on = new Set<GoogleAmenity>(DIRECT.filter((a) => place[a] === true));
+  if (place.accessibilityOptions?.hasWheelchairAccessibleEntrance) on.add("wheelchairEntrance");
+  if (place.paymentOptions?.acceptsCreditCards || place.paymentOptions?.acceptsDebitCards) on.add("acceptsCards");
+  if (place.parkingOptions?.hasFreeParkingLot || place.parkingOptions?.hasFreeStreetParking) on.add("freeParking");
+  return googleAmenities.filter((a) => on.has(a)); // keep the display order
+}
 const memo = new Map<string, Promise<Details>>(); // this page session only
 let loader: Promise<void> | null = null;
 
@@ -81,6 +109,11 @@ function fetchDetails(placeId: string, language: string): Promise<Details> {
         websiteURI: place.websiteURI,
         googleMapsURI: place.googleMapsURI,
         businessStatus: place.businessStatus,
+        editorialSummary: place.editorialSummary ?? undefined,
+        // The JS library has used both "MODERATE" and "Moderate"; normalise to the enum name.
+        priceLevel: place.priceLevel ? String(place.priceLevel).toUpperCase().replace(/ /g, "_") : undefined,
+        photos: place.photos?.slice(0, PHOTOS).map((ph) => ({ url: ph.getURI({ maxWidth: 480, maxHeight: 360 }), author: ph.authorAttributions?.[0] })),
+        amenities: amenitiesOf(place),
       };
     })();
     memo.set(placeId, p);
@@ -154,7 +187,9 @@ export default function GoogleReviews({ placeId, hasPhone, ui, locale }: { place
 
   if (!KEY || !placeId || state.status === "failed") return null;
   const d = state.data;
-  const empty = state.status === "done" && !d?.rating && !d?.reviews?.length && !d?.nationalPhoneNumber && !d?.regularOpeningHours;
+  const empty =
+    state.status === "done" && !d?.rating && !d?.reviews?.length && !d?.nationalPhoneNumber && !d?.regularOpeningHours && !d?.photos?.length && !d?.amenities?.length;
+  const price = d?.priceLevel && d.priceLevel in ui.googlePrice ? ui.googlePrice[d.priceLevel as keyof Content["ui"]["googlePrice"]] : null;
   if (empty) return null;
 
   return (
@@ -189,7 +224,52 @@ export default function GoogleReviews({ placeId, hasPhone, ui, locale }: { place
               <span className="font-display text-3xl font-extrabold text-river">{d.rating.toFixed(1)}</span>
               <Stars value={d.rating} />
               <span className="text-sm text-muted">{ui.googleReviews.replace("{n}", String(d.userRatingCount ?? 0))}</span>
+              {price ? <span className="rounded-full bg-tint px-2.5 py-0.5 text-xs font-semibold text-ink">{price}</span> : null}
             </p>
+          ) : price ? (
+            <p className="mt-4 text-sm font-semibold text-ink">{price}</p>
+          ) : null}
+
+          {d?.editorialSummary ? <p className="mt-3 text-[15px] leading-relaxed text-ink">{d.editorialSummary}</p> : null}
+
+          {d?.photos?.length ? (
+            <div className="mt-4">
+              <h3 className="sr-only">{ui.googlePhotos}</h3>
+              <ul className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+                {d.photos.map((ph) => (
+                  <li key={ph.url}>
+                    <figure>
+                      {/* eslint-disable-next-line @next/next/no-img-element -- Google-hosted photo; may not be cached or proxied */}
+                      <img src={ph.url} alt="" loading="lazy" referrerPolicy="no-referrer" className="aspect-[4/3] w-full rounded-xl bg-tint object-cover" />
+                      {ph.author ? (
+                        <figcaption className="mt-1 truncate text-[11px] text-muted">
+                          {ph.author.uri ? (
+                            <a href={ph.author.uri} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                              {ui.googlePhotoBy.replace("{name}", ph.author.displayName)}
+                            </a>
+                          ) : (
+                            ui.googlePhotoBy.replace("{name}", ph.author.displayName)
+                          )}
+                        </figcaption>
+                      ) : null}
+                    </figure>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
+
+          {d?.amenities?.length ? (
+            <div className="mt-4">
+              <h3 className="text-sm font-semibold text-river">{ui.googleServices}</h3>
+              <ul className="mt-2 flex flex-wrap gap-1.5">
+                {d.amenities.map((a) => (
+                  <li key={a} className="rounded-full bg-tint px-2.5 py-1 text-xs font-semibold text-teal-text">
+                    {ui.googleAmenities[a]}
+                  </li>
+                ))}
+              </ul>
+            </div>
           ) : null}
 
           {d?.nationalPhoneNumber && !hasPhone ? (
