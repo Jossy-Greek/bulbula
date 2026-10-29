@@ -17,7 +17,7 @@ import MenuSection from "@/components/MenuSection";
 import { services as serviceNames } from "@/data/services";
 import { site } from "@/data/site";
 import { getContent, isLocale, locales } from "@/data/content";
-import { directionsUrl, externalUrl, getListing, getListings, googleMapsUrl, telHref } from "@/lib/directory";
+import { directionsUrl, externalUrl, getListing, getListings, getSiteSettings, googleMapsUrl, telHref } from "@/lib/directory";
 import { localeHref } from "@/lib/href";
 import { formatDistance, metres } from "@/lib/geo";
 import { getReviews } from "@/lib/reviews";
@@ -46,6 +46,7 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
   if (!l) notFound();
   const maps = googleMapsUrl(l);
   const summary = await getReviews(l.id);
+  const { showMenus } = await getSiteSettings();
   // Nearby: the closest other places with a pin (Google Maps "Nearby" pattern).
   const here = l.lat != null && l.lng != null ? { lat: l.lat, lng: l.lng } : null;
   const nearby = here
@@ -167,7 +168,7 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
                 ) : null}
               </div>
             ) : null}
-            {l.menu.length ? <MenuSection menu={l.menu} source={l.menuSource} ui={c.ui} locale={locale} /> : null}
+            {showMenus && l.menu.length ? <MenuSection menu={l.menu} source={l.menuSource} ui={c.ui} locale={locale} /> : null}
             <Reviews slug={l.slug} summary={summary} c={c} />
             {l.google ? <GoogleSummary google={l.google} mapsUrl={maps} ui={c.ui} /> : null}
             <GoogleReviews placeId={l.googlePlaceId} hasPhone={Boolean(l.phone)} ui={c.ui} locale={locale} />

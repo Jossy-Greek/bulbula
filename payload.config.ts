@@ -14,6 +14,7 @@ import { Categories } from "./collections/Categories";
 import { Media } from "./collections/Media";
 import { Reviews } from "./collections/Reviews";
 import { Users } from "./collections/Users";
+import { SiteSettings } from "./globals/SiteSettings";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -44,6 +45,7 @@ export default buildConfig({
     },
   },
   collections: [Businesses, Reviews, Categories, Media, Users, AnalyticsEvents],
+  globals: [SiteSettings],
   localization: {
     locales: [
       { code: "en", label: "English" },
