@@ -194,6 +194,10 @@ export interface Business {
    */
   menuLink?: string | null;
   /**
+   * Untick to hide the menu from the business page without deleting it.
+   */
+  showMenu?: boolean | null;
+  /**
    * Typed from the menu (a photo on Google Maps, or from the owner). Prices in birr.
    */
   menu?:
@@ -541,6 +545,7 @@ export interface BusinessesSelect<T extends boolean = true> {
   services?: T;
   priceRange?: T;
   menuLink?: T;
+  showMenu?: T;
   menu?:
     | T
     | {
