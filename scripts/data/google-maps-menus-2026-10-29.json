@@ -1,0 +1,3227 @@
+{
+ "173": {
+  "source": "menu photos on Google Maps, Dec 2023",
+  "sections": [
+   {
+    "title": "Breakfast / ቁርስ",
+    "items": [
+     {
+      "name": "Bombolino",
+      "nameAm": "ቦምቦሊኖ",
+      "price": 25
+     },
+     {
+      "name": "Cake",
+      "nameAm": "ተቆራጭ ኬክ",
+      "price": 40
+     },
+     {
+      "name": "Special ful",
+      "nameAm": "ስፔሻል ፉል",
+      "price": 200
+     },
+     {
+      "name": "Fasting ful",
+      "nameAm": "የፆም ፉል",
+      "price": 140
+     },
+     {
+      "name": "Special chechebsa",
+      "nameAm": "ስፔሻል ጨጨብሳ",
+      "price": 180
+     },
+     {
+      "name": "Chechebsa",
+      "nameAm": "ጨጨብሳ",
+      "price": 150
+     },
+     {
+      "name": "Egg sandwich",
+      "nameAm": "እንቁላል ሳንዱች",
+      "price": 150
+     },
+     {
+      "name": "Scrambled egg",
+      "nameAm": "እንቁላል ፍርፍር",
+      "price": 150
+     },
+     {
+      "name": "Egg with meat",
+      "nameAm": "እንቁላል በስጋ",
+      "price": 180
+     },
+     {
+      "name": "Kinche",
+      "nameAm": "ቅንጬ",
+      "price": 180
+     },
+     {
+      "name": "Bula",
+      "nameAm": "ቡላ",
+      "price": 180
+     },
+     {
+      "name": "Oats",
+      "nameAm": "አጥሚት",
+      "price": 150
+     },
+     {
+      "name": "Omelette",
+      "nameAm": "ኦምሌት",
+      "price": 160
+     },
+     {
+      "name": "Fetira with honey",
+      "nameAm": "ፈጢራ በማር",
+      "price": 120
+     },
+     {
+      "name": "Fetira with egg",
+      "nameAm": "ፈጢራ በእንቁላል",
+      "price": 160
+     }
+    ]
+   },
+   {
+    "title": "Lunch / ምሳ",
+    "items": [
+     {
+      "name": "Tibs",
+      "nameAm": null,
+      "price": 220
+     },
+     {
+      "name": "Chikina tibs",
+      "nameAm": "ጭቅና ጥብስ",
+      "price": 280
+     },
+     {
+      "name": "Lamb tibs",
+      "nameAm": "የበግ ጥብስ",
+      "price": 250
+     },
+     {
+      "name": "Dulet",
+      "nameAm": "ድለት",
+      "price": 200
+     },
+     {
+      "name": "Kikil",
+      "nameAm": "ቅቅል",
+      "price": 230
+     },
+     {
+      "name": "Gomen besiga",
+      "nameAm": "ጎመን በስጋ",
+      "price": 250
+     },
+     {
+      "name": "Firfir with butter",
+      "nameAm": "ፍርፍር በቂቤ",
+      "price": 180
+     },
+     {
+      "name": "Fasting firfir",
+      "nameAm": "የፆም ፍርፍር",
+      "price": 150
+     },
+     {
+      "name": "Tibs firfir",
+      "nameAm": "ጥብስ ፍርፍር",
+      "price": 180
+     },
+     {
+      "name": "Tuna firfir",
+      "nameAm": "ቱና ፍርፍር",
+      "price": 220
+     },
+     {
+      "name": "Shiro with salad",
+      "nameAm": "ሽሮ በሰላጣ",
+      "price": 190
+     },
+     {
+      "name": "Tegabino",
+      "nameAm": "ተጋቢኖ",
+      "price": 130
+     },
+     {
+      "name": "Bozena shiro",
+      "nameAm": "ቦዘና ሽሮ",
+      "price": 200
+     },
+     {
+      "name": "Shiro fesese",
+      "nameAm": "ሽሮ ፈሰስ",
+      "price": 120
+     },
+     {
+      "name": "Fasting variety",
+      "nameAm": "የፆም በያይነት",
+      "price": 180
+     },
+     {
+      "name": "Lomi special (alicha firfir, key firfir, rice, dulet)",
+      "nameAm": "ሎሚ ስፔሻል",
+      "price": 330
+     }
+    ]
+   },
+   {
+    "title": "Pasta / ፓስታ",
+    "items": [
+     {
+      "name": "Spaghetti / macaroni with tomato",
+      "nameAm": "ፓስታ/ማካሮኒ በቲማቲም",
+      "price": 160
+     },
+     {
+      "name": "Spaghetti / macaroni with vegetables",
+      "nameAm": "ፓስታ/ማካሮኒ በአትክልት",
+      "price": 180
+     },
+     {
+      "name": "Spaghetti / macaroni with tuna",
+      "nameAm": "ፓስታ/ማካሮኒ በቱና",
+      "price": 220
+     },
+     {
+      "name": "Spaghetti / macaroni with meat",
+      "nameAm": "ፓስታ/ማካሮኒ በስጋ",
+      "price": 190
+     }
+    ]
+   },
+   {
+    "title": "Rice / ሩዝ",
+    "items": [
+     {
+      "name": "Rice with chicken",
+      "nameAm": "ሩዝ በዶሮ ስጋ",
+      "price": 200
+     },
+     {
+      "name": "Rice with vegetables",
+      "nameAm": "ሩዝ በአትክልት",
+      "price": 180
+     },
+     {
+      "name": "Rice with tomato",
+      "nameAm": "ሩዝ በቲማቲም",
+      "price": 160
+     },
+     {
+      "name": "Rice with fish",
+      "nameAm": "ሩዝ በአሳ",
+      "price": 210
+     },
+     {
+      "name": "Rice with tuna",
+      "nameAm": "ሩዝ በቱና",
+      "price": 220
+     }
+    ]
+   },
+   {
+    "title": "Burgers & sandwiches / በርገር",
+    "items": [
+     {
+      "name": "Special burger",
+      "nameAm": "ስፔሻል በርገር",
+      "price": 300
+     },
+     {
+      "name": "Normal burger",
+      "nameAm": "ኖርማል በርገር",
+      "price": 250
+     },
+     {
+      "name": "Cheeseburger",
+      "nameAm": "ቺዝ በርገር",
+      "price": 270
+     },
+     {
+      "name": "Club sandwich",
+      "nameAm": "ክለብ ሳንዱች",
+      "price": 260
+     },
+     {
+      "name": "Tuna sandwich",
+      "nameAm": "ቱና ሳንዱች",
+      "price": 270
+     },
+     {
+      "name": "Veg sandwich",
+      "nameAm": "አትክልት ሳንዱች",
+      "price": 240
+     },
+     {
+      "name": "French fries",
+      "nameAm": "ቺብስ",
+      "price": 140
+     },
+     {
+      "name": "Chicken sandwich",
+      "nameAm": "የዶሮ ሳንዱች",
+      "price": 260
+     },
+     {
+      "name": "Fish sandwich",
+      "nameAm": "አሳ ሳንዱች",
+      "price": 240
+     },
+     {
+      "name": "Fish cutlet",
+      "nameAm": "አሳ ኮተሌት",
+      "price": 300
+     }
+    ]
+   },
+   {
+    "title": "Snacks / እስናክ",
+    "items": [
+     {
+      "name": "Chicken wings, 6 pcs",
+      "nameAm": "ችክን ዊንግ 6",
+      "price": 250
+     },
+     {
+      "name": "Chicken wings, 12 pcs",
+      "nameAm": "ችክን ዊንግ 12",
+      "price": 400
+     },
+     {
+      "name": "Meat barbecue, 4 pcs",
+      "nameAm": "ስጋ ባርቢኪው 4",
+      "price": 200
+     },
+     {
+      "name": "Meat barbecue, 8 pcs",
+      "nameAm": "ስጋ ባርቢኪው 8",
+      "price": 300
+     }
+    ]
+   },
+   {
+    "title": "Pizza / ፒዛ",
+    "items": [
+     {
+      "name": "Tuna pizza, large",
+      "nameAm": "ቱና ፒዛ ትልቅ",
+      "price": 350
+     },
+     {
+      "name": "Tuna pizza, medium",
+      "nameAm": "ቱና ፒዛ መካከለኛ",
+      "price": 300
+     },
+     {
+      "name": "Beef pizza, large",
+      "nameAm": "ቢፍ ፒዛ ትልቅ",
+      "price": 350
+     },
+     {
+      "name": "Beef pizza, medium",
+      "nameAm": "ቢፍ ፒዛ መካከለኛ",
+      "price": 300
+     },
+     {
+      "name": "Chicken pizza, large",
+      "nameAm": "ቺክን ፒዛ ትልቅ",
+      "price": 350
+     },
+     {
+      "name": "Chicken pizza, medium",
+      "nameAm": "ቺክን ፒዛ መካከለኛ",
+      "price": 300
+     },
+     {
+      "name": "Veg pizza, large",
+      "nameAm": "አትክልት ፒዛ ትልቅ",
+      "price": 250
+     },
+     {
+      "name": "Veg pizza, medium",
+      "nameAm": "አትክልት ፒዛ መካከለኛ",
+      "price": 200
+     },
+     {
+      "name": "Cheese pizza, large",
+      "nameAm": "ቺዝ ፒዛ ትልቅ",
+      "price": 300
+     },
+     {
+      "name": "Cheese pizza, medium",
+      "nameAm": "ቺዝ ፒዛ መካከለኛ",
+      "price": 250
+     },
+     {
+      "name": "Lomi special pizza",
+      "nameAm": "ሎሚ ስፔሻል ፒዛ",
+      "price": 410
+     }
+    ]
+   },
+   {
+    "title": "Juices & shakes / ጁስ",
+    "items": [
+     {
+      "name": "Avocado juice",
+      "nameAm": "አቮካዶ ጁስ",
+      "price": 110
+     },
+     {
+      "name": "Papaya juice",
+      "nameAm": "ፓፓያ ጁስ",
+      "price": 110
+     },
+     {
+      "name": "Mango juice",
+      "nameAm": "ማንጎ ጁስ",
+      "price": 110
+     },
+     {
+      "name": "Strawberry juice",
+      "nameAm": "እንጆሪ ጁስ",
+      "price": 85
+     },
+     {
+      "name": "Spris (mixed)",
+      "nameAm": "ስፕሪስ",
+      "price": 140
+     },
+     {
+      "name": "Strawberry milkshake",
+      "nameAm": "ሚልክ ሼክ በእስትሮበሪ",
+      "price": 165
+     },
+     {
+      "name": "Banana milkshake",
+      "nameAm": "ሚልክ ሼክ በሙዝ",
+      "price": 150
+     },
+     {
+      "name": "Beso juice",
+      "nameAm": "በሶ ጁስ",
+      "price": 100
+     },
+     {
+      "name": "Special juice",
+      "nameAm": "ስፔሻል ጁስ",
+      "price": 150
+     },
+     {
+      "name": "Pineapple juice",
+      "nameAm": "አናናስ ጁስ",
+      "price": 85
+     },
+     {
+      "name": "Teleba juice",
+      "nameAm": "ተልባ ጁስ",
+      "price": 100
+     }
+    ]
+   },
+   {
+    "title": "Hot drinks / ትኩስ መጠጥ",
+    "items": [
+     {
+      "name": "Tea",
+      "nameAm": "ሻይ",
+      "price": 20
+     },
+     {
+      "name": "Lemon tea",
+      "nameAm": "ሎሚ ሻይ",
+      "price": 25
+     },
+     {
+      "name": "Qeshir tea",
+      "nameAm": "ቀሽር ሻይ",
+      "price": 25
+     },
+     {
+      "name": "Peanut tea",
+      "nameAm": "ኦቾሎኒ ሻይ",
+      "price": 35
+     },
+     {
+      "name": "Flavoured tea",
+      "nameAm": "ፍሌቨር ሻይ",
+      "price": 35
+     },
+     {
+      "name": "Special tea",
+      "nameAm": "ስፔሻል ሻይ",
+      "price": 60
+     },
+     {
+      "name": "Coffee",
+      "nameAm": "ቡና",
+      "price": 35
+     },
+     {
+      "name": "Macchiato",
+      "nameAm": "ማኪያቶ",
+      "price": 40
+     },
+     {
+      "name": "Fasting macchiato",
+      "nameAm": "የፆም ማኪያቶ",
+      "price": 40
+     },
+     {
+      "name": "Spris",
+      "nameAm": "ስፕሪስ",
+      "price": 30
+     },
+     {
+      "name": "Milk",
+      "nameAm": "ወተት",
+      "price": 35
+     },
+     {
+      "name": "Peanut with milk",
+      "nameAm": "ኦቾሎኒ በወተት",
+      "price": 40
+     },
+     {
+      "name": "Cappuccino",
+      "nameAm": "ካፑቺኖ",
+      "price": 50
+     }
+    ]
+   },
+   {
+    "title": "Drinks / መጠጥ",
+    "items": [
+     {
+      "name": "Water, ½ L",
+      "nameAm": "ውሀ",
+      "price": 20
+     },
+     {
+      "name": "Water, 1 L",
+      "nameAm": "ውሀ",
+      "price": 25
+     },
+     {
+      "name": "Water, 2 L",
+      "nameAm": "ውሀ",
+      "price": 35
+     },
+     {
+      "name": "Ambo water",
+      "nameAm": "አምቦ ውሀ",
+      "price": 35
+     },
+     {
+      "name": "Soft drink",
+      "nameAm": "ለስላሳ",
+      "price": 35
+     },
+     {
+      "name": "Beer",
+      "nameAm": "ቢራ",
+      "price": 50
+     },
+     {
+      "name": "Negus",
+      "nameAm": "ንጉስ",
+      "price": 50
+     },
+     {
+      "name": "Malt",
+      "nameAm": "ማልት",
+      "price": 50
+     },
+     {
+      "name": "Heineken",
+      "nameAm": "ሄኒከን ቢራ",
+      "price": 65
+     },
+     {
+      "name": "Bedele, big",
+      "nameAm": "በደሌ ትልቁ",
+      "price": 65
+     },
+     {
+      "name": "Guder red wine",
+      "nameAm": "ጉደር ቀይ ወይን",
+      "price": 300
+     },
+     {
+      "name": "Aksumite",
+      "nameAm": "አክሱማይት",
+      "price": 450
+     },
+     {
+      "name": "Camila",
+      "nameAm": "ካሚላ",
+      "price": 450
+     },
+     {
+      "name": "Acacia red dry",
+      "nameAm": "አካሲያ ቀይ ድራይ",
+      "price": 800
+     },
+     {
+      "name": "Acacia medium sweet",
+      "nameAm": "አካሲያ ሚድየም ስዊት",
+      "price": 800
+     },
+     {
+      "name": "Acacia rosé",
+      "nameAm": "አካሲያ ሮዜ",
+      "price": 850
+     },
+     {
+      "name": "Awash",
+      "nameAm": "አዋሽ",
+      "price": 300
+     },
+     {
+      "name": "Awash Tekeshino",
+      "nameAm": "አዋሽ ተከሽኖ",
+      "price": 380
+     }
+    ]
+   }
+  ]
+ },
+ "39": {
+  "source": "menu photos on Google Maps, Apr 2024",
+  "sections": [
+   {
+    "title": "Breakfast / ቁርስ",
+    "items": [
+     {
+      "name": "Chechebsa",
+      "nameAm": "ጨጨብሳ",
+      "price": 95
+     },
+     {
+      "name": "Egg firfir",
+      "nameAm": "እንቁላል ፍርፍር",
+      "price": 110
+     },
+     {
+      "name": "Ful",
+      "nameAm": "ፉል",
+      "price": 145
+     },
+     {
+      "name": "Special ful",
+      "nameAm": "ስፔሻል ፉል",
+      "price": 185
+     },
+     {
+      "name": "Pancake",
+      "nameAm": "ፓን ኬክ",
+      "price": 105
+     },
+     {
+      "name": "French toast",
+      "nameAm": "ፍሬንች ቶስት",
+      "price": 80
+     },
+     {
+      "name": "Omelette",
+      "nameAm": "ኦምሌት",
+      "price": 130
+     },
+     {
+      "name": "Special omelette",
+      "nameAm": "ስፔሻል ኦምሌት",
+      "price": 150
+     }
+    ]
+   },
+   {
+    "title": "Burgers & sandwiches / በርገር",
+    "items": [
+     {
+      "name": "Ayuk special burger (double beef, mozzarella)",
+      "nameAm": "አዩክ ስፔሻል በርገር",
+      "price": 319
+     },
+     {
+      "name": "Cheeseburger",
+      "nameAm": "ቺዝ በርገር",
+      "price": 269
+     },
+     {
+      "name": "Delight burger (with egg and mozzarella)",
+      "nameAm": "ዴላይት በርገር",
+      "price": 278
+     },
+     {
+      "name": "Normal burger",
+      "nameAm": "ኖርማል በርገር",
+      "price": 230
+     },
+     {
+      "name": "Club sandwich",
+      "nameAm": "ክለብ ሳንድዊች",
+      "price": 258
+     },
+     {
+      "name": "Chicken sandwich",
+      "nameAm": "የዶሮ ሳንድዊች",
+      "price": 230
+     },
+     {
+      "name": "Egg sandwich",
+      "nameAm": "እንቁላል ሳንድዊች",
+      "price": 140
+     },
+     {
+      "name": "Tuna sandwich",
+      "nameAm": "ቱና ሳንድዊች",
+      "price": 213
+     },
+     {
+      "name": "French fries",
+      "nameAm": "ቺፕስ",
+      "price": 130
+     }
+    ]
+   }
+  ]
+ },
+ "85": {
+  "source": "the menu on Google Maps (photos, Mar 2025)",
+  "sections": [
+   {
+    "title": "Mains",
+    "items": [
+     {
+      "name": "Beef tenderloin",
+      "nameAm": null,
+      "price": 1160
+     },
+     {
+      "name": "Beef stroganoff",
+      "nameAm": null,
+      "price": 909
+     },
+     {
+      "name": "Golden blue beef",
+      "nameAm": null,
+      "price": 900
+     },
+     {
+      "name": "Tuscan chicken",
+      "nameAm": null,
+      "price": 1217
+     },
+     {
+      "name": "Grilled chicken",
+      "nameAm": null,
+      "price": 1162
+     },
+     {
+      "name": "Chicken fried rice",
+      "nameAm": null,
+      "price": 980
+     },
+     {
+      "name": "Butter lemon chicken",
+      "nameAm": null,
+      "price": 1229
+     },
+     {
+      "name": "Fried chicken legs",
+      "nameAm": null,
+      "price": 857
+     },
+     {
+      "name": "Chicken wings",
+      "nameAm": null,
+      "price": 852
+     },
+     {
+      "name": "Butter lemon fish",
+      "nameAm": null,
+      "price": 1117
+     },
+     {
+      "name": "Fish goulash (fasting)",
+      "nameAm": null,
+      "price": 907
+     },
+     {
+      "name": "Fish cutlets (fasting)",
+      "nameAm": null,
+      "price": 916
+     },
+     {
+      "name": "Fish and chips (fasting)",
+      "nameAm": null,
+      "price": 987
+     },
+     {
+      "name": "Eggplant caponata (fasting)",
+      "nameAm": null,
+      "price": 610
+     }
+    ]
+   },
+   {
+    "title": "Burgers",
+    "items": [
+     {
+      "name": "House beef burger",
+      "nameAm": null,
+      "price": 772
+     },
+     {
+      "name": "BBQ beef burger",
+      "nameAm": null,
+      "price": 734
+     },
+     {
+      "name": "Crispy chicken burger",
+      "nameAm": null,
+      "price": 845
+     },
+     {
+      "name": "Cheeseburger",
+      "nameAm": null,
+      "price": 796
+     }
+    ]
+   },
+   {
+    "title": "Salads",
+    "items": [
+     {
+      "name": "Garden salad",
+      "nameAm": null,
+      "price": 456
+     },
+     {
+      "name": "Avocado salad",
+      "nameAm": null,
+      "price": 468
+     },
+     {
+      "name": "Green salad",
+      "nameAm": null,
+      "price": 468
+     },
+     {
+      "name": "Tuna salad",
+      "nameAm": null,
+      "price": 610
+     },
+     {
+      "name": "Caesar salad",
+      "nameAm": null,
+      "price": 728
+     }
+    ]
+   },
+   {
+    "title": "Sandwiches & wraps",
+    "items": [
+     {
+      "name": "Philly cheese steak",
+      "nameAm": null,
+      "price": 854
+     },
+     {
+      "name": "Philly cheese chicken",
+      "nameAm": null,
+      "price": 827
+     },
+     {
+      "name": "Chicken crispy wrap",
+      "nameAm": null,
+      "price": 837
+     },
+     {
+      "name": "Fish crispy wrap (fasting)",
+      "nameAm": null,
+      "price": 800
+     },
+     {
+      "name": "Tuna fajita wrap (fasting)",
+      "nameAm": null,
+      "price": 710
+     },
+     {
+      "name": "Tuna sandwich (fasting)",
+      "nameAm": null,
+      "price": 632
+     },
+     {
+      "name": "Avocado vegan wrap (fasting)",
+      "nameAm": null,
+      "price": 544
+     },
+     {
+      "name": "Veggie sandwich",
+      "nameAm": null,
+      "price": 430
+     }
+    ]
+   },
+   {
+    "title": "Pasta",
+    "items": [
+     {
+      "name": "Ravioli",
+      "nameAm": null,
+      "price": 720
+     },
+     {
+      "name": "Chicken Alfredo",
+      "nameAm": null,
+      "price": 879
+     },
+     {
+      "name": "Pasta Bolognese",
+      "nameAm": null,
+      "price": 849
+     },
+     {
+      "name": "Chicken pesto",
+      "nameAm": null,
+      "price": 899
+     },
+     {
+      "name": "Pesto pasta",
+      "nameAm": null,
+      "price": 700
+     },
+     {
+      "name": "Pasta arrabbiata (fasting)",
+      "nameAm": null,
+      "price": 598
+     },
+     {
+      "name": "Tomato sauce pasta (fasting)",
+      "nameAm": null,
+      "price": 590
+     }
+    ]
+   },
+   {
+    "title": "Combos",
+    "items": [
+     {
+      "name": "Fasting combo (falafel or Nile perch, salad or fries, pasta, bread)",
+      "nameAm": null,
+      "price": 1020
+     }
+    ]
+   }
+  ]
+ },
+ "95": {
+  "source": "the menu on Google Maps (photo, Nov 2024)",
+  "sections": [
+   {
+    "title": "Breakfast",
+    "items": [
+     {
+      "name": "Omelette",
+      "nameAm": null,
+      "price": 220
+     },
+     {
+      "name": "Special omelette",
+      "nameAm": null,
+      "price": 300
+     },
+     {
+      "name": "Egg sandwich",
+      "nameAm": null,
+      "price": 250
+     },
+     {
+      "name": "Side: french fries, salad, vegetables",
+      "nameAm": null,
+      "price": 250
+     },
+     {
+      "name": "Scrambled egg",
+      "nameAm": null,
+      "price": 200
+     },
+     {
+      "name": "Boiled egg",
+      "nameAm": null,
+      "price": 150
+     },
+     {
+      "name": "Fried egg",
+      "nameAm": null,
+      "price": 200
+     },
+     {
+      "name": "Scrambled egg with beef",
+      "nameAm": null,
+      "price": 250
+     },
+     {
+      "name": "Vegetable sandwich",
+      "nameAm": null,
+      "price": 200
+     },
+     {
+      "name": "French fries",
+      "nameAm": null,
+      "price": 200
+     },
+     {
+      "name": "Fetira",
+      "nameAm": "ፈጢራ",
+      "price": 250
+     },
+     {
+      "name": "Special fetira",
+      "nameAm": "ስፔሻል ፈጢራ",
+      "price": 300
+     },
+     {
+      "name": "Croissant avocado sandwich",
+      "nameAm": null,
+      "price": 300
+     },
+     {
+      "name": "Croissant egg sandwich",
+      "nameAm": null,
+      "price": 300
+     },
+     {
+      "name": "Chechebsa",
+      "nameAm": "ጨጨብሳ",
+      "price": 200
+     },
+     {
+      "name": "Special chechebsa",
+      "nameAm": "ስፔሻል ጨጨብሳ",
+      "price": 250
+     },
+     {
+      "name": "Ful",
+      "nameAm": "ፉል",
+      "price": 200
+     }
+    ]
+   },
+   {
+    "title": "Pizza",
+    "items": [
+     {
+      "name": "Margherita pizza",
+      "nameAm": null,
+      "price": 450
+     },
+     {
+      "name": "Beef pizza",
+      "nameAm": null,
+      "price": 450
+     },
+     {
+      "name": "Chicken pizza",
+      "nameAm": null,
+      "price": 450
+     },
+     {
+      "name": "Tuna pizza",
+      "nameAm": null,
+      "price": 450
+     },
+     {
+      "name": "Mini pizza",
+      "nameAm": null,
+      "price": 400
+     },
+     {
+      "name": "Special pizza",
+      "nameAm": null,
+      "price": 650
+     },
+     {
+      "name": "Vegetable pizza",
+      "nameAm": null,
+      "price": 300
+     }
+    ]
+   },
+   {
+    "title": "Burgers",
+    "items": [
+     {
+      "name": "Beef burger",
+      "nameAm": null,
+      "price": 360
+     },
+     {
+      "name": "Chicken burger",
+      "nameAm": null,
+      "price": 380
+     },
+     {
+      "name": "Special burger",
+      "nameAm": null,
+      "price": 450
+     },
+     {
+      "name": "Vegetable burger",
+      "nameAm": null,
+      "price": 300
+     }
+    ]
+   },
+   {
+    "title": "Sandwiches",
+    "items": [
+     {
+      "name": "Tuna sandwich",
+      "nameAm": null,
+      "price": 300
+     },
+     {
+      "name": "Steak sandwich",
+      "nameAm": null,
+      "price": 350
+     },
+     {
+      "name": "Club sandwich",
+      "nameAm": null,
+      "price": 400
+     },
+     {
+      "name": "Half sandwich",
+      "nameAm": null,
+      "price": 200
+     },
+     {
+      "name": "Chicken sandwich",
+      "nameAm": null,
+      "price": 400
+     }
+    ]
+   },
+   {
+    "title": "Wraps",
+    "items": [
+     {
+      "name": "Beef wrap",
+      "nameAm": null,
+      "price": 360
+     },
+     {
+      "name": "Tuna wrap",
+      "nameAm": null,
+      "price": 270
+     },
+     {
+      "name": "Chicken wrap",
+      "nameAm": null,
+      "price": 380
+     },
+     {
+      "name": "Mozzarella cheese vegetable wrap",
+      "nameAm": null,
+      "price": 200
+     },
+     {
+      "name": "Omelette wrap",
+      "nameAm": null,
+      "price": 280
+     }
+    ]
+   },
+   {
+    "title": "Salads",
+    "items": [
+     {
+      "name": "Chicken salad",
+      "nameAm": null,
+      "price": 400
+     },
+     {
+      "name": "Mixed salad",
+      "nameAm": null,
+      "price": 350
+     },
+     {
+      "name": "Special salad",
+      "nameAm": null,
+      "price": 500
+     },
+     {
+      "name": "Beef salad",
+      "nameAm": null,
+      "price": 400
+     },
+     {
+      "name": "Tuna salad",
+      "nameAm": null,
+      "price": 400
+     }
+    ]
+   }
+  ]
+ },
+ "102": {
+  "source": "the menu listed on Google Maps (read Oct 2026)",
+  "sections": [
+   {
+    "title": "Breakfast",
+    "items": [
+     {
+      "name": "Malawah with honey",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Scrambled eggs",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Ful with tuna",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Ful special",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Ful normal",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Pancakes",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Special chechebsa",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Normal chechebsa",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Fetira with dates",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Fetira with honey",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Fetira with tuna",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Special fetira",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Egg wrap",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Masoub",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Fetira with eggs",
+      "nameAm": null,
+      "price": null
+     }
+    ]
+   },
+   {
+    "title": "Main course",
+    "items": [
+     {
+      "name": "Charcoal-grilled chicken with rice",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Crispy fried chicken",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Normal shawarma",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Special shawarma",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Shawarma plate",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Crispy wrap",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Chicken, eggs and avocado bowl",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Chicken, eggs and falafel bowl",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Chicken firfir",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Spaghetti with chicken",
+      "nameAm": null,
+      "price": null
+     }
+    ]
+   },
+   {
+    "title": "Fasting",
+    "items": [
+     {
+      "name": "Falafel wrap",
+      "nameAm": null,
+      "price": 280
+     },
+     {
+      "name": "Tuna wrap",
+      "nameAm": null,
+      "price": 395
+     },
+     {
+      "name": "Veggie wrap",
+      "nameAm": null,
+      "price": 250
+     },
+     {
+      "name": "Fasting firfir",
+      "nameAm": null,
+      "price": 250
+     },
+     {
+      "name": "Fasting combo",
+      "nameAm": null,
+      "price": 400
+     },
+     {
+      "name": "Spaghetti with tuna",
+      "nameAm": null,
+      "price": 350
+     },
+     {
+      "name": "Spaghetti with tomato sauce",
+      "nameAm": null,
+      "price": 280
+     },
+     {
+      "name": "Spaghetti with veggies",
+      "nameAm": null,
+      "price": 280
+     },
+     {
+      "name": "Veggie pizza",
+      "nameAm": null,
+      "price": 400
+     },
+     {
+      "name": "Tuna pizza",
+      "nameAm": null,
+      "price": 450
+     }
+    ]
+   },
+   {
+    "title": "Snacks",
+    "items": [
+     {
+      "name": "Lentil / veggie sambusa (4 pcs)",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Falafel plate",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "Meat sambusa (4 pcs)",
+      "nameAm": null,
+      "price": null
+     },
+     {
+      "name": "French fries",
+      "nameAm": null,
+      "price": null
+     }
+    ]
+   },
+   {
+    "title": "Drinks",
+    "items": [
+     {
+      "name": "Shai Adeni",
+      "nameAm": null,
+      "price": 80
+     },
+     {
+      "name": "Tea",
+      "nameAm": null,
+      "price": 35
+     },
+     {
+      "name": "Special tea",
+      "nameAm": null,
+      "price": 80
+     },
+     {
+      "name": "Lemon tea",
+      "nameAm": null,
+      "price": 70
+     },
+     {
+      "name": "Ginger honey tea",
+      "nameAm": null,
+      "price": 55
+     },
+     {
+      "name": "Macchiato",
+      "nameAm": null,
+      "price": 95
+     },
+     {
+      "name": "Double macchiato",
+      "nameAm": null,
+      "price": 70
+     },
+     {
+      "name": "Fasting macchiato",
+      "nameAm": null,
+      "price": 70
+     },
+     {
+      "name": "Peanut tea",
+      "nameAm": null,
+      "price": 70
+     },
+     {
+      "name": "Cappuccino",
+      "nameAm": null,
+      "price": 70
+     },
+     {
+      "name": "Spris tea",
+      "nameAm": null,
+      "price": 45
+     },
+     {
+      "name": "Espresso",
+      "nameAm": null,
+      "price": 40
+     },
+     {
+      "name": "Milk",
+      "nameAm": null,
+      "price": 60
+     },
+     {
+      "name": "Iced latte",
+      "nameAm": null,
+      "price": 120
+     },
+     {
+      "name": "Soft drink",
+      "nameAm": null,
+      "price": 50
+     },
+     {
+      "name": "Water, ½ L",
+      "nameAm": null,
+      "price": 25
+     },
+     {
+      "name": "Water, 1 L",
+      "nameAm": null,
+      "price": 35
+     },
+     {
+      "name": "Water, 2 L",
+      "nameAm": null,
+      "price": 45
+     },
+     {
+      "name": "Fresh seasonal juice",
+      "nameAm": null,
+      "price": 180
+     },
+     {
+      "name": "Lemon with mint",
+      "nameAm": null,
+      "price": 130
+     },
+     {
+      "name": "Strawberry mojito",
+      "nameAm": null,
+      "price": 120
+     },
+     {
+      "name": "Lemon mint mojito",
+      "nameAm": null,
+      "price": 120
+     },
+     {
+      "name": "Mango papaya shake",
+      "nameAm": null,
+      "price": 220
+     },
+     {
+      "name": "Banana dates shake",
+      "nameAm": null,
+      "price": 220
+     },
+     {
+      "name": "Banana flaxseed shake",
+      "nameAm": null,
+      "price": 220
+     },
+     {
+      "name": "Strawberry banana shake",
+      "nameAm": null,
+      "price": 220
+     },
+     {
+      "name": "Strawberry lemonade",
+      "nameAm": null,
+      "price": 200
+     }
+    ]
+   },
+   {
+    "title": "Extras",
+    "items": [
+     {
+      "name": "Extra bread",
+      "nameAm": null,
+      "price": 15
+     },
+     {
+      "name": "Extra rice",
+      "nameAm": null,
+      "price": 150
+     },
+     {
+      "name": "Extra pita",
+      "nameAm": null,
+      "price": 30
+     },
+     {
+      "name": "Extra qishta cream",
+      "nameAm": null,
+      "price": 70
+     },
+     {
+      "name": "Extra sauce / yoghurt / honey",
+      "nameAm": null,
+      "price": 45
+     },
+     {
+      "name": "Takeaway box",
+      "nameAm": null,
+      "price": 25
+     },
+     {
+      "name": "Takeaway pizza box",
+      "nameAm": null,
+      "price": 35
+     },
+     {
+      "name": "Takeaway cup",
+      "nameAm": null,
+      "price": 20
+     }
+    ]
+   }
+  ]
+ },
+ "159": {
+  "source": "the menu photo on Google Maps, Nov 2025 (pizza prices are for a small)",
+  "sections": [
+   {
+    "title": "Veg pizzas",
+    "items": [
+     {
+      "name": "Margherita (medium 685, large 995)",
+      "nameAm": null,
+      "price": 440
+     },
+     {
+      "name": "Cheese (medium 660, large 980)",
+      "nameAm": null,
+      "price": 425
+     },
+     {
+      "name": "Hot & spicy veg (medium 780, large 1,170)",
+      "nameAm": null,
+      "price": 490
+     },
+     {
+      "name": "Tropical veggie (medium 805, large 1,235)",
+      "nameAm": null,
+      "price": 520
+     },
+     {
+      "name": "Mushroom lovers (medium 835, large 1,110)",
+      "nameAm": null,
+      "price": 520
+     },
+     {
+      "name": "Veggie supreme (medium 740, large 1,110)",
+      "nameAm": null,
+      "price": 480
+     }
+    ]
+   },
+   {
+    "title": "Meat pizzas",
+    "items": [
+     {
+      "name": "Hawaiian (medium 860, large 1,170)",
+      "nameAm": null,
+      "price": 620
+     },
+     {
+      "name": "Pepperoni lovers (medium 860, large 1,255)",
+      "nameAm": null,
+      "price": 590
+     },
+     {
+      "name": "Italian meat (medium 950, large 1,370)",
+      "nameAm": null,
+      "price": 690
+     },
+     {
+      "name": "BBQ double meat (medium 1,025, large 1,370)",
+      "nameAm": null,
+      "price": 680
+     },
+     {
+      "name": "Meat lovers (medium 1,025, large 1,370)",
+      "nameAm": null,
+      "price": 680
+     },
+     {
+      "name": "Super supreme (medium 1,065, large 1,370)",
+      "nameAm": null,
+      "price": 710
+     }
+    ]
+   },
+   {
+    "title": "Chicken pizzas",
+    "items": [
+     {
+      "name": "Hot & spicy chicken (medium 940, large 1,380)",
+      "nameAm": null,
+      "price": 590
+     },
+     {
+      "name": "Chicken & mushroom (medium 940, large 1,340)",
+      "nameAm": null,
+      "price": 590
+     },
+     {
+      "name": "Sweet chilli chicken (medium 950, large 1,340)",
+      "nameAm": null,
+      "price": 620
+     },
+     {
+      "name": "Chicken fajita (medium 890, large 1,370)",
+      "nameAm": null,
+      "price": 590
+     },
+     {
+      "name": "BBQ chicken (medium 1,035, large 1,370)",
+      "nameAm": null,
+      "price": 660
+     },
+     {
+      "name": "Chicken supreme (medium 1,005, large 1,370)",
+      "nameAm": null,
+      "price": 650
+     }
+    ]
+   },
+   {
+    "title": "Fasting pizzas",
+    "items": [
+     {
+      "name": "Tuna (medium 660, large 1,035)",
+      "nameAm": null,
+      "price": 480
+     },
+     {
+      "name": "Veggie blast (medium 710, large 980)",
+      "nameAm": null,
+      "price": 430
+     },
+     {
+      "name": "Pineapple lovers (medium 660, large 980)",
+      "nameAm": null,
+      "price": 460
+     }
+    ]
+   },
+   {
+    "title": "Calzones",
+    "items": [
+     {
+      "name": "Veg calzone",
+      "nameAm": null,
+      "price": 460
+     },
+     {
+      "name": "Beef calzone",
+      "nameAm": null,
+      "price": 565
+     },
+     {
+      "name": "Chicken calzone",
+      "nameAm": null,
+      "price": 565
+     }
+    ]
+   },
+   {
+    "title": "Drinks",
+    "items": [
+     {
+      "name": "Coca-Cola, 300 ml",
+      "nameAm": null,
+      "price": 90
+     },
+     {
+      "name": "Coca-Cola, 500 ml",
+      "nameAm": null,
+      "price": 125
+     },
+     {
+      "name": "Sprite, 300 ml",
+      "nameAm": null,
+      "price": 90
+     },
+     {
+      "name": "Sprite, 500 ml",
+      "nameAm": null,
+      "price": 125
+     },
+     {
+      "name": "Fanta orange, 300 ml",
+      "nameAm": null,
+      "price": 90
+     },
+     {
+      "name": "Fanta orange, 500 ml",
+      "nameAm": null,
+      "price": 125
+     },
+     {
+      "name": "Fanta pineapple, 300 ml",
+      "nameAm": null,
+      "price": 90
+     },
+     {
+      "name": "Fanta pineapple, 500 ml",
+      "nameAm": null,
+      "price": 125
+     },
+     {
+      "name": "Novida",
+      "nameAm": null,
+      "price": 90
+     },
+     {
+      "name": "Ambo sparkling",
+      "nameAm": null,
+      "price": 105
+     },
+     {
+      "name": "Ambo flavour",
+      "nameAm": null,
+      "price": 125
+     },
+     {
+      "name": "Water, 600 ml",
+      "nameAm": null,
+      "price": 60
+     }
+    ]
+   }
+  ]
+ },
+ "161": {
+  "source": "the menu listed on Google Maps (photo, May 2026)",
+  "sections": [
+   {
+    "title": "Soup",
+    "items": [
+     {
+      "name": "Egg noodle soup",
+      "nameAm": null,
+      "price": 450
+     },
+     {
+      "name": "Hot & sour soup",
+      "nameAm": null,
+      "price": 420
+     },
+     {
+      "name": "Chicken noodle soup",
+      "nameAm": null,
+      "price": 560
+     }
+    ]
+   },
+   {
+    "title": "Salad (half / full)",
+    "items": [
+     {
+      "name": "Normal salad (full 730)",
+      "nameAm": null,
+      "price": 560
+     },
+     {
+      "name": "Fish salad (full 760)",
+      "nameAm": null,
+      "price": 630
+     },
+     {
+      "name": "Beef salad (full 830)",
+      "nameAm": null,
+      "price": 680
+     },
+     {
+      "name": "Chicken salad (full 850)",
+      "nameAm": null,
+      "price": 700
+     },
+     {
+      "name": "Combo salad (full 850)",
+      "nameAm": null,
+      "price": 720
+     }
+    ]
+   },
+   {
+    "title": "Noodles",
+    "items": [
+     {
+      "name": "Stir-fry vegetable noodles",
+      "nameAm": null,
+      "price": 680
+     },
+     {
+      "name": "Stir-fry fish noodles",
+      "nameAm": null,
+      "price": 750
+     },
+     {
+      "name": "Stir-fry beef noodles",
+      "nameAm": null,
+      "price": 850
+     }
+    ]
+   },
+   {
+    "title": "Rice",
+    "items": [
+     {
+      "name": "Chicken fried rice",
+      "nameAm": null,
+      "price": 630
+     },
+     {
+      "name": "Beef fried rice",
+      "nameAm": null,
+      "price": 690
+     },
+     {
+      "name": "Mixed fried rice",
+      "nameAm": null,
+      "price": 750
+     },
+     {
+      "name": "Special fried rice",
+      "nameAm": null,
+      "price": 770
+     },
+     {
+      "name": "Combo rice",
+      "nameAm": null,
+      "price": 760
+     }
+    ]
+   },
+   {
+    "title": "Sizzling plates",
+    "items": [
+     {
+      "name": "Chicken sizzling",
+      "nameAm": null,
+      "price": 1290
+     },
+     {
+      "name": "Beef sizzling",
+      "nameAm": null,
+      "price": 1120
+     },
+     {
+      "name": "Fish sizzling",
+      "nameAm": null,
+      "price": 890
+     },
+     {
+      "name": "Chicken lollipop (5 pcs)",
+      "nameAm": null,
+      "price": 1150
+     }
+    ]
+   },
+   {
+    "title": "Variety",
+    "items": [
+     {
+      "name": "Peanut chicken",
+      "nameAm": null,
+      "price": 1290
+     },
+     {
+      "name": "Beef broccoli",
+      "nameAm": null,
+      "price": 950
+     },
+     {
+      "name": "Sweet and sour chicken",
+      "nameAm": null,
+      "price": 1140
+     },
+     {
+      "name": "Fried corn with chicken",
+      "nameAm": null,
+      "price": 750
+     }
+    ]
+   },
+   {
+    "title": "Veggie corner",
+    "items": [
+     {
+      "name": "Broccoli garlic",
+      "nameAm": null,
+      "price": 520
+     },
+     {
+      "name": "Fried corn",
+      "nameAm": null,
+      "price": 600
+     },
+     {
+      "name": "Fried tofu",
+      "nameAm": null,
+      "price": 650
+     },
+     {
+      "name": "Sautéed spinach with broccoli",
+      "nameAm": null,
+      "price": 580
+     },
+     {
+      "name": "Mixed vegetables",
+      "nameAm": null,
+      "price": 570
+     }
+    ]
+   },
+   {
+    "title": "Smoothies",
+    "items": [
+     {
+      "name": "Chandy best",
+      "nameAm": null,
+      "price": 300
+     },
+     {
+      "name": "Avocado banana",
+      "nameAm": null,
+      "price": 300
+     },
+     {
+      "name": "Banana breakfast",
+      "nameAm": null,
+      "price": 300
+     },
+     {
+      "name": "Chocolate peanut butter",
+      "nameAm": null,
+      "price": 300
+     },
+     {
+      "name": "Classic strawberry",
+      "nameAm": null,
+      "price": 300
+     },
+     {
+      "name": "Sweet summer",
+      "nameAm": null,
+      "price": 300
+     },
+     {
+      "name": "Buttermilk banana",
+      "nameAm": null,
+      "price": 300
+     },
+     {
+      "name": "Peanut banana espresso",
+      "nameAm": null,
+      "price": 300
+     },
+     {
+      "name": "Green smoothie",
+      "nameAm": null,
+      "price": 300
+     }
+    ]
+   },
+   {
+    "title": "Mojitos",
+    "items": [
+     {
+      "name": "Classic mojito with rum",
+      "nameAm": null,
+      "price": 250
+     },
+     {
+      "name": "Strawberry mojito with rum",
+      "nameAm": null,
+      "price": 230
+     },
+     {
+      "name": "Pineapple mojito with rum",
+      "nameAm": null,
+      "price": 250
+     },
+     {
+      "name": "Blue lagoon mojito with rum",
+      "nameAm": null,
+      "price": 250
+     },
+     {
+      "name": "Espresso mojito with rum",
+      "nameAm": null,
+      "price": 250
+     },
+     {
+      "name": "Cinnamon mojito with rum",
+      "nameAm": null,
+      "price": 250
+     },
+     {
+      "name": "Tej mojito",
+      "nameAm": null,
+      "price": 420
+     },
+     {
+      "name": "Special mojito with rum",
+      "nameAm": null,
+      "price": 270
+     }
+    ]
+   },
+   {
+    "title": "Extras",
+    "items": [
+     {
+      "name": "Extra egg",
+      "nameAm": null,
+      "price": 40
+     },
+     {
+      "name": "Extra fish",
+      "nameAm": null,
+      "price": 150
+     },
+     {
+      "name": "Extra beef",
+      "nameAm": null,
+      "price": 200
+     },
+     {
+      "name": "Extra chicken",
+      "nameAm": null,
+      "price": 250
+     },
+     {
+      "name": "Extra vegetables",
+      "nameAm": null,
+      "price": 100
+     },
+     {
+      "name": "Extra rice",
+      "nameAm": null,
+      "price": 250
+     },
+     {
+      "name": "Water, ½ L",
+      "nameAm": null,
+      "price": 50
+     }
+    ]
+   }
+  ]
+ },
+ "162": {
+  "source": "the menu photo on Google Maps, Oct 2026",
+  "sections": [
+   {
+    "title": "Burgers",
+    "items": [
+     {
+      "name": "Angla special 1",
+      "nameAm": null,
+      "price": 691
+     },
+     {
+      "name": "Angla special 2",
+      "nameAm": null,
+      "price": 835
+     },
+     {
+      "name": "Angla special 4",
+      "nameAm": null,
+      "price": 904
+     },
+     {
+      "name": "Mini Angla special 1",
+      "nameAm": null,
+      "price": 591
+     },
+     {
+      "name": "Beef burger",
+      "nameAm": null,
+      "price": 448
+     },
+     {
+      "name": "Cheeseburger",
+      "nameAm": null,
+      "price": 500
+     },
+     {
+      "name": "Egg sandwich",
+      "nameAm": null,
+      "price": 322
+     },
+     {
+      "name": "Chicken sandwich",
+      "nameAm": null,
+      "price": 800
+     }
+    ]
+   },
+   {
+    "title": "Fasting",
+    "items": [
+     {
+      "name": "Tofu sandwich",
+      "nameAm": null,
+      "price": 391
+     },
+     {
+      "name": "Vegetable sandwich",
+      "nameAm": null,
+      "price": 322
+     },
+     {
+      "name": "Vegan special burger",
+      "nameAm": null,
+      "price": 391
+     },
+     {
+      "name": "Tuna sandwich",
+      "nameAm": null,
+      "price": 513
+     },
+     {
+      "name": "Fish sandwich",
+      "nameAm": null,
+      "price": 443
+     },
+     {
+      "name": "Double fish sandwich",
+      "nameAm": null,
+      "price": 574
+     }
+    ]
+   },
+   {
+    "title": "Pizza",
+    "items": [
+     {
+      "name": "Margherita pizza",
+      "nameAm": null,
+      "price": 574
+     },
+     {
+      "name": "Beef pizza",
+      "nameAm": null,
+      "price": 652
+     },
+     {
+      "name": "Chicken pizza",
+      "nameAm": null,
+      "price": 722
+     },
+     {
+      "name": "Meat lovers pizza",
+      "nameAm": null,
+      "price": 748
+     },
+     {
+      "name": "Angla special pizza",
+      "nameAm": null,
+      "price": 748
+     },
+     {
+      "name": "Tuna pizza",
+      "nameAm": null,
+      "price": 652
+     },
+     {
+      "name": "Tuna with cheese pizza",
+      "nameAm": null,
+      "price": 704
+     },
+     {
+      "name": "Vegetable pizza",
+      "nameAm": null,
+      "price": 483
+     }
+    ]
+   }
+  ]
+ },
+ "164": {
+  "source": "the menu photo on Google Maps, Apr 2026",
+  "sections": [
+   {
+    "title": "Combos & platters",
+    "items": [
+     {
+      "name": "Luxury special combo (half chicken arrosto, special burger, fish & fries, lasagna)",
+      "nameAm": null,
+      "price": 10210
+     },
+     {
+      "name": "Luxury regular combo (lasagna, special burger, chicken wings, fish & fries)",
+      "nameAm": null,
+      "price": 5770
+     },
+     {
+      "name": "Luxury triple meat platter (tempura roll ye sega, chicken wings, fish & fries)",
+      "nameAm": null,
+      "price": 4290
+     }
+    ]
+   },
+   {
+    "title": "Singles",
+    "items": [
+     {
+      "name": "Special french fries",
+      "nameAm": null,
+      "price": 1200
+     },
+     {
+      "name": "Fish & fries",
+      "nameAm": null,
+      "price": 1260
+     },
+     {
+      "name": "Special house burger",
+      "nameAm": null,
+      "price": 1260
+     },
+     {
+      "name": "Chicken burger",
+      "nameAm": null,
+      "price": 1110
+     },
+     {
+      "name": "Cheeseburger",
+      "nameAm": null,
+      "price": 1040
+     },
+     {
+      "name": "Half chicken arrosto",
+      "nameAm": null,
+      "price": 2135
+     },
+     {
+      "name": "Whole chicken arrosto",
+      "nameAm": null,
+      "price": 4295
+     }
+    ]
+   }
+  ]
+ },
+ "165": {
+  "source": "the menu listed on Google Maps and a menu photo (Mar 2026)",
+  "sections": [
+   {
+    "title": "Pasta (spaghetti, linguine, penne or tagliatelle)",
+    "items": [
+     {
+      "name": "Spicy tomato sauce",
+      "nameAm": null,
+      "price": 600
+     },
+     {
+      "name": "Arrabbiata",
+      "nameAm": null,
+      "price": 600
+     },
+     {
+      "name": "Bolognese",
+      "nameAm": null,
+      "price": 800
+     },
+     {
+      "name": "Pesto genovese",
+      "nameAm": null,
+      "price": 770
+     }
+    ]
+   },
+   {
+    "title": "Signature",
+    "items": [
+     {
+      "name": "Steak & pasta (150 g filet mignon)",
+      "nameAm": null,
+      "price": 1300
+     },
+     {
+      "name": "Steak, frites & pasta",
+      "nameAm": null,
+      "price": 1350
+     },
+     {
+      "name": "Chicken Alfredo",
+      "nameAm": null,
+      "price": 1150
+     },
+     {
+      "name": "BBQ chicken wings with Alfredo or rosé sauce",
+      "nameAm": null,
+      "price": 1150
+     },
+     {
+      "name": "Herb-crusted tilapia in rosé sauce",
+      "nameAm": null,
+      "price": 850
+     }
+    ]
+   },
+   {
+    "title": "From the oven",
+    "items": [
+     {
+      "name": "Lasagna",
+      "nameAm": null,
+      "price": 900
+     },
+     {
+      "name": "Mac & cheese",
+      "nameAm": null,
+      "price": 850
+     }
+    ]
+   },
+   {
+    "title": "Pizza",
+    "items": [
+     {
+      "name": "Margherita",
+      "nameAm": null,
+      "price": 900
+     },
+     {
+      "name": "Marinara",
+      "nameAm": null,
+      "price": 700
+     },
+     {
+      "name": "Pesto",
+      "nameAm": null,
+      "price": 750
+     },
+     {
+      "name": "Quattro (tuna, olives, pesto)",
+      "nameAm": null,
+      "price": 1150
+     },
+     {
+      "name": "Romana",
+      "nameAm": null,
+      "price": 980
+     },
+     {
+      "name": "BBQ chicken",
+      "nameAm": null,
+      "price": 980
+     },
+     {
+      "name": "Al funghi",
+      "nameAm": null,
+      "price": 980
+     },
+     {
+      "name": "Steak pizza",
+      "nameAm": null,
+      "price": 1150
+     },
+     {
+      "name": "Seafood pizza (Nile perch)",
+      "nameAm": null,
+      "price": 980
+     }
+    ]
+   },
+   {
+    "title": "Burgers & sandwiches",
+    "items": [
+     {
+      "name": "Chicken burger",
+      "nameAm": null,
+      "price": 850
+     },
+     {
+      "name": "Subito smash burger",
+      "nameAm": null,
+      "price": 850
+     },
+     {
+      "name": "Steak & cheese sandwich",
+      "nameAm": null,
+      "price": 950
+     }
+    ]
+   },
+   {
+    "title": "Desserts",
+    "items": [
+     {
+      "name": "Tiramisu",
+      "nameAm": null,
+      "price": 850
+     },
+     {
+      "name": "Italian lemon cake",
+      "nameAm": null,
+      "price": 750
+     },
+     {
+      "name": "Millefeuille",
+      "nameAm": null,
+      "price": 800
+     }
+    ]
+   },
+   {
+    "title": "Drinks",
+    "items": [
+     {
+      "name": "Americano",
+      "nameAm": null,
+      "price": 100
+     },
+     {
+      "name": "Espresso",
+      "nameAm": null,
+      "price": 130
+     },
+     {
+      "name": "Coffee",
+      "nameAm": null,
+      "price": 100
+     },
+     {
+      "name": "Macchiato",
+      "nameAm": null,
+      "price": 160
+     },
+     {
+      "name": "Tea",
+      "nameAm": null,
+      "price": 80
+     },
+     {
+      "name": "Lemon tea",
+      "nameAm": null,
+      "price": 90
+     },
+     {
+      "name": "Ginger tea",
+      "nameAm": null,
+      "price": 90
+     },
+     {
+      "name": "Soft drink",
+      "nameAm": null,
+      "price": 90
+     },
+     {
+      "name": "Caffè latte",
+      "nameAm": null,
+      "price": 90
+     },
+     {
+      "name": "Ambo sparkling water",
+      "nameAm": null,
+      "price": 100
+     },
+     {
+      "name": "Novida",
+      "nameAm": null,
+      "price": 70
+     }
+    ]
+   }
+  ]
+ },
+ "172": {
+  "source": "the menu photo on Google Maps, Feb 2024",
+  "sections": [
+   {
+    "title": "Snacks",
+    "items": [
+     {
+      "name": "Hummus",
+      "nameAm": null,
+      "price": 160
+     },
+     {
+      "name": "Potato sticks",
+      "nameAm": null,
+      "price": 160
+     },
+     {
+      "name": "Strawberry toast",
+      "nameAm": null,
+      "price": 160
+     },
+     {
+      "name": "Cheese toast",
+      "nameAm": null,
+      "price": 160
+     },
+     {
+      "name": "Pesto melt",
+      "nameAm": null,
+      "price": 160
+     },
+     {
+      "name": "Ful",
+      "nameAm": "ፉል",
+      "price": 200
+     },
+     {
+      "name": "French fries",
+      "nameAm": null,
+      "price": 150
+     }
+    ]
+   },
+   {
+    "title": "Sandwiches & wraps",
+    "items": [
+     {
+      "name": "Pulled beef sandwich",
+      "nameAm": null,
+      "price": 400
+     },
+     {
+      "name": "Pulled chicken sandwich",
+      "nameAm": null,
+      "price": 400
+     },
+     {
+      "name": "Chicken wrap",
+      "nameAm": null,
+      "price": 400
+     },
+     {
+      "name": "Beef wrap",
+      "nameAm": null,
+      "price": 400
+     },
+     {
+      "name": "Tuna sandwich / wrap",
+      "nameAm": null,
+      "price": 400
+     },
+     {
+      "name": "Veggie sandwich / wrap",
+      "nameAm": null,
+      "price": 300
+     },
+     {
+      "name": "Falafel wrap",
+      "nameAm": null,
+      "price": 350
+     }
+    ]
+   },
+   {
+    "title": "Pizza",
+    "items": [
+     {
+      "name": "Margherita pizza",
+      "nameAm": null,
+      "price": 400
+     },
+     {
+      "name": "Pesto pizza",
+      "nameAm": null,
+      "price": 400
+     },
+     {
+      "name": "Veggie pizza",
+      "nameAm": null,
+      "price": 400
+     },
+     {
+      "name": "Chicken pizza",
+      "nameAm": null,
+      "price": 500
+     },
+     {
+      "name": "Beef pizza",
+      "nameAm": null,
+      "price": 500
+     },
+     {
+      "name": "Tuna pizza",
+      "nameAm": null,
+      "price": 500
+     },
+     {
+      "name": "Half & half",
+      "nameAm": null,
+      "price": 500
+     }
+    ]
+   },
+   {
+    "title": "Drinks",
+    "items": [
+     {
+      "name": "Bottled water",
+      "nameAm": null,
+      "price": 35
+     },
+     {
+      "name": "Soft drink",
+      "nameAm": null,
+      "price": 60
+     },
+     {
+      "name": "Tea, flavoured or herbal",
+      "nameAm": null,
+      "price": 50
+     },
+     {
+      "name": "Jebena coffee",
+      "nameAm": "የጀበና ቡና",
+      "price": 30
+     }
+    ]
+   }
+  ]
+ },
+ "174": {
+  "source": "menu photos on Google Maps, Apr 2024",
+  "sections": [
+   {
+    "title": "Breakfast / ቁርስ",
+    "items": [
+     {
+      "name": "Breakfast combo (chechebsa, rice with meat, tibit, tibs firfir, egg sils)",
+      "nameAm": "የቁርስ ኮምቦ (የፍስክ)",
+      "price": 450
+     },
+     {
+      "name": "Bula kitfo",
+      "nameAm": "ቡላ ክትፎ",
+      "price": 300
+     },
+     {
+      "name": "Special dulet",
+      "nameAm": "ስፔሻል ዱለት",
+      "price": 300
+     },
+     {
+      "name": "Dirkosh firfir with quanta",
+      "nameAm": "ድርቆሽ ፍርፍር በቋንጣ",
+      "price": 300
+     },
+     {
+      "name": "Avocado and egg sandwich",
+      "nameAm": "አቦካዶ በእንቁላል ሳንድዊች",
+      "price": 275
+     },
+     {
+      "name": "Special chechebsa",
+      "nameAm": "ስፔሻል ጨጨብሳ",
+      "price": 275
+     },
+     {
+      "name": "Quanta firfir",
+      "nameAm": "ቋንጣ ፍርፍር",
+      "price": 270
+     },
+     {
+      "name": "Fetira",
+      "nameAm": "ፈጢራ",
+      "price": 250
+     },
+     {
+      "name": "Special omelette",
+      "nameAm": "ስፔሻል ኦምሌት",
+      "price": 250
+     },
+     {
+      "name": "Dulet",
+      "nameAm": "ዱለት",
+      "price": 250
+     },
+     {
+      "name": "Tibs firfir",
+      "nameAm": "ጥብስ ፍርፍር",
+      "price": 250
+     },
+     {
+      "name": "Strawberry pancake",
+      "nameAm": "የእንጆሪ ፓን ኬክ",
+      "price": 200
+     },
+     {
+      "name": "Egg with meat",
+      "nameAm": "እንቁላል በስጋ",
+      "price": 200
+     },
+     {
+      "name": "Special ful",
+      "nameAm": "ስፔሻል ፉል",
+      "price": 200
+     },
+     {
+      "name": "Bula genfo",
+      "nameAm": "ቡላ ገንፎ",
+      "price": 175
+     },
+     {
+      "name": "Plain omelette",
+      "nameAm": "ፕሌን ኦምሌት",
+      "price": 175
+     },
+     {
+      "name": "Scrambled egg",
+      "nameAm": "እንቁላል ፍርፍር",
+      "price": 150
+     },
+     {
+      "name": "Egg sils",
+      "nameAm": "እንቁላል ስልስ",
+      "price": 150
+     }
+    ]
+   },
+   {
+    "title": "Fasting breakfast / የፆም ቁርስ",
+    "items": [
+     {
+      "name": "Fasting breakfast combo (chechebsa, rice, fasting tibit, fasting firfir, avocado)",
+      "nameAm": "የቁርስ ኮምቦ (የፆም)",
+      "price": 350
+     },
+     {
+      "name": "Vegetable firfir",
+      "nameAm": "አትክልት ፍርፍር",
+      "price": 200
+     },
+     {
+      "name": "Dirkosh firfir",
+      "nameAm": "ድርቆሽ ፍርፍር",
+      "price": 200
+     },
+     {
+      "name": "Soya firfir",
+      "nameAm": "ሶያ ፍርፍር",
+      "price": 200
+     },
+     {
+      "name": "Fasting tibit",
+      "nameAm": "የፆም ትቢት",
+      "price": 175
+     },
+     {
+      "name": "Ful with avocado",
+      "nameAm": "ፉል በአቦካዶ",
+      "price": 175
+     },
+     {
+      "name": "Ful Sudani",
+      "nameAm": "ፉል ሱዳኒ",
+      "price": 175
+     },
+     {
+      "name": "Melewa",
+      "nameAm": "መለዋ",
+      "price": 175
+     },
+     {
+      "name": "Fasting firfir",
+      "nameAm": "እንጀራ ፍርፍር",
+      "price": 150
+     },
+     {
+      "name": "Chechebsa",
+      "nameAm": "ጨጨብሳ",
+      "price": 150
+     }
+    ]
+   },
+   {
+    "title": "Lunch & dinner / ምሳ እና እራት",
+    "items": [
+     {
+      "name": "Chicken teriyaki",
+      "nameAm": "ቴሪያኪ ቺከን",
+      "price": 700
+     },
+     {
+      "name": "Stir-fried chicken",
+      "nameAm": "የተጠበሰ ዶሮ በአትክልት",
+      "price": 650
+     },
+     {
+      "name": "Chicken Mexican",
+      "nameAm": "ሜክሲካን ቺከን",
+      "price": 600
+     },
+     {
+      "name": "Fried chicken",
+      "nameAm": "ፍራይድ ቺከን",
+      "price": 600
+     },
+     {
+      "name": "Grilled chicken",
+      "nameAm": "ግሪልድ ቺከን",
+      "price": 600
+     },
+     {
+      "name": "Special combo (rice with meat, bozena shiro, tibs firfir, dulet, gomen kitfo, key wet)",
+      "nameAm": "ስፔሻል ኮምቦ",
+      "price": 600
+     },
+     {
+      "name": "Special tibs",
+      "nameAm": "ስፔሻል ጥብስ",
+      "price": 450
+     },
+     {
+      "name": "Tibs tefersho",
+      "nameAm": "ጥብስ ተፈርሾ",
+      "price": 450
+     },
+     {
+      "name": "Chikina tibs",
+      "nameAm": "ጭቅና ጥብስ",
+      "price": 375
+     },
+     {
+      "name": "Spaghetti carbonara",
+      "nameAm": "ፓስታ በካርቦናራ",
+      "price": 350
+     },
+     {
+      "name": "Key wet",
+      "nameAm": "ቀይ ወጥ",
+      "price": 300
+     },
+     {
+      "name": "Minchet",
+      "nameAm": "ምንቸት",
+      "price": 300
+     },
+     {
+      "name": "Special salad",
+      "nameAm": "ስፔሻል ሰላጣ",
+      "price": 275
+     },
+     {
+      "name": "Gomen with meat",
+      "nameAm": "ጎመን በስጋ",
+      "price": 270
+     },
+     {
+      "name": "Spaghetti with meat",
+      "nameAm": "ፓስታ በስጋ",
+      "price": 250
+     },
+     {
+      "name": "Misir with meat",
+      "nameAm": "ምስር በስጋ",
+      "price": 250
+     }
+    ]
+   },
+   {
+    "title": "Fasting lunch & dinner / የፆም",
+    "items": [
+     {
+      "name": "Yegna fasting special",
+      "nameAm": "የኛ የፆም ስፔሻል",
+      "price": 450
+     },
+     {
+      "name": "Spaghetti with tuna",
+      "nameAm": "ፓስታ በቱና",
+      "price": 275
+     },
+     {
+      "name": "Special shiro",
+      "nameAm": "ስፔሻል ሽሮ",
+      "price": 250
+     },
+     {
+      "name": "Special salad",
+      "nameAm": "ስፔሻል ሰላጣ",
+      "price": 250
+     },
+     {
+      "name": "Spaghetti (vegetable or tomato)",
+      "nameAm": "ፓስታ በአትክልት / በሱጎ",
+      "price": 220
+     },
+     {
+      "name": "Fasting goulash",
+      "nameAm": "የፆም ጉላሽ",
+      "price": 220
+     },
+     {
+      "name": "Rice with soya",
+      "nameAm": "ሩዝ በሶያ",
+      "price": 220
+     },
+     {
+      "name": "Tegabino",
+      "nameAm": "ተጋቢኖ",
+      "price": 200
+     },
+     {
+      "name": "Mixed salad",
+      "nameAm": "ሚክስድ ሰላጣ",
+      "price": 200
+     },
+     {
+      "name": "Misir wet",
+      "nameAm": "ምስር ወጥ",
+      "price": 200
+     },
+     {
+      "name": "Gomen kitfo",
+      "nameAm": "ጎመን ክትፎ",
+      "price": 200
+     },
+     {
+      "name": "Shiro",
+      "nameAm": "ሽሮ",
+      "price": 175
+     },
+     {
+      "name": "Suf fitfit",
+      "nameAm": "ሱፍ ፍትፍት",
+      "price": 150
+     }
+    ]
+   },
+   {
+    "title": "Half-half / ግማሽ ግማሽ",
+    "items": [
+     {
+      "name": "Dulet and tibs firfir",
+      "nameAm": "ዱለት እና ጥብስ ፍርፍር",
+      "price": 350
+     },
+     {
+      "name": "Shiro and fasting firfir",
+      "nameAm": "ሽሮ እና የፆም ፍርፍር",
+      "price": 250
+     },
+     {
+      "name": "Salad and fasting goulash",
+      "nameAm": "ሰላጣ እና የፆም ጉላሽ",
+      "price": 250
+     },
+     {
+      "name": "Spaghetti and fasting firfir",
+      "nameAm": "ፓስታ እና የፆም ፍርፍር",
+      "price": 250
+     },
+     {
+      "name": "Dirkosh firfir and scrambled egg",
+      "nameAm": "ድርቆሽ ፍርፍር እና እንቁላል ፍርፍር",
+      "price": 250
+     },
+     {
+      "name": "Rice and salad",
+      "nameAm": "ሩዝ እና ሰላጣ",
+      "price": 250
+     }
+    ]
+   },
+   {
+    "title": "Burgers & sandwiches / በርገር እና ሳንድዊች",
+    "items": [
+     {
+      "name": "Special burger",
+      "nameAm": "ስፔሻል በርገር",
+      "price": 500
+     },
+     {
+      "name": "Special wrap",
+      "nameAm": "ስፔሻል ራፕ",
+      "price": 500
+     },
+     {
+      "name": "Chicken club sandwich",
+      "nameAm": "ክለብ ሳንድዊች በዶሮ",
+      "price": 450
+     },
+     {
+      "name": "Steak sandwich",
+      "nameAm": "ስቴክ ሳንድዊች",
+      "price": 400
+     },
+     {
+      "name": "Cheeseburger",
+      "nameAm": "ቺዝ በርገር",
+      "price": 350
+     },
+     {
+      "name": "Beef burger",
+      "nameAm": "ቢፍ በርገር",
+      "price": 300
+     },
+     {
+      "name": "Tuna sandwich",
+      "nameAm": "ቱና ሳንድዊች",
+      "price": 300
+     },
+     {
+      "name": "Vegetable wrap",
+      "nameAm": "የአትክልት ራፕ",
+      "price": 250
+     },
+     {
+      "name": "Egg sandwich",
+      "nameAm": "እንቁላል ሳንድዊች",
+      "price": 250
+     },
+     {
+      "name": "Vegetable sandwich",
+      "nameAm": "አትክልት ሳንድዊች",
+      "price": 200
+     },
+     {
+      "name": "French fries",
+      "nameAm": "ቺፕስ",
+      "price": 130
+     }
+    ]
+   },
+   {
+    "title": "Juice / ጁስ",
+    "items": [
+     {
+      "name": "Special juice",
+      "nameAm": "ስፔሻል ጁስ",
+      "price": 175
+     },
+     {
+      "name": "Spris juice",
+      "nameAm": "ስፕሪስ ጁስ",
+      "price": 150
+     },
+     {
+      "name": "Papaya juice",
+      "nameAm": "ፓፓያ ጁስ",
+      "price": 130
+     },
+     {
+      "name": "Avocado juice",
+      "nameAm": "አቦካዶ ጁስ",
+      "price": 130
+     }
+    ]
+   },
+   {
+    "title": "Hot drinks / ትኩስ መጠጦች",
+    "items": [
+     {
+      "name": "Fasting macchiato",
+      "nameAm": "የፆም ማኪያቶ",
+      "price": 80
+     },
+     {
+      "name": "Special tea",
+      "nameAm": "ስፔሻል ሻይ",
+      "price": 60
+     },
+     {
+      "name": "Macchiato",
+      "nameAm": "ማኪያቶ",
+      "price": 50
+     },
+     {
+      "name": "Peanut tea",
+      "nameAm": "ለውዝ ሻይ",
+      "price": 50
+     },
+     {
+      "name": "Coffee",
+      "nameAm": "ቡና",
+      "price": 40
+     },
+     {
+      "name": "Ginger tea",
+      "nameAm": "ዝንጅብል ሻይ",
+      "price": 30
+     },
+     {
+      "name": "Lemon tea",
+      "nameAm": "ሻይ በሎሚ",
+      "price": 30
+     },
+     {
+      "name": "Tea",
+      "nameAm": "ሻይ",
+      "price": 25
+     }
+    ]
+   },
+   {
+    "title": "Drinks / መጠጦች",
+    "items": [
+     {
+      "name": "Soft drink / Ambo water",
+      "nameAm": "ለስላሳ / አምቦ ውሀ",
+      "price": 40
+     },
+     {
+      "name": "Water, 1 L",
+      "nameAm": "ውሀ 1 ሊትር",
+      "price": 30
+     },
+     {
+      "name": "Water, ½ L",
+      "nameAm": "ውሀ 1/2 ሊትር",
+      "price": 20
+     },
+     {
+      "name": "Beer, big",
+      "nameAm": "ቢራ ትልቁ",
+      "price": 80
+     },
+     {
+      "name": "Beer, small",
+      "nameAm": "ቢራ ትንሹ",
+      "price": 60
+     }
+    ]
+   },
+   {
+    "title": "Extras & catering / ተጨማሪ",
+    "items": [
+     {
+      "name": "Extra injera, full",
+      "nameAm": "እንጀራ ጭማሪ (ሙሉ)",
+      "price": 30
+     },
+     {
+      "name": "Extra injera, half",
+      "nameAm": "እንጀራ ጭማሪ (ግማሽ)",
+      "price": 15
+     },
+     {
+      "name": "Extra egg",
+      "nameAm": "እንቁላል ጭማሪ",
+      "price": 15
+     },
+     {
+      "name": "Extra bread",
+      "nameAm": "ዳቦ ጭማሪ",
+      "price": 10
+     },
+     {
+      "name": "Takeaway box",
+      "nameAm": "የምግብ ቴካዌይ",
+      "price": 20
+     },
+     {
+      "name": "Agelgil, non-fasting, pre-order (for 30)",
+      "nameAm": "የፍስክ አገልግል (ለ30 ሰው)",
+      "price": 6000
+     },
+     {
+      "name": "Agelgil, fasting, pre-order (for 30)",
+      "nameAm": "የፆም አገልግል (ለ30 ሰው)",
+      "price": 4000
+     }
+    ]
+   }
+  ]
+ }
+}

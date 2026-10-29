@@ -12,6 +12,8 @@ import ShareButtons from "@/components/ShareButtons";
 import GoogleReviews from "@/components/GoogleReviews";
 import Reviews from "@/components/Reviews";
 import Stars from "@/components/Stars";
+import GoogleSummary from "@/components/GoogleSummary";
+import MenuSection from "@/components/MenuSection";
 import { services as serviceNames } from "@/data/services";
 import { site } from "@/data/site";
 import { getContent, isLocale, locales } from "@/data/content";
@@ -165,7 +167,9 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
                 ) : null}
               </div>
             ) : null}
+            {l.menu.length ? <MenuSection menu={l.menu} source={l.menuSource} ui={c.ui} locale={locale} /> : null}
             <Reviews slug={l.slug} summary={summary} c={c} />
+            {l.google ? <GoogleSummary google={l.google} mapsUrl={maps} ui={c.ui} /> : null}
             <GoogleReviews placeId={l.googlePlaceId} hasPhone={Boolean(l.phone)} ui={c.ui} locale={locale} />
             {l.lat != null && l.lng != null ? (
               <div>

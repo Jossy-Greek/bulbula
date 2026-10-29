@@ -42,7 +42,17 @@ export type Listing = {
   priceRange: string | null;
   menuLink: string | null;
   /** Copied from Google Maps (see scripts/import-google-details.ts). */
-  google: { rating: number; count: number; checkedAt: string | null } | null;
+  google: {
+    rating: number;
+    count: number;
+    checkedAt: string | null;
+    /** Reviews per star, index 0 = 1★ … 4 = 5★. */
+    stars: number[] | null;
+    /** What Google says reviews mention, most-mentioned first. */
+    topics: { label: string; count: number }[];
+  } | null;
+  menu: { title: string; items: { name: string; nameAm: string | null; price: number | null }[] }[];
+  menuSource: string | null;
 };
 
 export type CategoryInfo = { id: number; slug: string; name: string; group: "business" | "community"; icon: string; count: number };
@@ -119,7 +129,20 @@ function toListing(b: Business, locale: Locale): Listing {
     services: (b.services ?? []) as Service[],
     priceRange: b.priceRange ?? null,
     menuLink: b.menuLink ?? null,
-    google: b.googleRating ? { rating: b.googleRating, count: b.googleReviewCount ?? 0, checkedAt: b.googleCheckedAt ?? null } : null,
+    google: b.googleRating
+      ? {
+          rating: b.googleRating,
+          count: b.googleReviewCount ?? 0,
+          checkedAt: b.googleCheckedAt ?? null,
+          stars: Array.isArray(b.googleStars) && b.googleStars.length === 5 ? (b.googleStars as number[]) : null,
+          topics: Array.isArray(b.googleTopics) ? (b.googleTopics as { label: string; count: number }[]) : [],
+        }
+      : null,
+    menu: (b.menu ?? []).map((s) => ({
+      title: s.title,
+      items: (s.items ?? []).map((i) => ({ name: i.name, nameAm: i.nameAm ?? null, price: i.price ?? null })),
+    })),
+    menuSource: b.menuSource ?? null,
   };
 }
 
