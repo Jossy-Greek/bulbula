@@ -5,6 +5,7 @@ import * as migration_20261027_052148_analytics_events from './20261027_052148_a
 import * as migration_20261027_191339_visitor_reviews from './20261027_191339_visitor_reviews';
 import * as migration_20261029_084742_google_details from './20261029_084742_google_details';
 import * as migration_20261029_095452_google_menus_reviews from './20261029_095452_google_menus_reviews';
+import * as migration_20261029_110236_menu_visibility from './20261029_110236_menu_visibility';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20261029_095452_google_menus_reviews.up,
     down: migration_20261029_095452_google_menus_reviews.down,
-    name: '20261029_095452_google_menus_reviews'
+    name: '20261029_095452_google_menus_reviews',
+  },
+  {
+    up: migration_20261029_110236_menu_visibility.up,
+    down: migration_20261029_110236_menu_visibility.down,
+    name: '20261029_110236_menu_visibility'
   },
 ];

@@ -138,7 +138,8 @@ function toListing(b: Business, locale: Locale): Listing {
           topics: Array.isArray(b.googleTopics) ? (b.googleTopics as { label: string; count: number }[]) : [],
         }
       : null,
-    menu: (b.menu ?? []).map((s) => ({
+    // Hidden menus stay in the admin; the site gets none.
+    menu: (b.showMenu === false ? [] : (b.menu ?? [])).map((s) => ({
       title: s.title,
       items: (s.items ?? []).map((i) => ({ name: i.name, nameAm: i.nameAm ?? null, price: i.price ?? null })),
     })),

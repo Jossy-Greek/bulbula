@@ -124,6 +124,13 @@ export const Businesses: CollectionConfig = {
           ],
         },
         {
+          name: "showMenu",
+          type: "checkbox",
+          defaultValue: true,
+          label: "Show menu on the site",
+          admin: { description: "Untick to hide the menu from the business page without deleting it." },
+        },
+        {
           name: "menu",
           type: "array",
           labels: { singular: "Menu section", plural: "Menu sections" },
