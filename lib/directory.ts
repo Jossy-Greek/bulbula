@@ -171,6 +171,13 @@ export async function getListings(locale: Locale): Promise<Listing[]> {
     );
 }
 
+/** Site-wide switches from the admin's Site settings. Defaults apply until it is first saved. */
+export async function getSiteSettings(): Promise<{ showMenus: boolean }> {
+  const payload = await getPayload({ config });
+  const s = await payload.findGlobal({ slug: "site-settings", depth: 0 }).catch(() => null);
+  return { showMenus: s?.showMenus !== false };
+}
+
 export async function getListing(slug: string, locale: Locale): Promise<Listing | null> {
   const payload = await getPayload({ config });
   const res = await payload.find({
