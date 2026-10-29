@@ -80,6 +80,14 @@ export type Content = {
     menu: string;
     /** "{n}" = number of reviews. Shown next to a rating copied from Google Maps. */
     onGoogle: string;
+    googleBoxTitle: string;
+    /** "{n}" = star count. */
+    starsRow: string;
+    peopleMention: string;
+    readReviewsOnGoogle: string;
+    /** "{source}" = e.g. "Google Maps photo, Dec 2023". */
+    menuFrom: string;
+    birr: string;
     googlePhotos: string;
     /** "{name}" = photographer. */
     googlePhotoBy: string;
@@ -241,6 +249,12 @@ const en: Content = {
     priceRange: "Prices",
     menu: "Menu",
     onGoogle: "{n} reviews on Google",
+    googleBoxTitle: "On Google Maps",
+    starsRow: "{n} stars",
+    peopleMention: "People mention",
+    readReviewsOnGoogle: "Read the reviews on Google Maps",
+    menuFrom: "From {source}. Prices may have changed — check with the place.",
+    birr: "Br",
     googlePhotos: "Photos",
     googlePhotoBy: "Photo: {name}",
     googleServices: "Services",
@@ -464,6 +478,12 @@ const am: Content = {
     priceRange: "ዋጋ",
     menu: "ሜኑ",
     onGoogle: "{n} ግምገማዎች በGoogle",
+    googleBoxTitle: "በGoogle ካርታ",
+    starsRow: "{n} ኮከብ",
+    peopleMention: "ሰዎች የሚጠቅሱት",
+    readReviewsOnGoogle: "ግምገማዎቹን በGoogle ካርታ ያንብቡ",
+    menuFrom: "ምንጭ፦ {source}። ዋጋዎች ተለውጠው ሊሆን ይችላል — ቦታውን ይጠይቁ።",
+    birr: "ብር",
     googlePhotos: "ፎቶዎች",
     googlePhotoBy: "ፎቶ፦ {name}",
     googleServices: "አገልግሎቶች",

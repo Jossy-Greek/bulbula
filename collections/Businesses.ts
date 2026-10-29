@@ -123,6 +123,34 @@ export const Businesses: CollectionConfig = {
             { name: "menuLink", type: "text", admin: { width: "50%", description: "The business's own online menu, if any." } },
           ],
         },
+        {
+          name: "menu",
+          type: "array",
+          labels: { singular: "Menu section", plural: "Menu sections" },
+          admin: { description: "Typed from the menu (a photo on Google Maps, or from the owner). Prices in birr.", initCollapsed: true },
+          fields: [
+            { name: "title", type: "text", required: true, admin: { description: "e.g. Breakfast / ቁርስ" } },
+            {
+              name: "items",
+              type: "array",
+              fields: [
+                {
+                  type: "row",
+                  fields: [
+                    { name: "name", type: "text", required: true, admin: { width: "40%" } },
+                    { name: "nameAm", type: "text", admin: { width: "40%" } },
+                    { name: "price", type: "number", min: 0, admin: { width: "20%" } },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          name: "menuSource",
+          type: "text",
+          admin: { description: "Where and when the menu is from, e.g. “Google Maps photo, Dec 2023”. Shown under the menu." },
+        },
       ],
     },
     { name: "photo", type: "upload", relationTo: "media" },
@@ -161,6 +189,9 @@ export const Businesses: CollectionConfig = {
     // A copy of the Google Maps rating, refreshed by scripts/import-google-details.ts.
     { name: "googleRating", type: "number", min: 1, max: 5, admin: { position: "sidebar", step: 0.1 } },
     { name: "googleReviewCount", type: "number", min: 0, admin: { position: "sidebar" } },
+    // Machine-read from Google Maps' Reviews tab: [1★ … 5★] counts and the topics Google lists.
+    { name: "googleStars", type: "json", admin: { position: "sidebar", readOnly: true } },
+    { name: "googleTopics", type: "json", admin: { position: "sidebar", readOnly: true } },
     { name: "googleCheckedAt", type: "date", admin: { position: "sidebar", date: { pickerAppearance: "dayOnly" }, description: "When phone, hours, services and rating were last copied from Google Maps." } },
     {
       name: "source",

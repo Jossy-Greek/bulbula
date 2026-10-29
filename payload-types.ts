@@ -193,6 +193,30 @@ export interface Business {
    * The business's own online menu, if any.
    */
   menuLink?: string | null;
+  /**
+   * Typed from the menu (a photo on Google Maps, or from the owner). Prices in birr.
+   */
+  menu?:
+    | {
+        /**
+         * e.g. Breakfast / ቁርስ
+         */
+        title: string;
+        items?:
+          | {
+              name: string;
+              nameAm?: string | null;
+              price?: number | null;
+              id?: string | null;
+            }[]
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Where and when the menu is from, e.g. “Google Maps photo, Dec 2023”. Shown under the menu.
+   */
+  menuSource?: string | null;
   photo?: (number | null) | Media;
   status: 'pending' | 'published' | 'rejected';
   /**
@@ -206,6 +230,24 @@ export interface Business {
   featured?: boolean | null;
   googleRating?: number | null;
   googleReviewCount?: number | null;
+  googleStars?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  googleTopics?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
   /**
    * When phone, hours, services and rating were last copied from Google Maps.
    */
@@ -270,6 +312,7 @@ export interface Category {
 export interface Media {
   id: number;
   alt?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -498,6 +541,21 @@ export interface BusinessesSelect<T extends boolean = true> {
   services?: T;
   priceRange?: T;
   menuLink?: T;
+  menu?:
+    | T
+    | {
+        title?: T;
+        items?:
+          | T
+          | {
+              name?: T;
+              nameAm?: T;
+              price?: T;
+              id?: T;
+            };
+        id?: T;
+      };
+  menuSource?: T;
   photo?: T;
   status?: T;
   claimed?: T;
@@ -505,6 +563,8 @@ export interface BusinessesSelect<T extends boolean = true> {
   featured?: T;
   googleRating?: T;
   googleReviewCount?: T;
+  googleStars?: T;
+  googleTopics?: T;
   googleCheckedAt?: T;
   source?: T;
   osmId?: T;
@@ -555,6 +615,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
