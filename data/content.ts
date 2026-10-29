@@ -3,6 +3,12 @@ export type Locale = (typeof locales)[number];
 export const isLocale = (v: string): v is Locale => (locales as readonly string[]).includes(v);
 
 type Link = { label: string; href: string };
+export const googleAmenities = [
+  "hasDineIn", "hasTakeout", "hasDelivery", "isReservable", "hasOutdoorSeating",
+  "servesCoffee", "servesBreakfast", "servesLunch", "servesDinner", "servesDessert", "servesVegetarianFood",
+  "isGoodForChildren", "isGoodForGroups", "hasRestroom", "wheelchairEntrance", "acceptsCards", "freeParking",
+] as const;
+export type GoogleAmenity = (typeof googleAmenities)[number];
 
 export type Content = {
   locale: Locale;
@@ -74,6 +80,12 @@ export type Content = {
     menu: string;
     /** "{n}" = number of reviews. Shown next to a rating copied from Google Maps. */
     onGoogle: string;
+    googlePhotos: string;
+    /** "{name}" = photographer. */
+    googlePhotoBy: string;
+    googleServices: string;
+    googlePrice: Record<"FREE" | "INEXPENSIVE" | "MODERATE" | "EXPENSIVE" | "VERY_EXPENSIVE", string>;
+    googleAmenities: Record<GoogleAmenity, string>;
     /** "{c}" = category name. */
     allInCategory: string;
     /** "{n}" shown of "{t}". */
@@ -229,6 +241,29 @@ const en: Content = {
     priceRange: "Prices",
     menu: "Menu",
     onGoogle: "{n} reviews on Google",
+    googlePhotos: "Photos",
+    googlePhotoBy: "Photo: {name}",
+    googleServices: "Services",
+    googlePrice: { FREE: "Free", INEXPENSIVE: "Inexpensive", MODERATE: "Moderate prices", EXPENSIVE: "Expensive", VERY_EXPENSIVE: "Very expensive" },
+    googleAmenities: {
+      hasDineIn: "Dine-in",
+      hasTakeout: "Takeaway",
+      hasDelivery: "Delivery",
+      isReservable: "Takes reservations",
+      hasOutdoorSeating: "Outdoor seating",
+      servesCoffee: "Coffee",
+      servesBreakfast: "Breakfast",
+      servesLunch: "Lunch",
+      servesDinner: "Dinner",
+      servesDessert: "Desserts",
+      servesVegetarianFood: "Vegetarian food",
+      isGoodForChildren: "Good for kids",
+      isGoodForGroups: "Good for groups",
+      hasRestroom: "Restroom",
+      wheelchairEntrance: "Wheelchair-accessible entrance",
+      acceptsCards: "Accepts cards",
+      freeParking: "Free parking",
+    },
     allInCategory: "All {c}",
     showing: "Showing {n} of {t}",
     sortRecommended: "Recommended",
@@ -429,6 +464,29 @@ const am: Content = {
     priceRange: "ዋጋ",
     menu: "ሜኑ",
     onGoogle: "{n} ግምገማዎች በGoogle",
+    googlePhotos: "ፎቶዎች",
+    googlePhotoBy: "ፎቶ፦ {name}",
+    googleServices: "አገልግሎቶች",
+    googlePrice: { FREE: "ነፃ", INEXPENSIVE: "ርካሽ", MODERATE: "መካከለኛ ዋጋ", EXPENSIVE: "ውድ", VERY_EXPENSIVE: "በጣም ውድ" },
+    googleAmenities: {
+      hasDineIn: "እዚያው መመገብ",
+      hasTakeout: "ይዞ መሄድ",
+      hasDelivery: "ማድረስ (ዴሊቨሪ)",
+      isReservable: "ቦታ ማስያዝ ይቻላል",
+      hasOutdoorSeating: "የውጭ መቀመጫ",
+      servesCoffee: "ቡና",
+      servesBreakfast: "ቁርስ",
+      servesLunch: "ምሳ",
+      servesDinner: "እራት",
+      servesDessert: "ጣፋጭ ምግቦች",
+      servesVegetarianFood: "የአትክልት ምግብ",
+      isGoodForChildren: "ለልጆች ተስማሚ",
+      isGoodForGroups: "ለቡድን ተስማሚ",
+      hasRestroom: "መጸዳጃ ቤት",
+      wheelchairEntrance: "ለዊልቸር ተደራሽ መግቢያ",
+      acceptsCards: "ካርድ ይቀበላል",
+      freeParking: "ነፃ ፓርኪንግ",
+    },
     allInCategory: "ሁሉም {c}",
     showing: "ከ{t} {n} በማሳየት ላይ",
     sortRecommended: "የሚመከሩ",
