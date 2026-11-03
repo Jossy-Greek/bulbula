@@ -106,6 +106,7 @@ lucide-react. Fonts: Plus Jakarta Sans, Inter, Noto Sans Ethiopic.
 app/(frontend)/[locale]/   home, businesses, b/[slug], add (+ server action), about
 app/(frontend)/[locale]/directory.json   the whole directory as JSON, for the apps
 android/                   the Android app (Kotlin, Compose); see android/README.md
+ios/                       the iPhone app (SwiftUI, Liquid Glass); see ios/README.md
 app/(payload)/             Payload admin + REST/GraphQL; custom.scss = admin theme
 collections/               Businesses, Categories, Media, Users
 components/                site components; components/admin = dashboard, logo
@@ -115,7 +116,7 @@ lib/directory.ts           queries, hours formatting, fact summaries
 scripts/seed.ts            categories + OSM places + Tukiya (empty DB only)
 scripts/import-research.ts banks + leads from web research (idempotent)
 scripts/import-google-leads.ts  160 Google Maps finds → pending leads (idempotent)
-lib/hours.ts               opening-hours parser + open-now (Addis time); android/…/Hours.kt mirrors it
+lib/hours.ts               opening-hours parser + open-now (Addis time); android/…/Hours.kt and ios/…/Hours.swift mirror it
 migrations/                Payload migrations (push is off)
 ```
 
