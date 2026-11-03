@@ -25,9 +25,13 @@ so it opens instantly and works offline. Pull down to refresh.
 | `Directory.kt` | The JSON's shape, the download and cache, the screen state |
 | `Hours.kt` | "Open now" from OSM opening hours, a port of the site's `lib/hours.ts` |
 | `DirectoryScreen.kt` | Search, categories, list |
+| `SettingsScreen.kt`, `Settings.kt` | Appearance and language (Android 13+ per-app language) |
+| `Ui.kt` | Shared pieces: cards, icon tiles, status pill, pill switch, category icons |
 | `PlaceScreen.kt` | One place: status, call, directions, website, facts, services, menu |
-| `MainActivity.kt` | The two screens, back, website links (`/en/b/<slug>`) |
+| `MainActivity.kt` | The screens, back, appearance, website links (`/en/b/<slug>`) |
 | `Theme.kt` | The website's colours, light and dark |
 
-Language follows the phone (or Android 13+ per-app language): Amharic gets `/am/directory.json` and `values-am/strings.xml`;
+Icons are the website's Lucide set, converted by `scripts/lucide-icons.mjs` (licence in `LICENSE-lucide.txt`).
+
+Language follows the phone unless chosen in Settings: Amharic gets `/am/directory.json` and `values-am/strings.xml`;
 everything else English.

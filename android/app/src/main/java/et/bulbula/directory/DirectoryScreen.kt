@@ -1,5 +1,6 @@
 package et.bulbula.directory
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -9,17 +10,21 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -39,21 +44,18 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 
-/** Search, category, list. The title is the only heading; everything else is the places. */
-@OptIn(ExperimentalMaterial3Api::class)
+/** The title, then search and categories (pinned while the places scroll under them). */
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun DirectoryScreen(
     state: DirectoryState,
@@ -66,30 +68,40 @@ fun DirectoryScreen(
     chipState: LazyListState,
     onRefresh: () -> Unit,
     onOpen: (Place) -> Unit,
+    onSettings: () -> Unit,
 ) {
     val directory = state.directory
     val places = remember(directory, query, category) { directory?.listings.orEmpty().matching(query, category) }
+    val colors = MaterialTheme.colorScheme
 
-    Column(Modifier.fillMaxSize().statusBarsPadding()) {
-        Text(
-            stringResource(R.string.app_name),
-            style = MaterialTheme.typography.headlineLarge,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 16.dp, bottom = 12.dp),
-        )
-        SearchField(query, onQuery)
-        if (directory != null) {
-            Categories(directory.categories, category, onCategory, chipState)
-        }
+    // The status bar area stays the page colour, so the pinned header slides under nothing.
+    Column(Modifier.fillMaxSize().background(colors.background).statusBarsPadding()) {
         PullToRefreshBox(isRefreshing = state.refreshing && directory != null, onRefresh = onRefresh, modifier = Modifier.fillMaxSize()) {
-            when {
-                directory == null && state.failed -> Offline(onRefresh)
-                directory == null -> Box(Modifier.fillMaxSize(), Alignment.Center) { CircularProgressIndicator() }
-                places.isEmpty() -> Muted(stringResource(R.string.none), Modifier.fillMaxWidth().padding(20.dp))
-                else -> LazyColumn(state = listState, contentPadding = PaddingValues(bottom = 24.dp), modifier = Modifier.fillMaxSize().navigationBarsPadding()) {
-                    items(places, key = { it.slug }) { place ->
-                        PlaceRow(place, showCategory = category == null, now = now, onClick = { onOpen(place) })
-                        HorizontalDivider(Modifier.padding(start = 20.dp), color = MaterialTheme.colorScheme.outlineVariant)
+            LazyColumn(
+                state = listState,
+                contentPadding = PaddingValues(bottom = 24.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()),
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                item {
+                    Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 8.dp, top = 12.dp, bottom = 4.dp), verticalAlignment = Alignment.CenterVertically) {
+                        Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineLarge, modifier = Modifier.weight(1f))
+                        IconButton(onClick = onSettings) {
+                            Icon(painterResource(R.drawable.ic_settings), contentDescription = stringResource(R.string.settings), tint = colors.onSurfaceVariant)
+                        }
+                    }
+                }
+                stickyHeader {
+                    Column(Modifier.fillMaxWidth().background(colors.background).padding(top = 8.dp)) {
+                        SearchField(query, onQuery)
+                        if (directory != null) Categories(directory.categories, category, onCategory, chipState)
+                    }
+                }
+                when {
+                    directory == null && state.failed -> item { Offline(onRefresh) }
+                    directory == null -> item { Box(Modifier.fillMaxWidth().padding(top = 120.dp), Alignment.Center) { CircularProgressIndicator() } }
+                    places.isEmpty() -> item { Muted(stringResource(R.string.none), Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 24.dp)) }
+                    else -> itemsIndexed(places, key = { _, p -> p.slug }) { i, place ->
+                        PlaceRow(place, showCategory = category == null, now = now, first = i == 0, last = i == places.lastIndex) { onOpen(place) }
                     }
                 }
             }
@@ -111,17 +123,24 @@ private fun SearchField(query: String, onQuery: (String) -> Unit) {
     val focus = LocalFocusManager.current
     val colors = MaterialTheme.colorScheme
     Row(
-        Modifier.padding(horizontal = 16.dp).fillMaxWidth().height(44.dp).background(colors.surfaceVariant, RoundedCornerShape(12.dp)).padding(start = 12.dp),
+        Modifier
+            .padding(horizontal = 16.dp)
+            .fillMaxWidth()
+            .height(48.dp)
+            .clip(RoundedCornerShape(14.dp))
+            .background(colors.surface)
+            .border(1.dp, colors.outlineVariant, RoundedCornerShape(14.dp))
+            .padding(start = 14.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Icon(painterResource(R.drawable.ic_search), contentDescription = null, tint = colors.onSurfaceVariant, modifier = Modifier.size(20.dp))
-        Box(Modifier.weight(1f).padding(horizontal = 8.dp)) {
+        Icon(painterResource(R.drawable.ic_search), contentDescription = null, tint = colors.onSurfaceVariant, modifier = Modifier.size(19.dp))
+        Box(Modifier.weight(1f).padding(horizontal = 10.dp)) {
             if (query.isEmpty()) Muted(stringResource(R.string.search))
             BasicTextField(
                 value = query,
                 onValueChange = onQuery,
                 singleLine = true,
-                textStyle = MaterialTheme.typography.bodyLarge.copy(color = colors.onBackground),
+                textStyle = MaterialTheme.typography.bodyLarge.copy(color = colors.onSurface),
                 cursorBrush = SolidColor(colors.primary),
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
                 keyboardActions = KeyboardActions(onSearch = { focus.clearFocus() }),
@@ -157,47 +176,63 @@ private fun Chip(label: String, selected: Boolean, onClick: () -> Unit) {
     Text(
         label,
         style = MaterialTheme.typography.labelLarge,
-        color = if (selected) colors.background else colors.onBackground,
+        fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Medium,
+        color = if (selected) colors.onPrimary else colors.onSurface,
         modifier = Modifier
-            .background(if (selected) colors.onBackground else Color.Transparent, CircleShape)
-            .border(1.dp, if (selected) colors.onBackground else colors.outlineVariant, CircleShape)
+            .clip(CircleShape)
+            .background(if (selected) colors.primary else colors.surface)
+            .border(1.dp, if (selected) colors.primary else colors.outlineVariant, CircleShape)
             .clickable(onClick = onClick)
-            .padding(horizontal = 14.dp, vertical = 8.dp),
+            .padding(horizontal = 15.dp, vertical = 9.dp),
     )
 }
 
+/** One place in the list card; [first] and [last] round the card's corners. */
 @Composable
-private fun PlaceRow(place: Place, showCategory: Boolean, now: Pair<Int, Int>, onClick: () -> Unit) {
+private fun PlaceRow(place: Place, showCategory: Boolean, now: Pair<Int, Int>, first: Boolean, last: Boolean, onClick: () -> Unit) {
     val status = openLine(place.hoursSpec, now, short = true)
-    Column(Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 20.dp, vertical = 12.dp)) {
-        Text(place.name, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.Medium, maxLines = 2, overflow = TextOverflow.Ellipsis)
-        val category = place.category.name.takeIf { showCategory }
-        if (category != null || status != null) {
-            Spacer(Modifier.height(2.dp))
-            Text(
-                buildAnnotatedString {
-                    if (category != null) append(category)
-                    if (category != null && status != null) append(" · ")
-                    if (status != null) withStyle(SpanStyle(color = status.color)) { append(status.label) }
-                },
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1,
-                overflow = TextOverflow.Ellipsis,
-            )
+    val shape = RoundedCornerShape(topStart = if (first) 18.dp else 0.dp, topEnd = if (first) 18.dp else 0.dp, bottomStart = if (last) 18.dp else 0.dp, bottomEnd = if (last) 18.dp else 0.dp)
+    Column(Modifier.padding(horizontal = 16.dp).clip(shape).background(MaterialTheme.colorScheme.surface)) {
+        Row(Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
+            IconTile(place.category)
+            Spacer(Modifier.width(14.dp))
+            Column(Modifier.weight(1f)) {
+                Text(place.name, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis)
+                val category = place.category.name.takeIf { showCategory }
+                if (category != null || status != null) {
+                    Spacer(Modifier.height(2.dp))
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        if (status != null) {
+                            Box(Modifier.size(6.dp).background(status.color, CircleShape))
+                            Spacer(Modifier.width(5.dp))
+                            Text(status.label, style = MaterialTheme.typography.bodyMedium, color = status.color, fontWeight = FontWeight.Medium, maxLines = 1)
+                            if (category != null) Muted(" · ", small = true)
+                        }
+                        if (category != null) Muted(category, small = true)
+                    }
+                }
+            }
         }
+        if (!last) HorizontalDivider(Modifier.padding(start = 68.dp), color = MaterialTheme.colorScheme.outlineVariant)
     }
 }
 
 @Composable
 private fun Offline(onRetry: () -> Unit) {
-    Column(Modifier.fillMaxSize().padding(20.dp), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(Modifier.fillMaxWidth().padding(top = 120.dp, start = 20.dp, end = 20.dp), horizontalAlignment = Alignment.CenterHorizontally) {
         Muted(stringResource(R.string.offline))
-        Spacer(Modifier.height(12.dp))
+        Spacer(Modifier.height(14.dp))
         Button(onClick = onRetry) { Text(stringResource(R.string.retry)) }
     }
 }
 
 @Composable
-fun Muted(text: String, modifier: Modifier = Modifier) =
-    Text(text, style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant, modifier = modifier)
+fun Muted(text: String, modifier: Modifier = Modifier, small: Boolean = false) =
+    Text(
+        text,
+        style = if (small) MaterialTheme.typography.bodyMedium else MaterialTheme.typography.bodyLarge,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
+        maxLines = if (small) 1 else Int.MAX_VALUE,
+        overflow = TextOverflow.Ellipsis,
+        modifier = modifier,
+    )

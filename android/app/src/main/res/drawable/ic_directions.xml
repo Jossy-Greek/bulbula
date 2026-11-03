@@ -1,3 +1,4 @@
-<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24" android:autoMirrored="false">
-    <path android:fillColor="#FF000000" android:pathData="M21.71,11.29L12.71,2.29C12.32,1.9 11.69,1.9 11.3,2.29L2.3,11.29C1.91,11.68 1.91,12.31 2.3,12.7L11.3,21.7C11.69,22.09 12.32,22.09 12.71,21.7L21.71,12.7C22.1,12.32 22.1,11.69 21.71,11.29M14,14.5V12H10V15H8V11A1,1 0,0 1,9 10H14V7.5L17.5,11L14,14.5Z" />
+<!-- Lucide "navigation" (ISC licence, see LICENSE-lucide.txt), the website's icon set. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android" android:width="24dp" android:height="24dp" android:viewportWidth="24" android:viewportHeight="24">
+    <path android:pathData="M3 11L22 2L13 21L11 13L3 11Z" android:strokeColor="#FF000000" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round" />
 </vector>
