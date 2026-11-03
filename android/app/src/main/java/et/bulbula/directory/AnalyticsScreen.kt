@@ -76,7 +76,7 @@ fun AnalyticsScreen(vm: AdminViewModel, onBack: () -> Unit) {
                         Stat(stringResource(R.string.searches), r.kpis.searches, number, Modifier.weight(1f))
                     }
                     if (r.days.any { it.visitors > 0 }) Card { Bars(r.days.map { it.visitors }, Modifier.padding(16.dp)) }
-                    Top(stringResource(R.string.top_places), r.businesses.filter { it.leads > 0 || it.views > 0 }.take(10).map { it.name to (it.leads.takeIf { n -> n > 0 } ?: it.views) }, number)
+                    Top(stringResource(R.string.top_places), r.businesses.filter { it.leads > 0 }.sortedByDescending { it.leads }.take(10).map { it.name to it.leads }, number)
                     Top(stringResource(R.string.searches), r.searches.take(10).map { "“${it.key}”" to it.count }, number)
                     Top(stringResource(R.string.no_results), r.emptySearches.take(10).map { "“${it.key}”" to it.count }, number)
                 }
@@ -127,13 +127,14 @@ private fun Bars(values: List<Int>, modifier: Modifier) {
     val color = MaterialTheme.colorScheme.primary
     val max = (values.maxOrNull() ?: 0).coerceAtLeast(1)
     Canvas(modifier.fillMaxWidth().height(96.dp)) {
-        val gap = 2.dp.toPx()
-        val w = (size.width - gap * (values.size - 1)) / values.size
+        // Each day gets an equal slot; the bar inside it stays slim, so 7 days look like 90.
+        val slot = size.width / values.size
+        val w = (slot - 2.dp.toPx()).coerceIn(1.dp.toPx(), 10.dp.toPx())
         values.forEachIndexed { i, v ->
             val h = (size.height * v / max).coerceAtLeast(if (v > 0) 3.dp.toPx() else 1.dp.toPx())
             drawRoundRect(
                 color = if (v > 0) color else color.copy(alpha = 0.15f),
-                topLeft = Offset(i * (w + gap), size.height - h),
+                topLeft = Offset(i * slot + (slot - w) / 2, size.height - h),
                 size = Size(w, h),
                 cornerRadius = CornerRadius(w / 3, w / 3),
             )
