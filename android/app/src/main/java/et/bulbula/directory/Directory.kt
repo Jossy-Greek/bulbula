@@ -1,0 +1,112 @@
+package et.bulbula.directory
+
+import android.app.Application
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import java.io.File
+import java.net.HttpURLConnection
+import java.net.URL
+import java.util.Locale
+
+/** The whole directory, as served by the site at /{locale}/directory.json (app/(frontend)/[locale]/directory.json). */
+@Serializable
+data class Directory(
+    val categories: List<Category>,
+    /** Service key → label in this language, e.g. "dineIn" → "Dine-in". */
+    val services: Map<String, String> = emptyMap(),
+    /** Already in the website's order: featured, owner-run, confirmed, with a phone, then by name. */
+    val listings: List<Place>,
+)
+
+@Serializable
+data class Category(val slug: String, val name: String)
+
+@Serializable
+data class Place(
+    val slug: String,
+    val name: String,
+    val category: Category,
+    val description: String? = null,
+    /** True when [description] was written by us from the category, not by the place. */
+    val generated: Boolean = false,
+    val landmark: String? = null,
+    val address: String? = null,
+    val lat: Double? = null,
+    val lng: Double? = null,
+    val phone: String? = null,
+    val phone2: String? = null,
+    val website: String? = null,
+    val mapsUrl: String,
+    /** Readable hours in this language, e.g. "Mon–Sat 08:30–19:00 · Sun 10:00–16:00". */
+    val hours: String? = null,
+    /** The same hours as OSM opening_hours, for "open now" ([Hours]). */
+    val hoursSpec: String? = null,
+    val services: List<String> = emptyList(),
+    val google: Rating? = null,
+    val menu: List<MenuSection> = emptyList(),
+)
+
+@Serializable
+data class Rating(val rating: Double, val count: Int)
+
+@Serializable
+data class MenuSection(val title: String, val items: List<MenuItem>)
+
+@Serializable
+data class MenuItem(val name: String, val price: Double? = null)
+
+/** Reads the directory from the site and keeps the last copy on disk, so the app opens offline. */
+class DirectoryStore(private val dir: File, private val siteUrl: String = BuildConfig.SITE_URL) {
+    private val json = Json { ignoreUnknownKeys = true }
+
+    private fun file(locale: String) = File(dir, "directory-$locale.json")
+
+    fun cached(locale: String): Directory? =
+        file(locale).takeIf { it.exists() }?.let { runCatching { json.decodeFromString<Directory>(it.readText()) }.getOrNull() }
+
+    suspend fun fetch(locale: String): Directory = withContext(Dispatchers.IO) {
+        val conn = URL("$siteUrl/$locale/directory.json").openConnection() as HttpURLConnection
+        conn.connectTimeout = 10_000
+        conn.readTimeout = 20_000
+        try {
+            check(conn.responseCode == 200) { "HTTP ${conn.responseCode}" }
+            val text = conn.inputStream.bufferedReader().use { it.readText() }
+            json.decodeFromString<Directory>(text).also { file(locale).writeText(text) }
+        } finally {
+            conn.disconnect()
+        }
+    }
+}
+
+data class DirectoryState(val directory: Directory? = null, val refreshing: Boolean = false, val failed: Boolean = false)
+
+class DirectoryViewModel(app: Application) : AndroidViewModel(app) {
+    /** The site's languages; the phone's language picks one. */
+    private val locale = if (Locale.getDefault().language == "am") "am" else "en"
+    private val store = DirectoryStore(app.filesDir)
+
+    var state by mutableStateOf(DirectoryState(directory = store.cached(locale)))
+        private set
+
+    init {
+        refresh()
+    }
+
+    fun refresh() {
+        if (state.refreshing) return
+        state = state.copy(refreshing = true)
+        viewModelScope.launch {
+            state = runCatching { store.fetch(locale) }
+                .fold({ state.copy(directory = it, failed = false) }, { state.copy(failed = true) })
+                .copy(refreshing = false)
+        }
+    }
+}
