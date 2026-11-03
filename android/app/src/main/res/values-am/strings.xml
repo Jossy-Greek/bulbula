@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ቡልቡላ</string>
+    <string name="search">ፈልግ</string>
+    <string name="all">ሁሉም</string>
+    <string name="open_now">አሁን ክፍት</string>
+    <string name="open_24">24 ሰዓት ክፍት</string>
+    <string name="closed">ዝግ</string>
+    <string name="until">እስከ %1$s</string>
+    <string name="opens_today">%1$s ይከፈታል</string>
+    <string name="opens_day">%1$s %2$s ይከፈታል</string>
+    <string name="call">ይደውሉ</string>
+    <string name="directions">አቅጣጫ</string>
+    <string name="website">ድረ ገጽ</string>
+    <string name="menu">ሜኑ</string>
+    <string name="retry">እንደገና ይሞክሩ</string>
+    <string name="offline">ቡልቡላን ማግኘት አልተቻለም</string>
+    <string name="back">ተመለስ</string>
+    <string name="none">ምንም ቦታ የለም</string>
+    <string name="birr">%1$s ብር</string>
+    <string name="clear">አጽዳ</string>
+    <string-array name="days">
+        <item>ሰኞ</item><item>ማክሰኞ</item><item>ረቡዕ</item><item>ሐሙስ</item><item>ዓርብ</item><item>ቅዳሜ</item><item>እሑድ</item>
+    </string-array>
+</resources>
