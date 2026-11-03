@@ -35,6 +35,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -62,6 +63,7 @@ fun DirectoryScreen(
     category: String?,
     onCategory: (String?) -> Unit,
     listState: LazyListState,
+    chipState: LazyListState,
     onRefresh: () -> Unit,
     onOpen: (Place) -> Unit,
 ) {
@@ -77,7 +79,7 @@ fun DirectoryScreen(
         )
         SearchField(query, onQuery)
         if (directory != null) {
-            Categories(directory.categories, category, onCategory)
+            Categories(directory.categories, category, onCategory, chipState)
         }
         PullToRefreshBox(isRefreshing = state.refreshing && directory != null, onRefresh = onRefresh, modifier = Modifier.fillMaxSize()) {
             when {
@@ -135,8 +137,15 @@ private fun SearchField(query: String, onQuery: (String) -> Unit) {
 }
 
 @Composable
-private fun Categories(categories: List<Category>, selected: String?, onSelect: (String?) -> Unit) {
-    LazyRow(contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+private fun Categories(categories: List<Category>, selected: String?, onSelect: (String?) -> Unit, state: LazyListState) {
+    // Keep the selected chip in view, e.g. after coming back from a place.
+    LaunchedEffect(selected, categories) {
+        val index = if (selected == null) 0 else categories.indexOfFirst { it.slug == selected } + 1
+        val shown = state.layoutInfo.visibleItemsInfo.firstOrNull { it.index == index }
+        val fits = shown != null && shown.offset >= 0 && shown.offset + shown.size <= state.layoutInfo.viewportEndOffset
+        if (index >= 0 && !fits) state.animateScrollToItem(maxOf(0, index - 1))
+    }
+    LazyRow(state = state, contentPadding = PaddingValues(horizontal = 16.dp, vertical = 12.dp), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
         item { Chip(stringResource(R.string.all), selected == null) { onSelect(null) } }
         items(categories, key = { it.slug }) { c -> Chip(c.name, selected == c.slug) { onSelect(if (selected == c.slug) null else c.slug) } }
     }

@@ -81,7 +81,8 @@ fun PlaceScreen(place: Place, serviceLabels: Map<String, String>, now: Pair<Int,
             // Facts without labels: each reads on its own.
             Spacer(Modifier.height(12.dp))
             listOfNotNull(
-                place.hours?.let { Fact(it) },
+                // Skip the hours when the status line already says it all ("Open 24 hours").
+                place.hours?.takeUnless { status?.detail == null && Hours.parse(place.hoursSpec)?.let { w -> Hours.status(w, now) } == Hours.Status.Always }?.let { Fact(it) },
                 listOfNotNull(place.landmark, place.address).distinct().joinToString(", ").takeIf { it.isNotEmpty() }?.let { Fact(it) },
                 place.phone?.let { Fact(it) { dial(it) } },
                 place.phone2?.let { Fact(it) { dial(it) } },

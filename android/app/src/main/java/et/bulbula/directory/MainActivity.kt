@@ -55,6 +55,7 @@ fun App(link: String?, onLinkOpened: () -> Unit, vm: DirectoryViewModel = viewMo
     var query by rememberSaveable { mutableStateOf("") }
     var category by rememberSaveable { mutableStateOf<String?>(null) }
     val listState = rememberLazyListState()
+    val chipState = rememberLazyListState()
     // "Open now" follows the clock.
     val now by produceState(Hours.addisNow()) {
         while (true) {
@@ -82,6 +83,7 @@ fun App(link: String?, onLinkOpened: () -> Unit, vm: DirectoryViewModel = viewMo
                 category = category,
                 onCategory = { category = it },
                 listState = listState,
+                chipState = chipState,
                 onRefresh = vm::refresh,
                 onOpen = { slug = it.slug },
             )
