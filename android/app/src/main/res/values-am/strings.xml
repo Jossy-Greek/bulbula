@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">ቡልቡላ</string>
     <string name="search">ፈልግ</string>
     <string name="all">ሁሉም</string>
@@ -27,6 +27,42 @@
     <string name="dark">ጨለማ</string>
     <string name="add_business">ንግድዎን ያክሉ</string>
     <string name="share">ያጋሩ</string>
+    <string name="sign_in">ግባ</string>
+    <string name="sign_out">ውጣ</string>
+    <string name="email">ኢሜይል</string>
+    <string name="password">የይለፍ ቃል</string>
+    <string name="sign_in_failed">ኢሜይል ወይም የይለፍ ቃል ትክክል አይደለም</string>
+    <string name="review">ግምገማ</string>
+    <string name="pending">በመጠባበቅ ላይ</string>
+    <string name="unconfirmed">ገና ያልተረጋገጠ</string>
+    <string name="unconfirmed_tab">ያልተረጋገጡ</string>
+    <string name="nothing_to_review">የሚገመገም የለም</string>
+    <string name="edit">አስተካክል</string>
+    <string name="publish">አትም</string>
+    <string name="reject">ውድቅ አድርግ</string>
+    <string name="reject_place">%1$sን ውድቅ ላድርግ?</string>
+    <string name="cancel">ይቅር</string>
+    <string name="confirm">አረጋግጥ</string>
+    <string name="save">አስቀምጥ</string>
+    <string name="not_saved">አልተቀመጠም። እንደገና ይሞክሩ።</string>
+    <string name="phone">ስልክ</string>
+    <string name="phone2">ሁለተኛ ስልክ</string>
+    <string name="hours">የስራ ሰዓት</string>
+    <string name="landmark">በቡልቡላ የት?</string>
+    <string name="use_location">አካባቢዬን ተጠቀም</string>
+    <string name="reviews">አስተያየቶች</string>
+    <string name="analytics">ትንታኔ</string>
+    <string name="visitors">ጎብኚዎች</string>
+    <string name="page_views">የገጽ እይታዎች</string>
+    <string name="leads">ደንበኞች</string>
+    <string name="searches">ፍለጋዎች</string>
+    <string name="top_places">ሰዎች ያገኟቸው ንግዶች</string>
+    <string name="no_results">ውጤት ያልተገኘባቸው ፍለጋዎች</string>
+    <plurals name="range_days">
+        <item quantity="one">%1$d ቀን</item>
+        <item quantity="other">%1$d ቀናት</item>
+    </plurals>
+    <string name="live_now" tools:ignore="PluralsCandidate">አሁን %1$d</string>
     <string-array name="days">
         <item>ሰኞ</item><item>ማክሰኞ</item><item>ረቡዕ</item><item>ሐሙስ</item><item>ዓርብ</item><item>ቅዳሜ</item><item>እሑድ</item>
     </string-array>

@@ -17,6 +17,21 @@ export const AnalyticsEvents: CollectionConfig = {
     update: () => false,
     delete: signedIn,
   },
+  endpoints: [
+    {
+      // The same report as /admin/analytics, as JSON, for the apps: GET /api/analytics-events/report?range=30.
+      path: "/report",
+      method: "get",
+      handler: async (req) => {
+        if (!req.user) return Response.json({ error: "Sign in" }, { status: 401 });
+        // Loaded here, not at the top: lib/analytics is server-only and scripts load this file too.
+        const { buildReport, RANGES } = await import("@/lib/analytics");
+        const asked = Number(new URL(req.url ?? "", "http://x").searchParams.get("range"));
+        const range = (RANGES as readonly number[]).includes(asked) ? (asked as (typeof RANGES)[number]) : 30;
+        return Response.json(await buildReport(req.payload, range));
+      },
+    },
+  ],
   fields: [
     {
       name: "type",

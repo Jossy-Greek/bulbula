@@ -32,7 +32,20 @@ import androidx.core.net.toUri
 
 /** Appearance and language, and the two places on the website the app doesn't do itself. */
 @Composable
-fun SettingsScreen(appearance: Appearance, onAppearance: (Appearance) -> Unit, language: Language, onLanguage: (Language) -> Unit, onBack: () -> Unit) {
+fun SettingsScreen(
+    appearance: Appearance,
+    onAppearance: (Appearance) -> Unit,
+    language: Language,
+    onLanguage: (Language) -> Unit,
+    /** The signed-in admin's email, or null. */
+    admin: String?,
+    toReview: Int,
+    onSignIn: () -> Unit,
+    onReview: () -> Unit,
+    onAnalytics: () -> Unit,
+    onSignOut: () -> Unit,
+    onBack: () -> Unit,
+) {
     val context = LocalContext.current
     val colors = MaterialTheme.colorScheme
     val locale = if (LocalConfiguration.current.locales[0].language == "am") "am" else "en"
@@ -65,6 +78,28 @@ fun SettingsScreen(appearance: Appearance, onAppearance: (Appearance) -> Unit, l
                 }
                 CardRow(icon = R.drawable.ic_web, iconTint = colors.primary, last = true, onClick = { open("") }, trailing = { Chevron() }) {
                     Text(stringResource(R.string.website), style = MaterialTheme.typography.bodyLarge)
+                }
+            }
+            // For the site's existing admin accounts; everyone else only sees "Sign in".
+            Card {
+                if (admin == null) {
+                    CardRow(icon = R.drawable.ic_sign_in, iconTint = colors.primary, last = true, onClick = onSignIn, trailing = { Chevron() }) {
+                        Text(stringResource(R.string.sign_in), style = MaterialTheme.typography.bodyLarge)
+                    }
+                } else {
+                    CardRow(icon = R.drawable.ic_review, iconTint = colors.primary, onClick = onReview, trailing = {
+                        if (toReview > 0) Text("$toReview", style = MaterialTheme.typography.labelLarge, color = colors.onSurfaceVariant, modifier = Modifier.padding(end = 6.dp))
+                        Chevron()
+                    }) {
+                        Text(stringResource(R.string.review), style = MaterialTheme.typography.bodyLarge)
+                    }
+                    CardRow(icon = R.drawable.ic_analytics, iconTint = colors.primary, onClick = onAnalytics, trailing = { Chevron() }) {
+                        Text(stringResource(R.string.analytics), style = MaterialTheme.typography.bodyLarge)
+                    }
+                    CardRow(icon = R.drawable.ic_sign_out, last = true, onClick = onSignOut) {
+                        Text(stringResource(R.string.sign_out), style = MaterialTheme.typography.bodyLarge)
+                        Muted(admin, small = true)
+                    }
                 }
             }
             Text(

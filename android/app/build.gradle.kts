@@ -60,5 +60,8 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.lifecycle.viewmodel.compose)
     implementation(libs.serialization.json)
+    // The only HTTP client: Android's HttpURLConnection can't send PATCH, which admin edits need.
+    implementation(libs.okhttp)
     testImplementation(libs.junit)
+    testImplementation(libs.okhttp.mockwebserver)
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Same words as the website (data/content.ts). -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Bulbula</string>
     <string name="search">Search</string>
     <string name="all">All</string>
@@ -31,6 +31,44 @@
     <!-- Each language in its own words, the same in every translation. -->
     <string name="english" translatable="false">English</string>
     <string name="amharic" translatable="false">አማርኛ</string>
+    <!-- The format the hours field takes (OpenStreetMap opening_hours). -->
+    <string name="hours_example" translatable="false">Mo-Sa 08:00-18:00</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_out">Sign out</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in_failed">Email or password is wrong</string>
+    <string name="review">Review</string>
+    <string name="pending">Pending</string>
+    <string name="unconfirmed">Not yet confirmed</string>
+    <string name="unconfirmed_tab">Unconfirmed</string>
+    <string name="nothing_to_review">Nothing to review</string>
+    <string name="edit">Edit</string>
+    <string name="publish">Publish</string>
+    <string name="reject">Reject</string>
+    <string name="reject_place">Reject %1$s?</string>
+    <string name="cancel">Cancel</string>
+    <string name="confirm">Confirm</string>
+    <string name="save">Save</string>
+    <string name="not_saved">Not saved. Try again.</string>
+    <string name="phone">Phone</string>
+    <string name="phone2">Second phone</string>
+    <string name="hours">Hours</string>
+    <string name="landmark">Where in Bulbula?</string>
+    <string name="use_location">Use my location</string>
+    <string name="reviews">Reviews</string>
+    <string name="analytics">Analytics</string>
+    <string name="visitors">Visitors</string>
+    <string name="page_views">Page views</string>
+    <string name="leads">Leads</string>
+    <string name="searches">Searches</string>
+    <string name="top_places">Businesses people acted on</string>
+    <string name="no_results">Searches with no results</string>
+    <plurals name="range_days">
+        <item quantity="one">%1$d day</item>
+        <item quantity="other">%1$d days</item>
+    </plurals>
+    <string name="live_now" tools:ignore="PluralsCandidate">%1$d now</string>
     <string-array name="days">
         <item>Mon</item><item>Tue</item><item>Wed</item><item>Thu</item><item>Fri</item><item>Sat</item><item>Sun</item>
     </string-array>
