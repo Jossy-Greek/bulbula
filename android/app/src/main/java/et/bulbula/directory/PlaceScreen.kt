@@ -45,7 +45,7 @@ import java.util.Locale
 /** One place: what it is, whether it's open, and the ways to reach it. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun PlaceScreen(place: Place, serviceLabels: Map<String, String>, now: Pair<Int, Int>, onBack: () -> Unit) {
+fun PlaceScreen(place: Place, serviceLabels: Map<String, String>, now: Pair<Int, Int>, onBack: () -> Unit, onEdit: (() -> Unit)? = null) {
     val context = LocalContext.current
     val colors = MaterialTheme.colorScheme
     val locale = if (LocalConfiguration.current.locales[0].language == "am") "am" else "en"
@@ -63,6 +63,7 @@ fun PlaceScreen(place: Place, serviceLabels: Map<String, String>, now: Pair<Int,
         Row(Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 4.dp)) {
             IconButton(onClick = onBack) { Icon(painterResource(R.drawable.ic_back), contentDescription = stringResource(R.string.back)) }
             Spacer(Modifier.weight(1f))
+            if (onEdit != null) IconButton(onClick = onEdit) { Icon(painterResource(R.drawable.ic_edit), contentDescription = stringResource(R.string.edit), modifier = Modifier.size(20.dp)) }
             IconButton(onClick = share) { Icon(painterResource(R.drawable.ic_share), contentDescription = stringResource(R.string.share), modifier = Modifier.size(20.dp)) }
         }
 

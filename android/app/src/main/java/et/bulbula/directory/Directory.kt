@@ -11,9 +11,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import java.io.File
-import java.net.HttpURLConnection
-import java.net.URL
+import java.util.concurrent.TimeUnit
 
 /** The whole directory, as served by the site at /{locale}/directory.json (app/(frontend)/[locale]/directory.json). */
 @Serializable
@@ -37,6 +38,7 @@ data class Category(
 
 @Serializable
 data class Place(
+    val id: Int,
     val slug: String,
     val name: String,
     val category: Category,
@@ -69,9 +71,12 @@ data class MenuSection(val title: String, val items: List<MenuItem>)
 @Serializable
 data class MenuItem(val name: String, val price: Double? = null)
 
+/** The app's one HTTP client and JSON reader. */
+val http: OkHttpClient = OkHttpClient.Builder().connectTimeout(10, TimeUnit.SECONDS).readTimeout(20, TimeUnit.SECONDS).build()
+val json = Json { ignoreUnknownKeys = true }
+
 /** Reads the directory from the site and keeps the last copy on disk, so the app opens offline. */
 class DirectoryStore(private val dir: File, private val siteUrl: String = BuildConfig.SITE_URL) {
-    private val json = Json { ignoreUnknownKeys = true }
 
     private fun file(locale: String) = File(dir, "directory-$locale.json")
 
@@ -79,15 +84,10 @@ class DirectoryStore(private val dir: File, private val siteUrl: String = BuildC
         file(locale).takeIf { it.exists() }?.let { runCatching { json.decodeFromString<Directory>(it.readText()) }.getOrNull() }
 
     suspend fun fetch(locale: String): Directory = withContext(Dispatchers.IO) {
-        val conn = URL("$siteUrl/$locale/directory.json").openConnection() as HttpURLConnection
-        conn.connectTimeout = 10_000
-        conn.readTimeout = 20_000
-        try {
-            check(conn.responseCode == 200) { "HTTP ${conn.responseCode}" }
-            val text = conn.inputStream.bufferedReader().use { it.readText() }
+        http.newCall(Request.Builder().url("$siteUrl/$locale/directory.json").build()).execute().use { res ->
+            check(res.isSuccessful) { "HTTP ${res.code}" }
+            val text = res.body!!.string()
             json.decodeFromString<Directory>(text).also { file(locale).writeText(text) }
-        } finally {
-            conn.disconnect()
         }
     }
 }

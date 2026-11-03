@@ -82,7 +82,10 @@ class MainActivity : ComponentActivity() {
         intent?.data?.pathSegments?.let { s -> s.getOrNull(s.indexOf("b") + 1)?.takeIf { s.contains("b") } }
 }
 
-/** The directory, with a place or the settings on top of it. */
+/**
+ * The screens as a stack: "list" at the bottom, then "place:<slug>", "settings", "signin",
+ * "review" or "edit:<id>" on top. Back pops one.
+ */
 @Composable
 fun App(
     link: String?,
@@ -92,9 +95,11 @@ fun App(
     language: Language,
     onLanguage: (Language) -> Unit,
     vm: DirectoryViewModel = viewModel(),
+    admin: AdminViewModel = viewModel(),
 ) {
-    var slug by rememberSaveable { mutableStateOf<String?>(null) }
-    var showSettings by rememberSaveable { mutableStateOf(false) }
+    var stack by rememberSaveable { mutableStateOf(listOf("list")) }
+    fun push(screen: String) { stack = stack + screen }
+    fun pop() { if (stack.size > 1) stack = stack.dropLast(1) }
     var query by rememberSaveable { mutableStateOf("") }
     var category by rememberSaveable { mutableStateOf<String?>(null) }
     val listState = rememberLazyListState()
@@ -102,6 +107,7 @@ fun App(
     // The data's language is the screen's language.
     val locale = if (LocalConfiguration.current.locales[0].language == "am") "am" else "en"
     LaunchedEffect(locale) { vm.use(locale) }
+    LaunchedEffect(admin.state.session != null) { admin.reload() }
     // "Open now" follows the clock.
     val now by produceState(Hours.addisNow()) {
         while (true) {
@@ -110,26 +116,20 @@ fun App(
         }
     }
     if (link != null) {
-        slug = link
-        showSettings = false
+        stack = listOf("list", "place:$link")
         onLinkOpened()
     }
     val directory = vm.state.directory
-    BackHandler(enabled = slug != null || showSettings) {
-        slug = null
-        showSettings = false
-    }
+    val signedIn = admin.state.session
+    // Pending places and reviews: what's waiting on an admin (unconfirmed places are ongoing work, not a badge).
+    val toReview = if (signedIn != null) admin.state.pending.size + admin.state.reviews.size else null
+    BackHandler(enabled = stack.size > 1) { pop() }
 
-    val screen = when {
-        showSettings -> "settings"
-        slug != null -> "place:$slug"
-        else -> "list"
-    }
     AnimatedContent(
-        targetState = screen,
+        targetState = stack.last(),
         transitionSpec = {
-            // Screens slide in from the right and back out to it, like a stack.
-            if (targetState != "list") {
+            // Going deeper slides in from the right; going back fades.
+            if (stack.lastOrNull() == targetState && stack.size > 1) {
                 (slideInHorizontally { it / 4 } + fadeIn()) togetherWith fadeOut()
             } else {
                 fadeIn() togetherWith (slideOutHorizontally { it / 4 } + fadeOut())
@@ -137,10 +137,32 @@ fun App(
         },
         label = "screen",
     ) { current ->
-        val place = current.removePrefix("place:").takeIf { current.startsWith("place:") }?.let { s -> directory?.listings?.firstOrNull { it.slug == s } }
-        when {
-            current == "settings" -> SettingsScreen(appearance, onAppearance, language, onLanguage, onBack = { showSettings = false })
-            place != null -> PlaceScreen(place, directory?.services.orEmpty(), now, onBack = { slug = null })
+        val arg = current.substringAfter(':', "")
+        when (current.substringBefore(':')) {
+            "settings" -> SettingsScreen(
+                appearance, onAppearance, language, onLanguage,
+                admin = signedIn?.email,
+                toReview = toReview ?: 0,
+                onSignIn = { push("signin") },
+                onReview = { push("review") },
+                onAnalytics = { push("analytics") },
+                onSignOut = admin::signOut,
+                onBack = ::pop,
+            )
+            "signin" -> SignInScreen(admin.lastEmail, onSignIn = { e, pw -> admin.signIn(e, pw).also { if (it) { pop(); push("review") } } }, onBack = ::pop)
+            "review" -> if (signedIn == null) LaunchedEffect(Unit) { pop() } else ReviewScreen(admin.state, admin::reload, onOpen = { push("edit:${it.id}") }, onModerate = admin::moderate, onBack = ::pop)
+            "analytics" -> if (signedIn == null) LaunchedEffect(Unit) { pop() } else AnalyticsScreen(admin, onBack = ::pop)
+            "edit" -> {
+                val id = arg.toInt()
+                val known = (admin.state.pending + admin.state.unconfirmed).firstOrNull { it.id == id }
+                EditScreen(id, known, admin, onDone = { pop(); vm.refresh() })
+            }
+            "place" -> {
+                val place = directory?.listings?.firstOrNull { it.slug == arg }
+                if (place == null) LaunchedEffect(Unit) { pop() } else {
+                    PlaceScreen(place, directory.services, now, onBack = ::pop, onEdit = if (signedIn != null) ({ push("edit:${place.id}") }) else null)
+                }
+            }
             else -> DirectoryScreen(
                 state = vm.state,
                 now = now,
@@ -150,9 +172,11 @@ fun App(
                 onCategory = { category = it },
                 listState = listState,
                 chipState = chipState,
-                onRefresh = vm::refresh,
-                onOpen = { slug = it.slug },
-                onSettings = { showSettings = true },
+                onRefresh = { vm.refresh(); admin.reload() },
+                onOpen = { push("place:${it.slug}") },
+                onSettings = { push("settings") },
+                toReview = toReview,
+                onReview = { push("review") },
             )
         }
     }

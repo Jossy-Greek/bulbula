@@ -69,6 +69,9 @@ fun DirectoryScreen(
     onRefresh: () -> Unit,
     onOpen: (Place) -> Unit,
     onSettings: () -> Unit,
+    /** Places waiting for a signed-in admin; null when nobody is signed in. */
+    toReview: Int? = null,
+    onReview: () -> Unit = {},
 ) {
     val directory = state.directory
     val places = remember(directory, query, category) { directory?.listings.orEmpty().matching(query, category) }
@@ -85,6 +88,14 @@ fun DirectoryScreen(
                 item {
                     Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 8.dp, top = 12.dp, bottom = 4.dp), verticalAlignment = Alignment.CenterVertically) {
                         Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineLarge, modifier = Modifier.weight(1f))
+                        if (toReview != null && toReview > 0) {
+                            IconButton(onClick = onReview) {
+                                Box {
+                                    Icon(painterResource(R.drawable.ic_review), contentDescription = stringResource(R.string.review), tint = colors.primary)
+                                    Box(Modifier.align(Alignment.TopEnd).size(8.dp).background(closedColor, CircleShape))
+                                }
+                            }
+                        }
                         IconButton(onClick = onSettings) {
                             Icon(painterResource(R.drawable.ic_settings), contentDescription = stringResource(R.string.settings), tint = colors.onSurfaceVariant)
                         }
