@@ -1,0 +1,167 @@
+{
+  "250": {
+    "pid": "ChIJhcNAqAqDSxYR2CnlPFkVwuk",
+    "name": "Delina speciality dental clinic",
+    "status": "open",
+    "category": "Dental clinic",
+    "services": [
+      "Has wheelchair-accessible toilet",
+      "Has toilet",
+      "Appointments recommended"
+    ],
+    "hoursRows": [
+      [
+        "Monday",
+        "9 AM–5 PM"
+      ],
+      [
+        "Tuesday",
+        "9 AM–5 PM"
+      ],
+      [
+        "Wednesday",
+        "9 AM–5 PM"
+      ],
+      [
+        "Thursday",
+        "9 AM–5 PM"
+      ],
+      [
+        "Friday",
+        "9 AM–5 PM"
+      ],
+      [
+        "Saturday",
+        "9 AM–5 PM"
+      ],
+      [
+        "Sunday",
+        "9 AM–5 PM"
+      ]
+    ],
+    "phone": "0911508851",
+    "rating": 3.4,
+    "reviews": 5
+  },
+  "251": {
+    "pid": "ChIJ5_TT0OGDSxYRfgN5M1zJJQ8",
+    "name": "Prodent Speciality Dental Clinic",
+    "status": "open",
+    "category": "Dental clinic",
+    "services": [
+      "Has wheelchair-accessible toilet",
+      "Has toilet",
+      "Appointments recommended"
+    ],
+    "hoursRows": [
+      [
+        "Monday",
+        "8:30 AM–7 PM"
+      ],
+      [
+        "Tuesday",
+        "8:30 AM–7 PM"
+      ],
+      [
+        "Wednesday",
+        "8:30 AM–7 PM"
+      ],
+      [
+        "Thursday",
+        "8:30 AM–7 PM"
+      ],
+      [
+        "Friday",
+        "8:30 AM–7 PM"
+      ],
+      [
+        "Saturday",
+        "8:30 AM–7 PM"
+      ],
+      [
+        "Sunday",
+        "10 AM–4 PM"
+      ]
+    ],
+    "phone": "0956464748",
+    "website": "https://www.tiktok.com/@prodentspecialtydental",
+    "rating": 5,
+    "reviews": 1
+  },
+  "252": {
+    "pid": "ChIJk4UXhfWDSxYRFLs7glM84Gg",
+    "name": "Yeab Speciality dental clinic",
+    "status": "open",
+    "category": "Dental clinic",
+    "services": [
+      "Has wheelchair-accessible toilet",
+      "Identifies as women-owned",
+      "On-site services available",
+      "Has toilet",
+      "Appointments recommended",
+      "Accepts cheques",
+      "Accepts credit cards",
+      "Has nursing room",
+      "Free multi-storey car park",
+      "Paid multi-storey car park"
+    ],
+    "hoursRows": [],
+    "phone": "0911172670"
+  },
+  "253": {
+    "pid": "ChIJq2A-Sta-kq4RQF6mVxqAnLM",
+    "name": "Azi Speciality Dental Clinic",
+    "status": "open",
+    "category": "Dental clinic",
+    "services": [
+      "Has toilet",
+      "Appointments recommended"
+    ],
+    "hoursRows": [
+      [
+        "Monday",
+        "8 AM–6 PM"
+      ],
+      [
+        "Tuesday",
+        "8 AM–6 PM"
+      ],
+      [
+        "Wednesday",
+        "8 AM–6 PM"
+      ],
+      [
+        "Thursday",
+        "8 AM–6 PM"
+      ],
+      [
+        "Friday",
+        "8 AM–6 PM"
+      ],
+      [
+        "Saturday",
+        "8 AM–6 PM"
+      ],
+      [
+        "Sunday",
+        "Closed"
+      ]
+    ],
+    "phone": "0931293031",
+    "rating": 3,
+    "reviews": 2
+  },
+  "254": {
+    "pid": "ChIJMU4ZNgCFSxYRuVPf8dj23H0",
+    "name": "Selina speciality dental clinic",
+    "status": "open",
+    "category": "Dental clinic",
+    "services": [
+      "Has toilet",
+      "Appointments recommended"
+    ],
+    "hoursRows": [],
+    "rating": 5,
+    "reviews": 1
+  }
+}
