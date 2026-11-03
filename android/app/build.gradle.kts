@@ -39,6 +39,12 @@ android {
     androidResources {
         localeFilters += listOf("en", "am")
     }
+    // Settings can switch language in the app, so Play must ship both languages to every phone.
+    bundle {
+        language {
+            enableSplit = false
+        }
+    }
 }
 
 kotlin {

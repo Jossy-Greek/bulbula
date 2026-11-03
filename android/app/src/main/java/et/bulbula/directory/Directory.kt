@@ -14,7 +14,6 @@ import kotlinx.serialization.json.Json
 import java.io.File
 import java.net.HttpURLConnection
 import java.net.URL
-import java.util.Locale
 
 /** The whole directory, as served by the site at /{locale}/directory.json (app/(frontend)/[locale]/directory.json). */
 @Serializable
@@ -27,7 +26,14 @@ data class Directory(
 )
 
 @Serializable
-data class Category(val slug: String, val name: String)
+data class Category(
+    val slug: String,
+    val name: String,
+    /** A Lucide icon name from the site ("coffee", "landmark", …); see [categoryIcon]. */
+    val icon: String = "",
+    /** "business" or "community". */
+    val group: String = "business",
+)
 
 @Serializable
 data class Place(
@@ -89,24 +95,28 @@ class DirectoryStore(private val dir: File, private val siteUrl: String = BuildC
 data class DirectoryState(val directory: Directory? = null, val refreshing: Boolean = false, val failed: Boolean = false)
 
 class DirectoryViewModel(app: Application) : AndroidViewModel(app) {
-    /** The site's languages; the phone's language picks one. */
-    private val locale = if (Locale.getDefault().language == "am") "am" else "en"
     private val store = DirectoryStore(app.filesDir)
+    private var locale: String? = null
 
-    var state by mutableStateOf(DirectoryState(directory = store.cached(locale)))
+    var state by mutableStateOf(DirectoryState())
         private set
 
-    init {
+    /** Shows the saved copy in this language ("en" or "am") at once, then refreshes it. */
+    fun use(locale: String) {
+        if (locale == this.locale) return
+        this.locale = locale
+        state = DirectoryState(directory = store.cached(locale))
         refresh()
     }
 
     fun refresh() {
+        val locale = locale ?: return
         if (state.refreshing) return
         state = state.copy(refreshing = true)
         viewModelScope.launch {
-            state = runCatching { store.fetch(locale) }
-                .fold({ state.copy(directory = it, failed = false) }, { state.copy(failed = true) })
-                .copy(refreshing = false)
+            val result = runCatching { store.fetch(locale) }
+            if (locale != this@DirectoryViewModel.locale) return@launch // language changed meanwhile
+            state = result.fold({ state.copy(directory = it, failed = false) }, { state.copy(failed = true) }).copy(refreshing = false)
         }
     }
 }

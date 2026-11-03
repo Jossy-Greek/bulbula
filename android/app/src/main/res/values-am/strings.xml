@@ -19,6 +19,14 @@
     <string name="none">ምንም ቦታ የለም</string>
     <string name="birr">%1$s ብር</string>
     <string name="clear">አጽዳ</string>
+    <string name="settings">ቅንብሮች</string>
+    <string name="appearance">ገጽታ</string>
+    <string name="language">ቋንቋ</string>
+    <string name="system">እንደ ስልኩ</string>
+    <string name="light">ብሩህ</string>
+    <string name="dark">ጨለማ</string>
+    <string name="add_business">ንግድዎን ያክሉ</string>
+    <string name="share">ያጋሩ</string>
     <string-array name="days">
         <item>ሰኞ</item><item>ማክሰኞ</item><item>ረቡዕ</item><item>ሐሙስ</item><item>ዓርብ</item><item>ቅዳሜ</item><item>እሑድ</item>
     </string-array>
