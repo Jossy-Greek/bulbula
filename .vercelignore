@@ -6,3 +6,6 @@ skills-lock.json
 .claude/
 assets/source/
 bulbula-local.*
+# The mobile apps aren't part of the website (and android/ holds Gradle build output locally).
+android/
+ios/
