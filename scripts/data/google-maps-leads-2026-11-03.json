@@ -1,0 +1,62 @@
+[
+  {
+    "cat": "clinics",
+    "en": "Delina Speciality Dental Clinic",
+    "am": null,
+    "lat": 8.951332,
+    "lng": 38.7858583,
+    "placeId": "ChIJhcNAqAqDSxYR2CnlPFkVwuk",
+    "mapsLink": "https://www.google.com/maps/search/?api=1&query=Delina%20speciality%20dental%20clinic&query_place_id=ChIJhcNAqAqDSxYR2CnlPFkVwuk",
+    "landmarkEn": "Enyi real estate, Bulbula Mariam",
+    "landmarkAm": null,
+    "googleName": "Delina speciality dental clinic"
+  },
+  {
+    "cat": "clinics",
+    "en": "Prodent Speciality Dental Clinic",
+    "am": null,
+    "lat": 8.951741,
+    "lng": 38.7918657,
+    "placeId": "ChIJ5_TT0OGDSxYRfgN5M1zJJQ8",
+    "mapsLink": "https://www.google.com/maps/search/?api=1&query=Prodent%20Speciality%20Dental%20Clinic&query_place_id=ChIJ5_TT0OGDSxYRfgN5M1zJJQ8",
+    "landmarkEn": "Bulbula Mariam",
+    "landmarkAm": null,
+    "googleName": "Prodent Speciality Dental Clinic"
+  },
+  {
+    "cat": "clinics",
+    "en": "Yeab Speciality Dental Clinic",
+    "am": null,
+    "lat": 8.9485216,
+    "lng": 38.7822408,
+    "placeId": "ChIJk4UXhfWDSxYRFLs7glM84Gg",
+    "mapsLink": "https://www.google.com/maps/search/?api=1&query=Yeab%20Speciality%20dental%20clinic&query_place_id=ChIJk4UXhfWDSxYRFLs7glM84Gg",
+    "landmarkEn": "Ye Abesha work building, 1st floor",
+    "landmarkAm": null,
+    "googleName": "Yeab Speciality dental clinic"
+  },
+  {
+    "cat": "clinics",
+    "en": "Azi Speciality Dental Clinic",
+    "am": null,
+    "lat": 8.947994,
+    "lng": 38.7820446,
+    "placeId": "ChIJq2A-Sta-kq4RQF6mVxqAnLM",
+    "mapsLink": "https://www.google.com/maps/search/?api=1&query=Azi%20Speciality%20Dental%20Clinic&query_place_id=ChIJq2A-Sta-kq4RQF6mVxqAnLM",
+    "landmarkEn": null,
+    "landmarkAm": null,
+    "googleName": "Azi Speciality Dental Clinic"
+  },
+  {
+    "cat": "clinics",
+    "en": "Selina Speciality Dental Clinic",
+    "am": null,
+    "lat": 8.9485663,
+    "lng": 38.7759625,
+    "placeId": "ChIJMU4ZNgCFSxYRuVPf8dj23H0",
+    "mapsLink": "https://www.google.com/maps/search/?api=1&query=Selina%20speciality%20dental%20clinic&query_place_id=ChIJMU4ZNgCFSxYRuVPf8dj23H0",
+    "landmarkEn": "Near the Bole Bulbula 40/60 condominium",
+    "landmarkAm": null,
+    "googleName": "Selina speciality dental clinic"
+  }
+]

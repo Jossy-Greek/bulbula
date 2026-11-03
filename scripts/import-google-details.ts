@@ -40,7 +40,8 @@ type Read = {
 };
 
 const FILE = process.env.DETAILS_FILE ?? "scripts/data/google-maps-details-2026-10-29.json";
-const CHECKED = "2026-10-29";
+// CHECKED_ON is the day a later details file was read (default: the first read).
+const CHECKED = process.env.CHECKED_ON ?? "2026-10-29";
 // Opened before import (curl, 2026-10-29) and failed or served something else.
 const BAD_SITES = new Set<string>(JSON.parse(process.env.BAD_SITES ?? "[]"));
 
