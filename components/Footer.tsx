@@ -1,11 +1,15 @@
-import { Mail, Phone } from "lucide-react";
+import { Mail, Phone, Smartphone } from "lucide-react";
 import { Wordmark } from "./Nav";
 import SocialIcon from "./SocialIcon";
 import type { Content } from "@/data/content";
 import { site } from "@/data/site";
 import { localeHref } from "@/lib/href";
+import { getSiteSettings } from "@/lib/directory";
 
-export default function Footer({ c }: { c: Content }) {
+export default async function Footer({ c }: { c: Content }) {
+  // The APK link from Site settings → Android app, the same one the app's update check uses;
+  // nothing shows until it's set.
+  const { android } = await getSiteSettings();
   const heading = "text-[12px] font-bold uppercase tracking-[0.14em] text-marigold-soft/80";
   return (
     <footer className="ripples relative mt-auto overflow-hidden bg-river text-white">
@@ -14,6 +18,18 @@ export default function Footer({ c }: { c: Content }) {
           <div className="md:col-span-5">
             <Wordmark c={c} dark />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/75">{c.footer.blurb}</p>
+            {android ? (
+              <a
+                href={android.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex items-center gap-2 rounded-full bg-marigold px-4 py-2 text-sm font-bold text-river shadow-sm hover:bg-marigold-soft"
+              >
+                <Smartphone className="h-4 w-4" aria-hidden="true" />
+                {c.footer.androidApp}
+                {android.versionName ? <span className="font-semibold opacity-70">{android.versionName}</span> : null}
+              </a>
+            ) : null}
           </div>
           <div className="md:col-span-3">
             <h3 className={heading}>{c.footer.explore}</h3>
