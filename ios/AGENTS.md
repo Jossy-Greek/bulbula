@@ -6,6 +6,7 @@ Read `README.md` first. The Android app's rules (`../android/AGENTS.md`) apply h
   Liquid Glass (glass button styles, `glassEffect`, `GlassEffectContainer`, native bars and search) instead of
   drawing your own.
 - **`Hours.swift` mirrors `lib/hours.ts`** (and `Hours.kt`). Change all of them together.
+- **`Track.swift` mirrors `lib/track.ts`** (and `Track.kt`): the same events to `/e`, tagged `platform: "ios"`.
 - **One fixture.** Tests read `../android/app/src/test/resources/directory-sample.json`; refresh it when the endpoint changes.
 - **The project file is generated.** Edit `project.yml` and run `xcodegen`; don't commit `Bulbula.xcodeproj`.
 - **Swift 6, main actor by default.** Models and network code that leave the main actor are `nonisolated`.

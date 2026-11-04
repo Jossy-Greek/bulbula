@@ -989,6 +989,37 @@ a.bb-queue__name:hover {
   color: #fff;
   background: var(--bb-river);
 }
+/* Website / Android app / iOS app: underline tabs under the header, so they read as
+   "what you're looking at" rather than another range control. */
+.an-platforms {
+  display: flex;
+  gap: 1.25rem;
+  margin: -0.25rem 0 1.25rem;
+  border-bottom: 1px solid var(--bb-border);
+  overflow-x: auto;
+}
+.an-platforms a {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  padding: 0.6rem 0.1rem;
+  font-size: 14px;
+  font-weight: 700;
+  white-space: nowrap;
+  color: var(--bb-muted);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.an-platforms a small {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--bb-muted);
+}
+.an-platforms a[aria-current="page"] {
+  color: var(--bb-text, inherit);
+  border-bottom-color: var(--bb-river);
+}
 .an-kpis {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));

@@ -21,6 +21,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.produceState
@@ -121,6 +122,22 @@ fun App(
     }
     val directory = vm.state.directory
     val signedIn = admin.state.session
+    // Analytics (Track.kt): admins aren't counted; one view per screen change, as the website counts pages.
+    SideEffect { Track.enabled = signedIn == null }
+    val screen = stack.last()
+    LaunchedEffect(screen, locale) {
+        when (screen.substringBefore(':')) {
+            "list" -> Track.view(locale)
+            "place" -> Track.view(locale, screen.substringAfter(':'))
+        }
+    }
+    // A search counts once typing pauses, with how many places it found.
+    LaunchedEffect(query, category) {
+        val q = query.trim()
+        if (q.length < 2) return@LaunchedEffect
+        delay(1_500)
+        Track.search(locale, q.lowercase(), directory?.listings.orEmpty().matching(q, category).size)
+    }
     // Pending places and reviews: what's waiting on an admin (unconfirmed places are ongoing work, not a badge).
     val toReview = if (signedIn != null) admin.state.pending.size + admin.state.reviews.size else null
     BackHandler(enabled = stack.size > 1) { pop() }
@@ -169,7 +186,7 @@ fun App(
                 query = query,
                 onQuery = { query = it },
                 category = category,
-                onCategory = { category = it },
+                onCategory = { category = it; if (it != null) Track.filter(locale, it) },
                 listState = listState,
                 chipState = chipState,
                 onRefresh = { vm.refresh(); admin.reload() },

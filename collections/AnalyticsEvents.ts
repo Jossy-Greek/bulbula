@@ -19,16 +19,18 @@ export const AnalyticsEvents: CollectionConfig = {
   },
   endpoints: [
     {
-      // The same report as /admin/analytics, as JSON, for the apps: GET /api/analytics-events/report?range=30.
+      // The same report as /admin/analytics, as JSON, for the apps: GET /api/analytics-events/report?range=30&platform=android.
       path: "/report",
       method: "get",
       handler: async (req) => {
         if (!req.user) return Response.json({ error: "Sign in" }, { status: 401 });
         // Loaded here, not at the top: lib/analytics is server-only and scripts load this file too.
-        const { buildReport, RANGES } = await import("@/lib/analytics");
-        const asked = Number(new URL(req.url ?? "", "http://x").searchParams.get("range"));
+        const { asPlatform, buildReport, RANGES } = await import("@/lib/analytics");
+        const params = new URL(req.url ?? "", "http://x").searchParams;
+        const asked = Number(params.get("range"));
         const range = (RANGES as readonly number[]).includes(asked) ? (asked as (typeof RANGES)[number]) : 30;
-        return Response.json(await buildReport(req.payload, range));
+        // ?platform=web|android|ios; anything else (or none) is all platforms.
+        return Response.json(await buildReport(req.payload, range, asPlatform(params.get("platform"))));
       },
     },
   ],
@@ -48,6 +50,12 @@ export const AnalyticsEvents: CollectionConfig = {
     { name: "locale", type: "text" },
     { name: "source", type: "text", admin: { description: "Telegram, Google, Facebook, Direct… (from utm_source or the referrer)." } },
     { name: "device", type: "text" },
+    {
+      name: "platform",
+      type: "text",
+      index: true,
+      admin: { description: "web · android · ios. Empty on events from before the apps were tracked: those are web." },
+    },
     { name: "country", type: "text" },
     { name: "visitor", type: "text", index: true },
   ],

@@ -14,6 +14,12 @@ const ACTIONS = new Set(["call", "directions", "maps", "website", "social", "sha
 
 const clip = (v: unknown, n: number) => (typeof v === "string" ? v.slice(0, n) : undefined);
 
+/**
+ * The Android and iOS apps post the same events with `platform`. Anything else is the
+ * website. (An app event can be faked like any beacon; these are counts, not proof.)
+ */
+const APP_PLATFORMS = new Set(["android", "ios"]);
+
 function device(ua: string) {
   if (/ipad|tablet|(android(?!.*mobile))/i.test(ua)) return "tablet";
   if (/mobi|iphone|android/i.test(ua)) return "mobile";
@@ -63,6 +69,8 @@ export async function POST(req: Request) {
   const action = clip(body.action, 20);
   if (type === "action" && (!action || !ACTIONS.has(action))) return new Response(null, { status: 400 });
 
+  const platform = APP_PLATFORMS.has(String(body.platform)) ? (body.platform as "android" | "ios") : "web";
+  const app = platform !== "web";
   const visitor = dailyVisitor(req.headers);
   const ownHost = new URL(req.url).hostname.replace(/^www\./, "");
 
@@ -78,8 +86,10 @@ export async function POST(req: Request) {
       query: clip(body.query, 100)?.trim().toLowerCase(),
       results: typeof body.results === "number" ? Math.max(0, Math.min(10_000, Math.round(body.results))) : undefined,
       locale: clip(body.locale, 5),
-      source: source(clip(body.utm, 60), clip(body.ref, 500), ownHost),
-      device: device(ua),
+      // An app has no referrer, and runs on a phone (its user agent isn't a browser's).
+      source: app ? "App" : source(clip(body.utm, 60), clip(body.ref, 500), ownHost),
+      device: app ? "mobile" : device(ua),
+      platform,
       country: req.headers.get("x-vercel-ip-country") ?? undefined,
       visitor,
     },

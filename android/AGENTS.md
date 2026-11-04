@@ -6,6 +6,7 @@ Read `README.md` first. Then:
   re-implement website rules in the app; add a field to the endpoint (`app/(frontend)/[locale]/directory.json/route.ts`)
   instead, keep it backward compatible (apps in the wild read it), and refresh `app/src/test/resources/directory-sample.json`.
 - **`Hours.kt` mirrors `lib/hours.ts`.** Change both together; `HoursTest` covers the cases.
+- **`Track.kt` mirrors `lib/track.ts`.** Same events to the same `/e`, tagged `platform: "android"`, so /admin/analytics can show the apps apart from the website. No ids, nothing stored, never blocks; admins aren't counted.
 - **Admin goes through Payload.** Sign-in, edits and moderation use Payload's REST API with the user's token, so
   the server's access rules apply; never add an app-only shortcut. Test admin changes on the local copy (README).
 - **Simple stays simple.** A directory, a place and settings, plus admin screens only after sign-in; no navigation, DI or image libraries, and one HTTP client. A new dependency needs a reason

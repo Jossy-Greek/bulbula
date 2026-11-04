@@ -18,6 +18,9 @@
     <string name="offline">Can\'t reach Bulbula</string>
     <string name="back">Back</string>
     <string name="none">No places</string>
+    <string name="update_available">Update available</string>
+    <string name="close">Close</string>
+    <string name="update">Update</string>
     <string name="birr">%1$s Br</string>
     <string name="clear">Clear</string>
     <string name="settings">Settings</string>
