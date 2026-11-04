@@ -44,6 +44,21 @@ struct DirectoryView: View {
         }
         .navigationTitle("Bulbula")
         .searchable(text: $query, prompt: Text("Search"))
+        // Analytics (Track.swift): admins aren't counted; a view each time the list shows.
+        .onAppear {
+            Track.enabled = admin.session == nil
+            Track.view()
+        }
+        .onChange(of: admin.session == nil) { _, signedOut in Track.enabled = signedOut }
+        .onChange(of: category) { _, picked in if let picked { Track.filter(picked) } }
+        // A search counts once typing pauses, with how many places it found.
+        .task(id: "\(query)|\(category ?? "")") {
+            let q = query.trimmingCharacters(in: .whitespaces)
+            guard q.count >= 2 else { return }
+            try? await Task.sleep(for: .seconds(1.5))
+            guard !Task.isCancelled else { return }
+            Track.search(q.lowercased(), results: model.directory?.listings.matching(q, category: category).count ?? 0)
+        }
         .refreshable {
             await model.refresh()
             await admin.reload()

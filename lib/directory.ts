@@ -172,10 +172,15 @@ export async function getListings(locale: Locale): Promise<Listing[]> {
 }
 
 /** Site-wide switches from the admin's Site settings. Defaults apply until it is first saved. */
-export async function getSiteSettings(): Promise<{ showMenus: boolean }> {
+export type AndroidRelease = { versionCode: number; versionName: string; url: string };
+
+export async function getSiteSettings(): Promise<{ showMenus: boolean; android: AndroidRelease | null }> {
   const payload = await getPayload({ config });
   const s = await payload.findGlobal({ slug: "site-settings", depth: 0 }).catch(() => null);
-  return { showMenus: s?.showMenus !== false };
+  const a = s?.androidApp;
+  // Only a complete entry is published: the app needs both the number and the link.
+  const android = a?.latestVersionCode && a.downloadUrl ? { versionCode: a.latestVersionCode, versionName: a.latestVersionName ?? "", url: a.downloadUrl } : null;
+  return { showMenus: s?.showMenus !== false, android };
 }
 
 export async function getListing(slug: string, locale: Locale): Promise<Listing | null> {

@@ -5,6 +5,13 @@ import type { AnalyticsEvent } from "@/payload-types";
 export const RANGES = [7, 30, 90] as const;
 export type Range = (typeof RANGES)[number];
 
+/** Where an event came from. Events from before the apps were tracked have no platform: website. */
+export const PLATFORMS = ["web", "android", "ios"] as const;
+export type Platform = (typeof PLATFORMS)[number];
+export const PLATFORM_LABELS: Record<Platform, string> = { web: "Website", android: "Android app", ios: "iOS app" };
+export const asPlatform = (v: unknown): Platform | undefined => (PLATFORMS as readonly unknown[]).includes(v) ? (v as Platform) : undefined;
+const platformOf = (e: AnalyticsEvent): Platform => asPlatform(e.platform) ?? "web";
+
 type Count = { key: string; count: number };
 export type DayPoint = { date: string; visitors: number; pageviews: number };
 export type BusinessRow = { slug: string; name: string; views: number; calls: number; directions: number; maps: number; other: number };
@@ -12,6 +19,10 @@ export type Kpi = { value: number; previous: number };
 
 export type Report = {
   range: Range;
+  /** The platform this report is for; undefined = all. */
+  platform?: Platform;
+  /** Visitors per platform in the period, whatever the filter (for the tabs). */
+  platforms: Record<Platform, number>;
   kpis: { visitors: Kpi; pageviews: Kpi; leads: Kpi; searches: Kpi };
   live: number;
   days: DayPoint[];
@@ -42,7 +53,7 @@ const visitorDays = (rows: AnalyticsEvent[]) => new Set(rows.map((r) => `${dayKe
 
 const LEAD_ACTIONS = new Set(["call", "directions", "maps", "website", "social"]);
 
-export async function buildReport(payload: Payload, range: Range): Promise<Report> {
+export async function buildReport(payload: Payload, range: Range, platform?: Platform): Promise<Report> {
   const now = Date.now();
   const since = new Date(now - 2 * range * 864e5).toISOString(); // current + previous period, for deltas
   const res = await payload.find({
@@ -53,8 +64,12 @@ export async function buildReport(payload: Payload, range: Range): Promise<Repor
     depth: 0,
     sort: "createdAt",
   });
-  const all = res.docs as AnalyticsEvent[];
+  const everything = res.docs as AnalyticsEvent[];
   const cut = now - range * 864e5;
+  const platforms = Object.fromEntries(
+    PLATFORMS.map((pf) => [pf, visitorDays(everything.filter((e) => platformOf(e) === pf && e.type === "pageview" && new Date(e.createdAt).getTime() >= cut))]),
+  ) as Record<Platform, number>;
+  const all = platform ? everything.filter((e) => platformOf(e) === platform) : everything;
   const cur = all.filter((e) => new Date(e.createdAt).getTime() >= cut);
   const prev = all.filter((e) => new Date(e.createdAt).getTime() < cut);
 
@@ -117,6 +132,8 @@ export async function buildReport(payload: Payload, range: Range): Promise<Repor
 
   return {
     range,
+    platform,
+    platforms,
     kpis: {
       visitors: { value: k.visitors, previous: p.visitors },
       pageviews: { value: k.pageviews, previous: p.pageviews },

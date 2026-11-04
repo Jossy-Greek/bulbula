@@ -12,6 +12,8 @@ struct PlaceView: View {
             TimelineView(.everyMinute) { context in
                 content(place, now: Hours.addisNow(context.date))
             }
+            // One view per opening, as the website counts a page.
+            .task(id: slug) { Track.view(slug: slug) }
         } else if model.directory == nil {
             ProgressView()
         } else {
@@ -54,13 +56,13 @@ struct PlaceView: View {
                 GlassEffectContainer(spacing: 10) {
                     HStack(spacing: 10) {
                         if let phone = place.phone, let url = telURL(phone) {
-                            Action(symbol: "phone.fill", label: Text("Call"), prominent: true) { openURL(url) }
+                            Action(symbol: "phone.fill", label: Text("Call"), prominent: true) { Track.action("call", slug: slug); openURL(url) }
                         }
                         if let url = directionsURL(place) {
-                            Action(symbol: "arrow.triangle.turn.up.right.diamond.fill", label: Text("Directions"), prominent: place.phone == nil) { openURL(url) }
+                            Action(symbol: "arrow.triangle.turn.up.right.diamond.fill", label: Text("Directions"), prominent: place.phone == nil) { Track.action("directions", slug: slug); openURL(url) }
                         }
                         if let site = place.website, let url = webURL(site) {
-                            Action(symbol: "safari", label: Text("Website"), prominent: false) { openURL(url) }
+                            Action(symbol: "safari", label: Text("Website"), prominent: false) { Track.action("website", slug: slug); openURL(url) }
                         }
                     }
                 }
@@ -77,7 +79,10 @@ struct PlaceView: View {
                 if let hours = place.hours, !always { Label { Text(verbatim: hours) } icon: { Image(systemName: "clock") } }
                 if !location.isEmpty { Label { Text(verbatim: location) } icon: { Image(systemName: "mappin.and.ellipse") } }
                 ForEach([place.phone, place.phone2].compactMap { $0 }, id: \.self) { phone in
-                    if let url = telURL(phone) { Link(destination: url) { Label { Text(verbatim: phone) } icon: { Image(systemName: "phone") } } }
+                    if let url = telURL(phone) {
+                        Link(destination: url) { Label { Text(verbatim: phone) } icon: { Image(systemName: "phone") } }
+                            .simultaneousGesture(TapGesture().onEnded { Track.action("call", slug: place.slug) })
+                    }
                 }
                 if let g = place.google, let url = URL(string: place.mapsUrl) {
                     Link(destination: url) {
@@ -85,6 +90,7 @@ struct PlaceView: View {
                             Image(systemName: "star.fill").foregroundStyle(Color.community)
                         }
                     }
+                    .simultaneousGesture(TapGesture().onEnded { Track.action("maps", slug: place.slug) })
                 }
             }
 
@@ -123,6 +129,7 @@ struct PlaceView: View {
                     NavigationLink(value: Route.edit(place.id)) { Image(systemName: "pencil") }.accessibilityLabel(Text("Edit"))
                 }
                 ShareLink(item: Site.url.appending(path: "\(Site.locale)/b/\(place.slug)"), subject: Text(verbatim: place.name))
+                    .simultaneousGesture(TapGesture().onEnded { Track.action("share", slug: place.slug) })
             }
         }
     }

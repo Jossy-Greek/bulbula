@@ -7,6 +7,8 @@ import * as migration_20261029_084742_google_details from './20261029_084742_goo
 import * as migration_20261029_095452_google_menus_reviews from './20261029_095452_google_menus_reviews';
 import * as migration_20261029_110236_menu_visibility from './20261029_110236_menu_visibility';
 import * as migration_20261029_111213_site_settings from './20261029_111213_site_settings';
+import * as migration_20261104_120000_analytics_platform from './20261104_120000_analytics_platform';
+import * as migration_20261104_130000_android_update from './20261104_130000_android_update';
 
 export const migrations = [
   {
@@ -52,6 +54,16 @@ export const migrations = [
   {
     up: migration_20261029_111213_site_settings.up,
     down: migration_20261029_111213_site_settings.down,
-    name: '20261029_111213_site_settings'
+    name: '20261029_111213_site_settings',
+  },
+  {
+    up: migration_20261104_120000_analytics_platform.up,
+    down: migration_20261104_120000_analytics_platform.down,
+    name: '20261104_120000_analytics_platform',
+  },
+  {
+    up: migration_20261104_130000_android_update.up,
+    down: migration_20261104_130000_android_update.down,
+    name: '20261104_130000_android_update',
   },
 ];

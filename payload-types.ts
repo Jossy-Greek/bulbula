@@ -320,6 +320,7 @@ export interface Category {
 export interface Media {
   id: number;
   alt?: string | null;
+  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -430,6 +431,10 @@ export interface AnalyticsEvent {
    */
   source?: string | null;
   device?: string | null;
+  /**
+   * web · android · ios. Empty on events from before the apps were tracked: those are web.
+   */
+  platform?: string | null;
   country?: string | null;
   visitor?: string | null;
   updatedAt: string;
@@ -623,6 +628,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -698,6 +704,7 @@ export interface AnalyticsEventsSelect<T extends boolean = true> {
   locale?: T;
   source?: T;
   device?: T;
+  platform?: T;
   country?: T;
   visitor?: T;
   updatedAt?: T;
@@ -753,6 +760,23 @@ export interface SiteSetting {
    * Untick to hide every business's menu at once. Each business also has its own switch; a menu shows only when both are on.
    */
   showMenus?: boolean | null;
+  /**
+   * After posting a new APK, set its version here. Phones on an older version see an Update button.
+   */
+  androidApp?: {
+    /**
+     * versionCode in android/app/build.gradle.kts, e.g. 2.
+     */
+    latestVersionCode?: number | null;
+    /**
+     * What people see, e.g. 1.1.
+     */
+    latestVersionName?: string | null;
+    /**
+     * Where the APK is, e.g. the Telegram post: https://t.me/…
+     */
+    downloadUrl?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -762,6 +786,13 @@ export interface SiteSetting {
  */
 export interface SiteSettingsSelect<T extends boolean = true> {
   showMenus?: T;
+  androidApp?:
+    | T
+    | {
+        latestVersionCode?: T;
+        latestVersionName?: T;
+        downloadUrl?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

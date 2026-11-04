@@ -24,7 +24,16 @@ data class Directory(
     val services: Map<String, String> = emptyMap(),
     /** Already in the website's order: featured, owner-run, confirmed, with a phone, then by name. */
     val listings: List<Place>,
+    /** The latest releases (admin → Site settings); absent until one is set. */
+    val app: Releases? = null,
 )
+
+@Serializable
+data class Releases(val android: Release? = null)
+
+/** An APK release: shared outside a store, so the app offers the update itself. */
+@Serializable
+data class Release(val versionCode: Int, val versionName: String = "", val url: String)
 
 @Serializable
 data class Category(

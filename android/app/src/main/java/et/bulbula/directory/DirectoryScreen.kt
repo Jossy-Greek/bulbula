@@ -1,5 +1,6 @@
 package et.bulbula.directory
 
+import android.content.Intent
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -38,14 +39,20 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -53,6 +60,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 
 /** The title, then search and categories (pinned while the places scroll under them). */
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -75,6 +83,10 @@ fun DirectoryScreen(
 ) {
     val directory = state.directory
     val places = remember(directory, query, category) { directory?.listings.orEmpty().matching(query, category) }
+    // A newer APK than this one, unless closed for this session.
+    var updateClosed by rememberSaveable { mutableStateOf(false) }
+    val update = directory?.app?.android?.takeIf { it.versionCode > BuildConfig.VERSION_CODE && !updateClosed }
+    val context = LocalContext.current
     val colors = MaterialTheme.colorScheme
 
     // The status bar area stays the page colour, so the pinned header slides under nothing.
@@ -99,6 +111,15 @@ fun DirectoryScreen(
                         IconButton(onClick = onSettings) {
                             Icon(painterResource(R.drawable.ic_settings), contentDescription = stringResource(R.string.settings), tint = colors.onSurfaceVariant)
                         }
+                    }
+                }
+                if (update != null) {
+                    item {
+                        UpdateBanner(
+                            update,
+                            onUpdate = { runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, update.url.toUri())) } },
+                            onClose = { updateClosed = true },
+                        )
                     }
                 }
                 stickyHeader {
@@ -247,3 +268,19 @@ fun Muted(text: String, modifier: Modifier = Modifier, small: Boolean = false) =
         overflow = TextOverflow.Ellipsis,
         modifier = modifier,
     )
+
+/** "Update available": the APK can't update itself from a store, so the app says when there's a newer one. */
+@Composable
+private fun UpdateBanner(release: Release, onUpdate: () -> Unit, onClose: () -> Unit) {
+    val colors = MaterialTheme.colorScheme
+    Row(
+        Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp).clip(RoundedCornerShape(16.dp)).background(colors.surface).padding(start = 16.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Text(stringResource(R.string.update_available), style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold)
+        if (release.versionName.isNotBlank()) Muted(" ${release.versionName}")
+        Spacer(Modifier.weight(1f))
+        TextButton(onClick = onUpdate) { Text(stringResource(R.string.update), fontWeight = FontWeight.SemiBold) }
+        IconButton(onClick = onClose) { Icon(painterResource(R.drawable.ic_close), contentDescription = stringResource(R.string.close), tint = colors.onSurfaceVariant, modifier = Modifier.size(18.dp)) }
+    }
+}

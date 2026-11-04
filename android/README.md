@@ -52,3 +52,21 @@ refreshed while in use). Admins then get:
 Payload's access rules decide what an account may do; the app only offers the actions. Try it on the local
 copy, not the live site: `npm run dev:local`, `BULBULA_LOCAL_DB=1 npx payload run scripts/local-admin.ts`
 for a test account, then `./gradlew installDebug -PsiteUrl=http://10.0.2.2:3008`.
+
+## Releasing an APK
+
+The app is shared as an APK (Telegram), not through a store, so it tells people about updates itself.
+
+1. Raise `versionCode` (and `versionName`) in `app/build.gradle.kts`.
+2. `./gradlew assembleRelease`, then align and sign `app-release-unsigned.apk` with the release key
+   (`~/.android/keys/bulbula-release.jks`, alias `bulbula`, password `BULBULA_KEYSTORE_PASSWORD` in
+   `~/.gradle/gradle.properties`; never in the repo). Every release must use this key, or phones refuse the update:
+   ```sh
+   BT=~/Library/Android/sdk/build-tools/36.0.0
+   $BT/zipalign -f -p 4 app/build/outputs/apk/release/app-release-unsigned.apk aligned.apk
+   $BT/apksigner sign --ks ~/.android/keys/bulbula-release.jks --ks-key-alias bulbula --out Bulbula-<version>.apk aligned.apk
+   ```
+3. Post the APK, then in the admin set **Settings → Site settings → Android app** (version code, name, link to the post).
+   Phones on an older version show **Update available** within a few minutes (`directory.json` carries it as `app.android`).
+
+Since 1.1 the app also sends usage events (`Track.kt`), shown under **Android app** in /admin/analytics.

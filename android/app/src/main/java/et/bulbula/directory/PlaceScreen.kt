@@ -50,8 +50,13 @@ fun PlaceScreen(place: Place, serviceLabels: Map<String, String>, now: Pair<Int,
     val colors = MaterialTheme.colorScheme
     val locale = if (LocalConfiguration.current.locales[0].language == "am") "am" else "en"
     val open = { uri: String -> context.startActivity(Intent(Intent.ACTION_VIEW, uri.toUri())) }
-    val dial = { phone: String -> context.startActivity(Intent(Intent.ACTION_DIAL, telUri(phone).toUri())) }
+    // Each way of reaching the place is counted for the admin's analytics (Track.kt).
+    val dial = { phone: String ->
+        Track.action(locale, "call", place.slug)
+        context.startActivity(Intent(Intent.ACTION_DIAL, telUri(phone).toUri()))
+    }
     val share = {
+        Track.action(locale, "share", place.slug)
         val text = "${place.name}\n${BuildConfig.SITE_URL}/$locale/b/${place.slug}"
         context.startActivity(Intent.createChooser(Intent(Intent.ACTION_SEND).setType("text/plain").putExtra(Intent.EXTRA_TEXT, text), null))
     }
@@ -82,8 +87,8 @@ fun PlaceScreen(place: Place, serviceLabels: Map<String, String>, now: Pair<Int,
         Spacer(Modifier.height(24.dp))
         Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             place.phone?.let { Action(R.drawable.ic_call, stringResource(R.string.call), primary = true, Modifier.weight(1f)) { dial(it) } }
-            Action(R.drawable.ic_directions, stringResource(R.string.directions), primary = place.phone == null, Modifier.weight(1f)) { open(directionsUri(place)) }
-            place.website?.let { Action(R.drawable.ic_web, stringResource(R.string.website), primary = false, Modifier.weight(1f)) { open(webUrl(it)) } }
+            Action(R.drawable.ic_directions, stringResource(R.string.directions), primary = place.phone == null, Modifier.weight(1f)) { Track.action(locale, "directions", place.slug); open(directionsUri(place)) }
+            place.website?.let { Action(R.drawable.ic_web, stringResource(R.string.website), primary = false, Modifier.weight(1f)) { Track.action(locale, "website", place.slug); open(webUrl(it)) } }
         }
 
         Column(Modifier.padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)) {
@@ -97,7 +102,7 @@ fun PlaceScreen(place: Place, serviceLabels: Map<String, String>, now: Pair<Int,
                 if (place.hours != null && !always) add(FactRow(R.drawable.ic_clock, place.hours))
                 if (location != null) add(FactRow(R.drawable.ic_map_pin, location))
                 listOfNotNull(place.phone, place.phone2).forEach { phone -> add(FactRow(R.drawable.ic_call, phone, link = true) { dial(phone) }) }
-                place.google?.let { g -> add(FactRow(R.drawable.ic_star, "${g.rating}  (${g.count})", star = true) { open(place.mapsUrl) }) }
+                place.google?.let { g -> add(FactRow(R.drawable.ic_star, "${g.rating}  (${g.count})", star = true) { Track.action(locale, "maps", place.slug); open(place.mapsUrl) }) }
             }
             if (facts.isNotEmpty()) {
                 Card {

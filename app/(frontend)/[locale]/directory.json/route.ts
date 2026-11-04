@@ -17,7 +17,7 @@ export function generateStaticParams() {
 export async function GET(_req: Request, { params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
   if (!isLocale(locale)) return new Response("Not found", { status: 404 });
-  const [listings, { showMenus }] = await Promise.all([getListings(locale), getSiteSettings()]);
+  const [listings, { showMenus, android }] = await Promise.all([getListings(locale), getSiteSettings()]);
   const categories = (await getCategories(locale, listings)).filter((c) => c.count > 0);
   return Response.json({
     version: 1,
@@ -25,5 +25,7 @@ export async function GET(_req: Request, { params }: { params: Promise<{ locale:
     // Labels for the service keys a listing can have ("dineIn" → "Dine-in").
     services: Object.fromEntries(Object.entries(services).map(([key, label]) => [key, label[locale]])),
     listings: showMenus ? listings : listings.map((l) => ({ ...l, menu: [] })),
+    // The latest Android release (admin → Site settings), so older APKs offer an update.
+    ...(android && { app: { android } }),
   });
 }

@@ -5,7 +5,7 @@ import type { AdminViewServerProps } from "payload";
 import { ArrowDownRight, ArrowUpRight, Eye, MousePointerClick, Radio, Search, Users } from "lucide-react";
 import AnalyticsChart from "./AnalyticsChart";
 import ExcludeMe from "./ExcludeMe";
-import { buildReport, RANGES, type Kpi, type Range } from "@/lib/analytics";
+import { asPlatform, buildReport, PLATFORM_LABELS, PLATFORMS, RANGES, type Kpi, type Platform, type Range } from "@/lib/analytics";
 
 const ACTION_LABELS: Record<string, string> = {
   call: "Calls",
@@ -61,7 +61,16 @@ export default async function AnalyticsView({ initPageResult, params, searchPara
 
   const asked = Number(searchParams?.range);
   const range: Range = (RANGES as readonly number[]).includes(asked) ? (asked as Range) : 30;
-  const r = await buildReport(req.payload, range);
+  const platform = asPlatform(searchParams?.platform);
+  const r = await buildReport(req.payload, range, platform);
+  /** Links keep the other choice: the range when switching platform, and the reverse. */
+  const href = (p: { range?: Range; platform?: Platform | null }) => {
+    const q = new URLSearchParams({ range: String(p.range ?? range) });
+    const pf = p.platform === undefined ? platform : p.platform;
+    if (pf) q.set("platform", pf);
+    return `/admin/analytics?${q}`;
+  };
+  const allVisitors = PLATFORMS.reduce((n, pf) => n + r.platforms[pf], 0);
 
   const kpis = [
     { icon: Users, label: "Visitors", k: r.kpis.visitors },
@@ -94,12 +103,24 @@ export default async function AnalyticsView({ initPageResult, params, searchPara
           </div>
           <nav className="an-range" aria-label="Date range">
             {RANGES.map((d) => (
-              <Link key={d} href={`/admin/analytics?range=${d}`} aria-current={d === range ? "page" : undefined}>
+              <Link key={d} href={href({ range: d })} aria-current={d === range ? "page" : undefined}>
                 {d} days
               </Link>
             ))}
           </nav>
         </header>
+
+        {/* Website and the two apps, apart or together. Counts are visitors in the period. */}
+        <nav className="an-platforms" aria-label="Platform">
+          <Link href={href({ platform: null })} aria-current={!platform ? "page" : undefined}>
+            All <small>{allVisitors.toLocaleString("en")}</small>
+          </Link>
+          {PLATFORMS.map((pf) => (
+            <Link key={pf} href={href({ platform: pf })} aria-current={pf === platform ? "page" : undefined}>
+              {PLATFORM_LABELS[pf]} <small>{r.platforms[pf].toLocaleString("en")}</small>
+            </Link>
+          ))}
+        </nav>
 
         <ul className="an-kpis">
           {kpis.map(({ icon: I, label, hint, k }) => (
