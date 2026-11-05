@@ -76,16 +76,20 @@ fun DirectoryScreen(
     chipState: LazyListState,
     onRefresh: () -> Unit,
     onOpen: (Place) -> Unit,
-    onSettings: () -> Unit,
+    onSettings: (() -> Unit)?,
     /** Places waiting for a signed-in admin; null when nobody is signed in. */
     toReview: Int? = null,
     onReview: () -> Unit = {},
+    /** In the tabs: "Search" as the title, no update banner (Home has it), room for the bottom bar. */
+    title: String = stringResource(R.string.app_name),
+    showUpdate: Boolean = true,
+    bottomSpace: androidx.compose.ui.unit.Dp = 24.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
 ) {
     val directory = state.directory
     val places = remember(directory, query, category) { directory?.listings.orEmpty().matching(query, category) }
     // A newer APK than this one, unless closed for this session.
     var updateClosed by rememberSaveable { mutableStateOf(false) }
-    val update = directory?.app?.android?.takeIf { it.versionCode > BuildConfig.VERSION_CODE && !updateClosed }
+    val update = directory?.app?.android?.takeIf { showUpdate && it.versionCode > BuildConfig.VERSION_CODE && !updateClosed }
     val context = LocalContext.current
     val colors = MaterialTheme.colorScheme
 
@@ -94,12 +98,12 @@ fun DirectoryScreen(
         PullToRefreshBox(isRefreshing = state.refreshing && directory != null, onRefresh = onRefresh, modifier = Modifier.fillMaxSize()) {
             LazyColumn(
                 state = listState,
-                contentPadding = PaddingValues(bottom = 24.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()),
+                contentPadding = PaddingValues(bottom = bottomSpace),
                 modifier = Modifier.fillMaxSize(),
             ) {
                 item {
                     Row(Modifier.fillMaxWidth().padding(start = 20.dp, end = 8.dp, top = 12.dp, bottom = 4.dp), verticalAlignment = Alignment.CenterVertically) {
-                        Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineLarge, modifier = Modifier.weight(1f))
+                        Text(title, style = MaterialTheme.typography.headlineLarge, modifier = Modifier.weight(1f))
                         if (toReview != null && toReview > 0) {
                             IconButton(onClick = onReview) {
                                 Box {
@@ -108,9 +112,12 @@ fun DirectoryScreen(
                                 }
                             }
                         }
-                        IconButton(onClick = onSettings) {
-                            Icon(painterResource(R.drawable.ic_settings), contentDescription = stringResource(R.string.settings), tint = colors.onSurfaceVariant)
+                        if (onSettings != null) {
+                            IconButton(onClick = onSettings) {
+                                Icon(painterResource(R.drawable.ic_settings), contentDescription = stringResource(R.string.settings), tint = colors.onSurfaceVariant)
+                            }
                         }
+                        Spacer(Modifier.height(48.dp))
                     }
                 }
                 if (update != null) {
@@ -271,7 +278,7 @@ fun Muted(text: String, modifier: Modifier = Modifier, small: Boolean = false) =
 
 /** "Update available": the APK can't update itself from a store, so the app says when there's a newer one. */
 @Composable
-private fun UpdateBanner(release: Release, onUpdate: () -> Unit, onClose: () -> Unit) {
+internal fun UpdateBanner(release: Release, onUpdate: () -> Unit, onClose: () -> Unit) {
     val colors = MaterialTheme.colorScheme
     Row(
         Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 4.dp).clip(RoundedCornerShape(16.dp)).background(colors.surface).padding(start = 16.dp, end = 4.dp, top = 4.dp, bottom = 4.dp),

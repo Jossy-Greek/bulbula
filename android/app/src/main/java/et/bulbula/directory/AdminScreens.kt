@@ -356,7 +356,7 @@ fun EditScreen(id: Int, preloaded: AdminPlace?, vm: AdminViewModel, onDone: () -
 
 /** One fresh fix from the phone, or null. Callers ask for the permission first. */
 @SuppressLint("MissingPermission")
-private suspend fun currentLocation(context: android.content.Context): Pair<Double, Double>? {
+suspend fun currentLocation(context: android.content.Context): Pair<Double, Double>? {
     val lm = context.getSystemService(LocationManager::class.java) ?: return null
     val provider = listOf(LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER).firstOrNull { lm.isProviderEnabled(it) } ?: return null
     return suspendCancellableCoroutine { cont ->

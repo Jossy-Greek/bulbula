@@ -51,8 +51,10 @@ fun PlaceScreen(place: Place, serviceLabels: Map<String, String>, now: Pair<Int,
     val locale = if (LocalConfiguration.current.locales[0].language == "am") "am" else "en"
     val open = { uri: String -> context.startActivity(Intent(Intent.ACTION_VIEW, uri.toUri())) }
     // Each way of reaching the place is counted for the admin's analytics (Track.kt).
+    val progress = LocalProgress.current
     val dial = { phone: String ->
         Track.action(locale, "call", place.slug)
+        progress.reached(place.slug)
         context.startActivity(Intent(Intent.ACTION_DIAL, telUri(phone).toUri()))
     }
     val share = {
@@ -87,7 +89,7 @@ fun PlaceScreen(place: Place, serviceLabels: Map<String, String>, now: Pair<Int,
         Spacer(Modifier.height(24.dp))
         Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             place.phone?.let { Action(R.drawable.ic_call, stringResource(R.string.call), primary = true, Modifier.weight(1f)) { dial(it) } }
-            Action(R.drawable.ic_directions, stringResource(R.string.directions), primary = place.phone == null, Modifier.weight(1f)) { Track.action(locale, "directions", place.slug); open(directionsUri(place)) }
+            Action(R.drawable.ic_directions, stringResource(R.string.directions), primary = place.phone == null, Modifier.weight(1f)) { Track.action(locale, "directions", place.slug); progress.reached(place.slug); open(directionsUri(place)) }
             place.website?.let { Action(R.drawable.ic_web, stringResource(R.string.website), primary = false, Modifier.weight(1f)) { Track.action(locale, "website", place.slug); open(webUrl(it)) } }
         }
 
@@ -129,6 +131,7 @@ fun PlaceScreen(place: Place, serviceLabels: Map<String, String>, now: Pair<Int,
             }
 
             if (place.menu.isNotEmpty()) Menu(place.menu)
+            RateCard(place)
         }
     }
 }

@@ -1,6 +1,18 @@
 package et.bulbula.directory
 
 import android.content.Context
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.scaleIn
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import androidx.core.content.ContextCompat
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -20,6 +32,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -33,6 +46,7 @@ import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     private val settings by lazy { Settings(this) }
+    private val progress by lazy { Progress(this) }
 
     /** A website link (/en/b/<slug>) the app was opened with. */
     private var link by mutableStateOf<String?>(null)
@@ -60,6 +74,7 @@ class MainActivity : ComponentActivity() {
                 enableEdgeToEdge(statusBarStyle = status, navigationBarStyle = navigation)
             }
             BulbulaTheme(dark) {
+                CompositionLocalProvider(LocalProgress provides progress) {
                 Surface(color = MaterialTheme.colorScheme.background) {
                     App(
                         link = link,
@@ -69,6 +84,7 @@ class MainActivity : ComponentActivity() {
                         language = settings.language,
                         onLanguage = { settings.setLanguage(this, it) },
                     )
+                }
                 }
             }
         }
@@ -84,8 +100,9 @@ class MainActivity : ComponentActivity() {
 }
 
 /**
- * The screens as a stack: "list" at the bottom, then "place:<slug>", "settings", "signin",
- * "review" or "edit:<id>" on top. Back pops one.
+ * The screens as a stack: "tabs" at the bottom (Home, Search, Nearby, Profile and the bar), then
+ * "place:<slug>", "add", "settings", "signin", "review" or "edit:<id>" on top. Back pops one,
+ * and on a tab other than Home goes to Home first. Before any of it, the welcome screens.
  */
 @Composable
 fun App(
@@ -98,7 +115,10 @@ fun App(
     vm: DirectoryViewModel = viewModel(),
     admin: AdminViewModel = viewModel(),
 ) {
-    var stack by rememberSaveable { mutableStateOf(listOf("list")) }
+    var stack by rememberSaveable { mutableStateOf(listOf("tabs")) }
+    var tab by rememberSaveable { mutableStateOf(Tab.Home) }
+    val progress = LocalProgress.current
+    var here by remember { mutableStateOf<Pair<Double, Double>?>(null) }
     fun push(screen: String) { stack = stack + screen }
     fun pop() { if (stack.size > 1) stack = stack.dropLast(1) }
     var query by rememberSaveable { mutableStateOf("") }
@@ -117,7 +137,7 @@ fun App(
         }
     }
     if (link != null) {
-        stack = listOf("list", "place:$link")
+        stack = listOf("tabs", "place:$link")
         onLinkOpened()
     }
     val directory = vm.state.directory
@@ -127,8 +147,11 @@ fun App(
     val screen = stack.last()
     LaunchedEffect(screen, locale) {
         when (screen.substringBefore(':')) {
-            "list" -> Track.view(locale)
-            "place" -> Track.view(locale, screen.substringAfter(':'))
+            "tabs" -> Track.view(locale)
+            "place" -> {
+                Track.view(locale, screen.substringAfter(':'))
+                if (progress.onboarded) progress.placeOpened(screen.substringAfter(':'))
+            }
         }
     }
     // A search counts once typing pauses, with how many places it found.
@@ -141,7 +164,27 @@ fun App(
     // Pending places and reviews: what's waiting on an admin (unconfirmed places are ongoing work, not a badge).
     val toReview = if (signedIn != null) admin.state.pending.size + admin.state.reviews.size else null
     BackHandler(enabled = stack.size > 1) { pop() }
+    BackHandler(enabled = stack.size == 1 && tab != Tab.Home) { tab = Tab.Home }
+    // Once a week: the streak and the weekly points.
+    LaunchedEffect(progress.onboarded) { if (progress.onboarded) progress.appOpened() }
+    // Where you are, once allowed, so Home can show what's open nearby.
+    val context = LocalContext.current
+    LaunchedEffect(progress.onboarded) {
+        val allowed = listOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+            .any { ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED }
+        if (progress.onboarded && allowed && here == null) here = roughLocation(context)
+    }
 
+    Box(Modifier.fillMaxSize()) {
+    AnimatedContent(
+        targetState = progress.onboarded,
+        transitionSpec = { (fadeIn(tween(400)) + scaleIn(initialScale = 0.96f)) togetherWith fadeOut(tween(250)) },
+        label = "welcome",
+    ) { onboarded ->
+    if (!onboarded) {
+        Onboarding(progress) { addPlace -> tab = Tab.Home; stack = if (addPlace) listOf("tabs", "add") else listOf("tabs") }
+        return@AnimatedContent
+    }
     AnimatedContent(
         targetState = stack.last(),
         transitionSpec = {
@@ -174,27 +217,57 @@ fun App(
                 val known = (admin.state.pending + admin.state.unconfirmed).firstOrNull { it.id == id }
                 EditScreen(id, known, admin, onDone = { pop(); vm.refresh() })
             }
+            "add" -> AddPlaceScreen(directory?.categories.orEmpty(), onBack = ::pop)
             "place" -> {
                 val place = directory?.listings?.firstOrNull { it.slug == arg }
                 if (place == null) LaunchedEffect(Unit) { pop() } else {
                     PlaceScreen(place, directory.services, now, onBack = ::pop, onEdit = if (signedIn != null) ({ push("edit:${place.id}") }) else null)
                 }
             }
-            else -> DirectoryScreen(
-                state = vm.state,
-                now = now,
-                query = query,
-                onQuery = { query = it },
-                category = category,
-                onCategory = { category = it; if (it != null) Track.filter(locale, it) },
-                listState = listState,
-                chipState = chipState,
-                onRefresh = { vm.refresh(); admin.reload() },
-                onOpen = { push("place:${it.slug}") },
-                onSettings = { push("settings") },
-                toReview = toReview,
-                onReview = { push("review") },
-            )
+            else -> Box(Modifier.fillMaxSize()) {
+                AnimatedContent(
+                    targetState = tab,
+                    transitionSpec = { (fadeIn(tween(220)) + scaleIn(tween(260), initialScale = 0.97f)) togetherWith fadeOut(tween(120)) },
+                    label = "tab",
+                ) { shown ->
+                    when (shown) {
+                        Tab.Home -> HomeScreen(
+                            state = vm.state,
+                            now = now,
+                            here = here,
+                            onOpen = { push("place:${it.slug}") },
+                            onCategory = { category = it; query = ""; tab = Tab.Search; Track.filter(locale, it) },
+                            onSeeAll = { category = null; tab = if (here != null) Tab.Nearby else Tab.Search },
+                            onAdd = { push("add") },
+                            onRefresh = { vm.refresh(); admin.reload() },
+                        )
+                        Tab.Search -> DirectoryScreen(
+                            state = vm.state,
+                            now = now,
+                            query = query,
+                            onQuery = { query = it },
+                            category = category,
+                            onCategory = { category = it; if (it != null) Track.filter(locale, it) },
+                            listState = listState,
+                            chipState = chipState,
+                            onRefresh = { vm.refresh(); admin.reload() },
+                            onOpen = { push("place:${it.slug}") },
+                            onSettings = null,
+                            toReview = toReview,
+                            onReview = { push("review") },
+                            title = stringResource(R.string.search),
+                            showUpdate = false,
+                            bottomSpace = tabBarSpace(),
+                        )
+                        Tab.Nearby -> NearbyScreen(directory, now, here, onHere = { here = it }, onOpen = { push("place:${it.slug}") })
+                        Tab.Profile -> ProfileScreen(onSettings = { push("settings") })
+                    }
+                }
+                BottomBar(tab, onTab = { tab = it }, onAdd = { push("add") }, modifier = Modifier.align(Alignment.BottomCenter))
+            }
         }
+    }
+    }
+    Celebrations(progress)
     }
 }
