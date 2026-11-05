@@ -1,13 +1,17 @@
 import type { Metadata, Viewport } from "next";
 import { notFound } from "next/navigation";
-import { Inter, Noto_Sans_Ethiopic, Plus_Jakarta_Sans } from "next/font/google";
+import localFont from "next/font/local";
 import "../globals.css";
 import { getContent, isLocale, locales } from "@/data/content";
 import Tracker from "@/components/Tracker";
 
-const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], weight: ["500", "600", "700", "800"], variable: "--font-jakarta" });
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const ethiopic = Noto_Sans_Ethiopic({ subsets: ["ethiopic"], weight: ["400", "500", "600", "700"], variable: "--font-ethiopic" });
+// Self-hosted (app/fonts, OFL): next/font/google started failing every build on
+// 2026-11-05, locally and on Vercel, inside Next's font downloader. Same fonts and
+// subsets as before (Inter latin, Plus Jakarta Sans latin, Noto Sans Ethiopic ethiopic),
+// as variable files, so the build no longer needs Google Fonts.
+const jakarta = localFont({ src: "../../fonts/jakarta-latin.woff2", weight: "200 800", variable: "--font-jakarta", display: "swap" });
+const inter = localFont({ src: "../../fonts/inter-latin.woff2", weight: "100 900", variable: "--font-inter", display: "swap" });
+const ethiopic = localFont({ src: "../../fonts/noto-ethiopic.woff2", weight: "100 900", variable: "--font-ethiopic", display: "swap" });
 
 export const viewport: Viewport = { themeColor: "#0e3d47" };
 
