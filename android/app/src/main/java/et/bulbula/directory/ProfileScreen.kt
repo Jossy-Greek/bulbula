@@ -61,7 +61,7 @@ import androidx.compose.ui.unit.sp
 
 /** Your level, XP, streak, what you've done and your badges; then settings. */
 @Composable
-fun ProfileScreen(onSettings: () -> Unit) {
+fun ProfileScreen(cloud: Cloud, onSettings: () -> Unit) {
     val progress = LocalProgress.current
     val colors = MaterialTheme.colorScheme
     val level = progress.level
@@ -179,7 +179,10 @@ fun ProfileScreen(onSettings: () -> Unit) {
                 }) { Text(stringResource(label), style = MaterialTheme.typography.bodyLarge) }
             }
         }
-        Muted(stringResource(R.string.points_note), Modifier.padding(horizontal = 20.dp, vertical = 10.dp), small = false)
+        Muted(stringResource(if (progress.cloud) R.string.points_note_cloud else R.string.points_note), Modifier.padding(horizontal = 20.dp, vertical = 10.dp), small = false)
+
+        Text(stringResource(R.string.your_progress), style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.ExtraBold, modifier = Modifier.padding(start = 20.dp, top = 16.dp, bottom = 12.dp))
+        AccountCard(cloud, Modifier.padding(horizontal = 16.dp))
 
         Card(Modifier.padding(start = 16.dp, end = 16.dp, top = 10.dp)) {
             CardRow(icon = R.drawable.ic_settings, onClick = onSettings, trailing = { Icon(painterResource(R.drawable.ic_chevron_right), contentDescription = null, tint = colors.onSurfaceVariant) }) {

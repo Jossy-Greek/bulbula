@@ -119,6 +119,7 @@ fun App(
     var tab by rememberSaveable { mutableStateOf(Tab.Home) }
     val progress = LocalProgress.current
     var here by remember { mutableStateOf<Pair<Double, Double>?>(null) }
+    val cloud = remember { Cloud() }
     fun push(screen: String) { stack = stack + screen }
     fun pop() { if (stack.size > 1) stack = stack.dropLast(1) }
     var query by rememberSaveable { mutableStateOf("") }
@@ -165,6 +166,19 @@ fun App(
     val toReview = if (signedIn != null) admin.state.pending.size + admin.state.reviews.size else null
     BackHandler(enabled = stack.size > 1) { pop() }
     BackHandler(enabled = stack.size == 1 && tab != Tab.Home) { tab = Tab.Home }
+    // Signed in: save progress a moment after it changes, and every few minutes collect
+    // points for reviews and places an admin has published.
+    LaunchedEffect(progress.cloudCode, progress.xp, progress.badges, progress.name, progress.toAck) {
+        if (progress.cloudCode == null) return@LaunchedEffect
+        delay(1_500)
+        progress.syncWith(cloud)
+    }
+    LaunchedEffect(progress.cloudCode) {
+        while (progress.cloudCode != null) {
+            delay(5 * 60_000)
+            progress.syncWith(cloud)
+        }
+    }
     // Once a week: the streak and the weekly points.
     LaunchedEffect(progress.onboarded) { if (progress.onboarded) progress.appOpened() }
     // Where you are, once allowed, so Home can show what's open nearby.
@@ -260,7 +274,7 @@ fun App(
                             bottomSpace = tabBarSpace(),
                         )
                         Tab.Nearby -> NearbyScreen(directory, now, here, onHere = { here = it }, onOpen = { push("place:${it.slug}") })
-                        Tab.Profile -> ProfileScreen(onSettings = { push("settings") })
+                        Tab.Profile -> ProfileScreen(cloud, onSettings = { push("settings") })
                     }
                 }
                 BottomBar(tab, onTab = { tab = it }, onAdd = { push("add") }, modifier = Modifier.align(Alignment.BottomCenter))

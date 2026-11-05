@@ -12,6 +12,7 @@ import { AnalyticsEvents } from "./collections/AnalyticsEvents";
 import { Businesses } from "./collections/Businesses";
 import { Categories } from "./collections/Categories";
 import { Media } from "./collections/Media";
+import { Players } from "./collections/Players";
 import { Reviews } from "./collections/Reviews";
 import { Users } from "./collections/Users";
 import { SiteSettings } from "./globals/SiteSettings";
@@ -44,7 +45,7 @@ export default buildConfig({
       },
     },
   },
-  collections: [Businesses, Reviews, Categories, Media, Users, AnalyticsEvents],
+  collections: [Businesses, Reviews, Players, Categories, Media, Users, AnalyticsEvents],
   globals: [SiteSettings],
   localization: {
     locales: [

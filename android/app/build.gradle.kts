@@ -19,6 +19,9 @@ android {
         versionCode = 2
         versionName = "1.1"
         buildConfigField("String", "SITE_URL", "\"$siteUrl\"")
+        // Google sign-in for the progress backup: the Web client ID of Firebase project
+        // bulbula-89af3 (not a secret). The release and debug keys' SHA-1s are registered there.
+        buildConfigField("String", "GOOGLE_CLIENT_ID", "\"1078066225776-o3tlngthodb34h2uhis4r4ep6j5qf33k.apps.googleusercontent.com\"")
     }
 
     buildTypes {
@@ -62,6 +65,9 @@ dependencies {
     implementation(libs.serialization.json)
     // The only HTTP client: Android's HttpURLConnection can't send PATCH, which admin edits need.
     implementation(libs.okhttp)
+    implementation(libs.credentials)
+    implementation(libs.credentials.play.services)
+    implementation(libs.googleid)
     testImplementation(libs.junit)
     testImplementation(libs.okhttp.mockwebserver)
     testImplementation(libs.org.json)

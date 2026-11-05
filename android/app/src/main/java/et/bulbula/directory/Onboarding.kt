@@ -1,6 +1,10 @@
 package et.bulbula.directory
 
 import android.Manifest
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -95,7 +99,8 @@ private val CHOICES = listOf(
 )
 
 /**
- * The first run: hello, why you're here, your name, location, then a small party.
+ * The first run: hello, why you're here, your name, location, sign in with Google or carry
+ * on as a guest, then a small party.
  * [onDone] says whether to go straight to "Add a place" (business owners).
  */
 @Composable
@@ -105,7 +110,35 @@ fun Onboarding(progress: Progress, onDone: (addPlace: Boolean) -> Unit) {
     var name by rememberSaveable { mutableStateOf(progress.name) }
     val colors = MaterialTheme.colorScheme
     val locate = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { step = 4 }
-    BackHandler(enabled = step in 1..3) { step -= 1 }
+    BackHandler(enabled = step in 1..4) { step -= 1 }
+    // A new phone: sign in with Google to bring back saved progress instead of starting over.
+    val cloud = remember { Cloud() }
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var signingIn by remember { mutableStateOf(false) }
+    var signInError by remember { mutableStateOf<Int?>(null) }
+    signInError?.let { message ->
+        val text = stringResource(message)
+        LaunchedEffect(message) {
+            Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+            signInError = null
+        }
+    }
+    val welcome = stringResource(R.string.welcome_back)
+    fun signInExisting() {
+        signingIn = true
+        scope.launch {
+            when (val outcome = signIn(context, cloud, progress, onlyExisting = true)) {
+                is GoogleOutcome.Saved -> {
+                    progress.useSaved(outcome)
+                    Toast.makeText(context, welcome, Toast.LENGTH_SHORT).show()
+                }
+                is GoogleOutcome.Failed -> signInError = googleError(outcome.error)
+                else -> Unit
+            }
+            signingIn = false
+        }
+    }
 
     fun finish(addPlace: Boolean) {
         progress.welcome(name, why)
@@ -116,10 +149,10 @@ fun Onboarding(progress: Progress, onDone: (addPlace: Boolean) -> Unit) {
         Blobs()
         Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding().imePadding()) {
             // Back and the progress bar, Duolingo-style, for the questions.
-            AnimatedVisibility(visible = step in 1..3) {
+            AnimatedVisibility(visible = step in 1..4) {
                 Row(Modifier.fillMaxWidth().padding(start = 4.dp, end = 24.dp, top = 6.dp), verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = { step -= 1 }) { Icon(painterResource(R.drawable.ic_back), contentDescription = stringResource(R.string.back), tint = colors.onSurfaceVariant) }
-                    XpBar(step / 4f, Modifier.weight(1f), color = colors.primary, height = 16.dp)
+                    XpBar(step / 5f, Modifier.weight(1f), color = colors.primary, height = 16.dp)
                 }
             }
             AnimatedContent(
@@ -133,13 +166,14 @@ fun Onboarding(progress: Progress, onDone: (addPlace: Boolean) -> Unit) {
                 label = "onboarding",
             ) { s ->
                 when (s) {
-                    0 -> Welcome(onStart = { step = 1 })
+                    0 -> Welcome(onStart = { step = 1 }, onSignIn = ::signInExisting, signingIn = signingIn)
                     1 -> WhyStep(why, onWhy = { why = it }, onNext = { step = 2 })
                     2 -> NameStep(name, onName = { name = it }, onNext = { step = 3 })
                     3 -> LocationStep(
                         onAllow = { locate.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)) },
                         onSkip = { step = 4 },
                     )
+                    4 -> AccountStep(cloud, onNext = { step = 5 })
                     else -> Ready(name, why, onGo = { finish(false) }, onAdd = { finish(true) })
                 }
             }
@@ -167,13 +201,20 @@ private fun StepBody(bottom: @Composable () -> Unit, content: @Composable () -> 
 }
 
 @Composable
-private fun Welcome(onStart: () -> Unit) {
+private fun Welcome(onStart: () -> Unit, onSignIn: () -> Unit, signingIn: Boolean) {
     val hello = remember { Animatable(0f) }
     LaunchedEffect(Unit) {
         delay(350)
         hello.animateTo(1f, spring(dampingRatio = 0.4f, stiffness = 300f))
     }
-    StepBody(bottom = { ChunkyButton(stringResource(R.string.get_started), onStart, Modifier.fillMaxWidth()) }) {
+    StepBody(bottom = {
+        Column {
+            ChunkyButton(stringResource(R.string.get_started), onStart, Modifier.fillMaxWidth())
+            TextButton(onClick = onSignIn, enabled = !signingIn, modifier = Modifier.fillMaxWidth().padding(top = 4.dp)) {
+                Text(stringResource(R.string.have_code), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
+    }) {
         Spacer(Modifier.height(56.dp))
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             // "Selam!" pops out of Bulbie.
@@ -322,6 +363,74 @@ fun Radar(modifier: Modifier = Modifier) {
             drawCircle(Teal.copy(alpha = 0.10f), radius = size.minDimension * 0.2f)
         }
         Bulbie(size = 96.dp)
+    }
+}
+
+/**
+ * Sign in with Google to keep progress on any phone, or carry on as a guest (everything
+ * stays on this phone; Profile can sign in later). An account that already has progress
+ * is offered back, and taking it skips the rest of the welcome.
+ */
+@Composable
+private fun AccountStep(cloud: Cloud, onNext: () -> Unit) {
+    val progress = LocalProgress.current
+    val colors = MaterialTheme.colorScheme
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var busy by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf<String?>(null) }
+    var found by remember { mutableStateOf<GoogleOutcome.Saved?>(null) }
+    val welcome = stringResource(R.string.welcome_back)
+    // Already signed in (e.g. "Show the welcome again"): nothing to ask.
+    LaunchedEffect(Unit) { if (progress.cloud) onNext() }
+
+    found?.let { saved ->
+        SavedProgressDialog(saved, onUse = {
+            found = null
+            progress.useSaved(saved)
+            Toast.makeText(context, welcome, Toast.LENGTH_SHORT).show()
+        }, onCancel = { found = null })
+    }
+
+    StepBody(bottom = {
+        Column {
+            GoogleButton(enabled = !busy, onClick = {
+                busy = true
+                error = null
+                scope.launch {
+                    when (val outcome = signIn(context, cloud, progress, onlyExisting = false)) {
+                        is GoogleOutcome.SignedIn -> {
+                            progress.signedIn(outcome.key, outcome.email)
+                            onNext()
+                        }
+                        is GoogleOutcome.Saved -> found = outcome
+                        is GoogleOutcome.Failed -> error = outcome.error
+                        GoogleOutcome.Cancelled -> Unit
+                    }
+                    busy = false
+                }
+            })
+            Spacer(Modifier.height(10.dp))
+            ChunkyButton(stringResource(R.string.continue_guest), onNext, Modifier.fillMaxWidth(), outlined = true, enabled = !busy)
+        }
+    }) {
+        Spacer(Modifier.height(20.dp))
+        BulbieSays(stringResource(R.string.account_question))
+        Spacer(Modifier.height(22.dp))
+        // What signing in gives, as plain facts: the two buttons below are the only choices.
+        Card {
+            CardRow(icon = R.drawable.ic_check, iconTint = openColor) { Text(stringResource(R.string.account_google_hint), style = MaterialTheme.typography.bodyLarge) }
+            CardRow(icon = R.drawable.ic_check, iconTint = openColor) { Text(stringResource(R.string.account_points), style = MaterialTheme.typography.bodyLarge) }
+            CardRow(icon = R.drawable.ic_shield, iconTint = colors.primary, last = true) { Text(stringResource(R.string.account_private), style = MaterialTheme.typography.bodyLarge) }
+        }
+        Spacer(Modifier.height(16.dp))
+        Text(
+            error?.let { stringResource(googleError(it)) } ?: stringResource(R.string.account_later),
+            style = MaterialTheme.typography.bodyMedium,
+            color = if (error != null) closedColor else MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
 

@@ -219,4 +219,38 @@
     <string-array name="star_words">
         <item>Poor</item><item>Fair</item><item>Good</item><item>Very good</item><item>Excellent</item>
     </string-array>
+    <!-- Cloud backup of progress (opt-in). -->
+    <string name="backup_limit">Too many new sign-ins from this phone today. Try tomorrow.</string>
+    <string name="welcome_back">Welcome back!</string>
+    <string name="your_progress">Your progress</string>
+    <string name="points_note_cloud">Your points and badges are saved to your Google account.</string>
+    <string name="review_thanks_later">Thank you! You\'ll get your points when we publish it.</string>
+    <string name="points_on_approval">+%1$d XP when we publish it</string>
+    <string name="xp_review_approved">Your review was published</string>
+    <string name="xp_place_approved">Your place was published</string>
+    <string name="have_code">Already used Bulbula? Sign in with Google</string>
+    <string name="continue_google">Continue with Google</string>
+    <string name="google_no_account">No Google account on this phone. Add one in the phone\'s Settings.</string>
+    <string name="google_failed">Google sign-in didn\'t work. Please try again.</string>
+    <string name="google_none">No saved progress for this Google account yet. Tap Get started.</string>
+    <string name="google_existing_title">You already have progress</string>
+    <string name="google_existing_body">%1$s already has progress: %2$s, %3$d XP. Use it on this phone? The progress here will be replaced.</string>
+    <string name="google_use_backup">Use it</string>
+    <string name="google_account">Google account</string>
+    <string name="signed_in">Signed in with Google</string>
+    <string name="sign_in_why">Keep your XP and badges with your Google account, so a new phone gets them back. We keep only your first name and progress, not your email.</string>
+    <string name="sign_out_q">Sign out?</string>
+    <string name="sign_out_body">Your progress stays on this phone but stops saving to your Google account.</string>
+    <string name="sign_out_delete">Delete my saved progress too</string>
+    <string name="sign_out_body_email">Your XP and badges stay on this phone, but stop saving to %1$s.</string>
+    <string name="stay_signed_in">Stay signed in</string>
+    <string name="delete_q">Delete your saved progress?</string>
+    <string name="delete_body">We remove your XP and badges from your Google account and sign you out. This phone keeps its own copy.</string>
+    <string name="delete_confirm">Delete and sign out</string>
+    <string name="account_question">Want to keep your progress safe?</string>
+    <string name="account_google_hint">Your XP and badges come with you to any phone</string>
+    <string name="account_later">As a guest, everything stays on this phone. You can sign in later from Profile.</string>
+    <string name="continue_guest">Continue as guest</string>
+    <string name="account_points">Your streak and badges are never lost</string>
+    <string name="account_private">We keep your first name and progress, not your email</string>
 </resources>

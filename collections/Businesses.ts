@@ -1,5 +1,6 @@
 import { serviceKeys, services } from "@/data/services";
 import type { CollectionConfig, FieldAccess } from "payload";
+import { AWARD_XP, grant } from "@/lib/players";
 import { revalidateDirectory } from "@/lib/revalidate";
 
 const signedIn: FieldAccess = ({ req }) => Boolean(req.user);
@@ -45,7 +46,14 @@ export const Businesses: CollectionConfig = {
         return data;
       },
     ],
-    afterChange: [() => revalidateDirectory()],
+    afterChange: [
+      () => revalidateDirectory(),
+      // A backed-up app player who added this place gets their points when it's published.
+      async ({ doc, previousDoc, req }) => {
+        if (doc.status !== "published" || previousDoc?.status === "published" || !doc.player) return;
+        await grant(req, doc.player, { id: `place-${doc.id}`, kind: "place", xp: AWARD_XP.place, place: doc.name ?? undefined });
+      },
+    ],
     afterDelete: [() => revalidateDirectory()],
   },
   fields: [
@@ -213,6 +221,14 @@ export const Businesses: CollectionConfig = {
       admin: { position: "sidebar" },
     },
     { name: "osmId", type: "text", admin: { position: "sidebar", description: "e.g. n12345 / w678" } },
+    {
+      name: "player",
+      type: "relationship",
+      relationTo: "players",
+      index: true,
+      access: { read: ({ req }) => Boolean(req.user) },
+      admin: { readOnly: true, position: "sidebar", description: "Added from the app by a player with cloud backup; publishing gives them points." },
+    },
     {
       name: "claims",
       type: "relationship",
