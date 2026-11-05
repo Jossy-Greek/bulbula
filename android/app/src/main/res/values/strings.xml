@@ -247,4 +247,10 @@
     <string name="delete_q">Delete your saved progress?</string>
     <string name="delete_body">We remove your XP and badges from your Google account and sign you out. This phone keeps its own copy.</string>
     <string name="delete_confirm">Delete and sign out</string>
+    <string name="account_question">Want to keep your progress safe?</string>
+    <string name="account_google_hint">Your XP and badges come with you to any phone</string>
+    <string name="account_later">As a guest, everything stays on this phone. You can sign in later from Profile.</string>
+    <string name="continue_guest">Continue as guest</string>
+    <string name="account_points">Your streak and badges are never lost</string>
+    <string name="account_private">We keep your first name and progress, not your email</string>
 </resources>

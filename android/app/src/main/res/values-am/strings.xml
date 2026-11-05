@@ -241,4 +241,10 @@
     <string name="delete_q">የተቀመጠውን ነጥብዎን ይሰርዙ?</string>
     <string name="delete_body">XP እና ባጆችዎን ከGoogle መለያዎ እናስወግዳለን፣ ከዚያ እናስወጣዎታለን። ይህ ስልክ የራሱን ቅጂ ይይዛል።</string>
     <string name="delete_confirm">ሰርዝና ውጣ</string>
+    <string name="account_question">ነጥብዎን መጠበቅ ይፈልጋሉ?</string>
+    <string name="account_google_hint">XP እና ባጆችዎ ወደ ማንኛውም ስልክ አብረውዎ ይሄዳሉ</string>
+    <string name="account_later">እንደ እንግዳ ሁሉም በዚህ ስልክ ይቆያል። በኋላ ከመገለጫ መግባት ይችላሉ።</string>
+    <string name="continue_guest">እንደ እንግዳ ቀጥል</string>
+    <string name="account_points">ተከታታይ ሳምንታትዎና ባጆችዎ አይጠፉም</string>
+    <string name="account_private">የምናስቀምጠው የመጀመሪያ ስምዎንና ነጥብዎን ነው፤ ኢሜይልዎን አይደለም</string>
 </resources>

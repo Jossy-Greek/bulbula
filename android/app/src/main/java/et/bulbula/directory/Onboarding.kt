@@ -99,7 +99,8 @@ private val CHOICES = listOf(
 )
 
 /**
- * The first run: hello, why you're here, your name, location, then a small party.
+ * The first run: hello, why you're here, your name, location, sign in with Google or carry
+ * on as a guest, then a small party.
  * [onDone] says whether to go straight to "Add a place" (business owners).
  */
 @Composable
@@ -109,7 +110,7 @@ fun Onboarding(progress: Progress, onDone: (addPlace: Boolean) -> Unit) {
     var name by rememberSaveable { mutableStateOf(progress.name) }
     val colors = MaterialTheme.colorScheme
     val locate = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { step = 4 }
-    BackHandler(enabled = step in 1..3) { step -= 1 }
+    BackHandler(enabled = step in 1..4) { step -= 1 }
     // A new phone: sign in with Google to bring back saved progress instead of starting over.
     val cloud = remember { Cloud() }
     val context = LocalContext.current
@@ -148,10 +149,10 @@ fun Onboarding(progress: Progress, onDone: (addPlace: Boolean) -> Unit) {
         Blobs()
         Column(Modifier.fillMaxSize().statusBarsPadding().navigationBarsPadding().imePadding()) {
             // Back and the progress bar, Duolingo-style, for the questions.
-            AnimatedVisibility(visible = step in 1..3) {
+            AnimatedVisibility(visible = step in 1..4) {
                 Row(Modifier.fillMaxWidth().padding(start = 4.dp, end = 24.dp, top = 6.dp), verticalAlignment = Alignment.CenterVertically) {
                     IconButton(onClick = { step -= 1 }) { Icon(painterResource(R.drawable.ic_back), contentDescription = stringResource(R.string.back), tint = colors.onSurfaceVariant) }
-                    XpBar(step / 4f, Modifier.weight(1f), color = colors.primary, height = 16.dp)
+                    XpBar(step / 5f, Modifier.weight(1f), color = colors.primary, height = 16.dp)
                 }
             }
             AnimatedContent(
@@ -172,6 +173,7 @@ fun Onboarding(progress: Progress, onDone: (addPlace: Boolean) -> Unit) {
                         onAllow = { locate.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)) },
                         onSkip = { step = 4 },
                     )
+                    4 -> AccountStep(cloud, onNext = { step = 5 })
                     else -> Ready(name, why, onGo = { finish(false) }, onAdd = { finish(true) })
                 }
             }
@@ -361,6 +363,74 @@ fun Radar(modifier: Modifier = Modifier) {
             drawCircle(Teal.copy(alpha = 0.10f), radius = size.minDimension * 0.2f)
         }
         Bulbie(size = 96.dp)
+    }
+}
+
+/**
+ * Sign in with Google to keep progress on any phone, or carry on as a guest (everything
+ * stays on this phone; Profile can sign in later). An account that already has progress
+ * is offered back, and taking it skips the rest of the welcome.
+ */
+@Composable
+private fun AccountStep(cloud: Cloud, onNext: () -> Unit) {
+    val progress = LocalProgress.current
+    val colors = MaterialTheme.colorScheme
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var busy by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf<String?>(null) }
+    var found by remember { mutableStateOf<GoogleOutcome.Saved?>(null) }
+    val welcome = stringResource(R.string.welcome_back)
+    // Already signed in (e.g. "Show the welcome again"): nothing to ask.
+    LaunchedEffect(Unit) { if (progress.cloud) onNext() }
+
+    found?.let { saved ->
+        SavedProgressDialog(saved, onUse = {
+            found = null
+            progress.useSaved(saved)
+            Toast.makeText(context, welcome, Toast.LENGTH_SHORT).show()
+        }, onCancel = { found = null })
+    }
+
+    StepBody(bottom = {
+        Column {
+            GoogleButton(enabled = !busy, onClick = {
+                busy = true
+                error = null
+                scope.launch {
+                    when (val outcome = signIn(context, cloud, progress, onlyExisting = false)) {
+                        is GoogleOutcome.SignedIn -> {
+                            progress.signedIn(outcome.key, outcome.email)
+                            onNext()
+                        }
+                        is GoogleOutcome.Saved -> found = outcome
+                        is GoogleOutcome.Failed -> error = outcome.error
+                        GoogleOutcome.Cancelled -> Unit
+                    }
+                    busy = false
+                }
+            })
+            Spacer(Modifier.height(10.dp))
+            ChunkyButton(stringResource(R.string.continue_guest), onNext, Modifier.fillMaxWidth(), outlined = true, enabled = !busy)
+        }
+    }) {
+        Spacer(Modifier.height(20.dp))
+        BulbieSays(stringResource(R.string.account_question))
+        Spacer(Modifier.height(22.dp))
+        // What signing in gives, as plain facts: the two buttons below are the only choices.
+        Card {
+            CardRow(icon = R.drawable.ic_check, iconTint = openColor) { Text(stringResource(R.string.account_google_hint), style = MaterialTheme.typography.bodyLarge) }
+            CardRow(icon = R.drawable.ic_check, iconTint = openColor) { Text(stringResource(R.string.account_points), style = MaterialTheme.typography.bodyLarge) }
+            CardRow(icon = R.drawable.ic_shield, iconTint = colors.primary, last = true) { Text(stringResource(R.string.account_private), style = MaterialTheme.typography.bodyLarge) }
+        }
+        Spacer(Modifier.height(16.dp))
+        Text(
+            error?.let { stringResource(googleError(it)) } ?: stringResource(R.string.account_later),
+            style = MaterialTheme.typography.bodyMedium,
+            color = if (error != null) closedColor else MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
 
