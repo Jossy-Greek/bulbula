@@ -66,7 +66,7 @@ fun PlaceScreen(place: Place, serviceLabels: Map<String, String>, now: Pair<Int,
     val always = Hours.parse(place.hoursSpec)?.let { Hours.status(it, now) } == Hours.Status.Always
     val location = listOfNotNull(place.landmark, place.address).distinct().joinToString(", ").takeIf { it.isNotEmpty() }
 
-    Column(Modifier.fillMaxSize().background(colors.background).verticalScroll(rememberScrollState()).statusBarsPadding().navigationBarsPadding().padding(bottom = 32.dp)) {
+    Column(Modifier.fillMaxSize().background(colors.background).statusBarsPadding().verticalScroll(rememberScrollState()).navigationBarsPadding().padding(bottom = 32.dp)) {
         Row(Modifier.fillMaxWidth().padding(horizontal = 4.dp, vertical = 4.dp)) {
             IconButton(onClick = onBack) { Icon(painterResource(R.drawable.ic_back), contentDescription = stringResource(R.string.back)) }
             Spacer(Modifier.weight(1f))
