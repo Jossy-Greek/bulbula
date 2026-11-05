@@ -14,7 +14,7 @@ export async function POST(req: Request) {
   const cat = await payload.find({ collection: "categories", where: { slug: { equals: String(body.category ?? "") } }, limit: 1, depth: 0 });
   const form = new FormData();
   form.set("category", String(cat.docs[0]?.id ?? ""));
-  for (const key of ["nameEn", "nameAm", "phone", "landmark", "hours", "descriptionEn", "yourName", "yourPhone", "relationship", "company"]) {
+  for (const key of ["nameEn", "nameAm", "phone", "landmark", "hours", "descriptionEn", "yourName", "yourPhone", "relationship", "company", "player"]) {
     if (body[key] != null) form.set(key, String(body[key]));
   }
   if (body.consent === true) form.set("consent", "on");

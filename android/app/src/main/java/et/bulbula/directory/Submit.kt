@@ -24,8 +24,8 @@ suspend fun send(path: String, body: JSONObject, siteUrl: String = BuildConfig.S
 }
 
 /** A review from the place screen (app/m/review on the site). [drawn] is when the form opened. */
-suspend fun sendReview(slug: String, rating: Int, author: String, text: String, locale: String, drawn: Long): String? =
-    send("/m/review", JSONObject().put("slug", slug).put("rating", rating).put("author", author).put("text", text).put("locale", locale).put("t", drawn))
+suspend fun sendReview(slug: String, rating: Int, author: String, text: String, locale: String, drawn: Long, player: String? = null): String? =
+    send("/m/review", JSONObject().put("slug", slug).put("rating", rating).put("author", author).put("text", text).put("locale", locale).put("t", drawn).put("player", player))
 
 /** A new place (app/m/place on the site); it waits for an admin like the website's form. */
 class NewPlace(
@@ -40,11 +40,12 @@ class NewPlace(
     val relationship: String,
 )
 
-suspend fun sendPlace(p: NewPlace): String? =
+/** [player] is the recovery code when cloud backup is on, so the points come on approval. */
+suspend fun sendPlace(p: NewPlace, player: String? = null): String? =
     send(
         "/m/place",
         JSONObject()
             .put("nameEn", p.name).put("category", p.category).put("phone", p.phone).put("landmark", p.landmark)
             .put("hours", p.hours).put("descriptionEn", p.description).put("yourName", p.yourName).put("yourPhone", p.yourPhone)
-            .put("relationship", p.relationship).put("consent", true),
+            .put("relationship", p.relationship).put("consent", true).put("player", player),
     )

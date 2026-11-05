@@ -1,6 +1,10 @@
 package et.bulbula.directory
 
 import android.Manifest
+import kotlinx.coroutines.launch
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.platform.LocalContext
+import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -106,6 +110,34 @@ fun Onboarding(progress: Progress, onDone: (addPlace: Boolean) -> Unit) {
     val colors = MaterialTheme.colorScheme
     val locate = rememberLauncherForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { step = 4 }
     BackHandler(enabled = step in 1..3) { step -= 1 }
+    // A new phone: sign in with Google to bring back saved progress instead of starting over.
+    val cloud = remember { Cloud() }
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    var signingIn by remember { mutableStateOf(false) }
+    var signInError by remember { mutableStateOf<Int?>(null) }
+    signInError?.let { message ->
+        val text = stringResource(message)
+        LaunchedEffect(message) {
+            Toast.makeText(context, text, Toast.LENGTH_LONG).show()
+            signInError = null
+        }
+    }
+    val welcome = stringResource(R.string.welcome_back)
+    fun signInExisting() {
+        signingIn = true
+        scope.launch {
+            when (val outcome = signIn(context, cloud, progress, onlyExisting = true)) {
+                is GoogleOutcome.Saved -> {
+                    progress.useSaved(outcome)
+                    Toast.makeText(context, welcome, Toast.LENGTH_SHORT).show()
+                }
+                is GoogleOutcome.Failed -> signInError = googleError(outcome.error)
+                else -> Unit
+            }
+            signingIn = false
+        }
+    }
 
     fun finish(addPlace: Boolean) {
         progress.welcome(name, why)
@@ -133,7 +165,7 @@ fun Onboarding(progress: Progress, onDone: (addPlace: Boolean) -> Unit) {
                 label = "onboarding",
             ) { s ->
                 when (s) {
-                    0 -> Welcome(onStart = { step = 1 })
+                    0 -> Welcome(onStart = { step = 1 }, onSignIn = ::signInExisting, signingIn = signingIn)
                     1 -> WhyStep(why, onWhy = { why = it }, onNext = { step = 2 })
                     2 -> NameStep(name, onName = { name = it }, onNext = { step = 3 })
                     3 -> LocationStep(
@@ -167,13 +199,20 @@ private fun StepBody(bottom: @Composable () -> Unit, content: @Composable () -> 
 }
 
 @Composable
-private fun Welcome(onStart: () -> Unit) {
+private fun Welcome(onStart: () -> Unit, onSignIn: () -> Unit, signingIn: Boolean) {
     val hello = remember { Animatable(0f) }
     LaunchedEffect(Unit) {
         delay(350)
         hello.animateTo(1f, spring(dampingRatio = 0.4f, stiffness = 300f))
     }
-    StepBody(bottom = { ChunkyButton(stringResource(R.string.get_started), onStart, Modifier.fillMaxWidth()) }) {
+    StepBody(bottom = {
+        Column {
+            ChunkyButton(stringResource(R.string.get_started), onStart, Modifier.fillMaxWidth())
+            TextButton(onClick = onSignIn, enabled = !signingIn, modifier = Modifier.fillMaxWidth().padding(top = 4.dp)) {
+                Text(stringResource(R.string.have_code), fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
+    }) {
         Spacer(Modifier.height(56.dp))
         Column(Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
             // "Selam!" pops out of Bulbie.

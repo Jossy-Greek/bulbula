@@ -5,6 +5,7 @@ import { getPayload } from "payload";
 import config from "@payload-config";
 import { dailyVisitor } from "@/lib/visitor";
 import { adminUrl, notifyAdmin } from "@/lib/notify";
+import { findPlayer } from "@/lib/players";
 
 export type ReviewState = { ok: boolean; error?: "rating" | "name" | "links" | "already" | "failed" };
 
@@ -56,10 +57,12 @@ export async function submitReview(_prev: ReviewState, form: FormData): Promise<
     if (sameBusiness) return { ok: false, error: "already" };
     if (today.totalDocs >= PER_DAY) return { ok: true }; // a flood: accept quietly, keep nothing
 
+    // From the app, with cloud backup on: the recovery code ties the review to its player.
+    const player = await findPlayer(payload, form.get("player"));
     await payload.create({
       collection: "reviews",
       overrideAccess: true,
-      data: { business: business.id, rating, author, text: text || undefined, locale, visitor, status: "pending" },
+      data: { business: business.id, rating, author, text: text || undefined, locale, visitor, status: "pending", player: player?.id },
     });
     await notifyAdmin(
       `⭐ New review: ${"★".repeat(rating)}${"☆".repeat(5 - rating)} on ${business.name} by ${author}${text ? `\n“${text.length > 200 ? `${text.slice(0, 200)}…` : text}”` : ""}\nPublish or reject: ${adminUrl("#reviews")}`,

@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { AWARD_XP, grant } from "@/lib/players";
 import { revalidateDirectory } from "@/lib/revalidate";
 
 const signedIn = ({ req }: { req: { user?: unknown } }) => Boolean(req.user);
@@ -26,7 +27,16 @@ export const Reviews: CollectionConfig = {
     delete: signedIn,
   },
   hooks: {
-    afterChange: [() => revalidateDirectory()],
+    afterChange: [
+      () => revalidateDirectory(),
+      // A backed-up app player gets their points when the review is published.
+      async ({ doc, previousDoc, req }) => {
+        if (doc.status !== "published" || previousDoc?.status === "published" || !doc.player) return;
+        const businessId = typeof doc.business === "object" ? doc.business?.id : doc.business;
+        const business = businessId ? await req.payload.findByID({ collection: "businesses", id: businessId, depth: 0, req, overrideAccess: true, disableErrors: true }) : null;
+        await grant(req, doc.player, { id: `review-${doc.id}`, kind: "review", xp: AWARD_XP.review, place: business?.name ?? undefined });
+      },
+    ],
     afterDelete: [() => revalidateDirectory()],
   },
   fields: [
@@ -53,6 +63,7 @@ export const Reviews: CollectionConfig = {
     },
     { name: "text", type: "textarea", maxLength: 1000 },
     { name: "locale", type: "text", admin: { readOnly: true, position: "sidebar", description: "Site language the review was written from." } },
+    { name: "player", type: "relationship", relationTo: "players", index: true, access: { read: signedIn }, admin: { readOnly: true, position: "sidebar", description: "Sent from the app by a player with cloud backup; publishing gives them points." } },
     { name: "visitor", type: "text", index: true, access: { read: signedIn }, admin: { readOnly: true, position: "sidebar", description: "Daily-rotating hash; not a person's identity." } },
   ],
 };

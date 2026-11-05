@@ -3,6 +3,7 @@
 import { getPayload } from "payload";
 import config from "@payload-config";
 import { adminUrl, notifyAdmin } from "@/lib/notify";
+import { findPlayer } from "@/lib/players";
 
 export type AddState = { ok: boolean; error?: "required" | "contact" | "consent" | "failed" };
 
@@ -39,6 +40,8 @@ export async function submitBusiness(_prev: AddState, form: FormData): Promise<A
       const found = await payload.find({ collection: "businesses", where: { slug: { equals: claimSlug } }, limit: 1, depth: 0 });
       claims = found.docs[0]?.id;
     }
+    // From the app, with cloud backup on: the recovery code ties the place to its player.
+    const player = await findPlayer(payload, form.get("player"));
     const doc = await payload.create({
       collection: "businesses",
       locale: "en",
@@ -57,6 +60,7 @@ export async function submitBusiness(_prev: AddState, form: FormData): Promise<A
         description: clean(form.get("descriptionEn"), 1200) || undefined,
         status: "pending",
         source: "owner",
+        player: player?.id,
         claimed: false,
         featured: false,
         claims,

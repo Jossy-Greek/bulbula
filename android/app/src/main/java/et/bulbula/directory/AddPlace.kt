@@ -91,17 +91,18 @@ fun AddPlaceScreen(categories: List<Category>, onBack: () -> Unit) {
     var sending by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
     var sent by rememberSaveable { mutableStateOf(false) }
+    var pointsLater by rememberSaveable { mutableStateOf(false) }
     val ready = name.isNotBlank() && category != null && phone.isNotBlank() && yourName.isNotBlank() && yourPhone.isNotBlank() && consent
 
     fun submit() {
         sending = true
         error = null
         scope.launch {
-            val result = sendPlace(NewPlace(name.trim(), category!!, phone.trim(), landmark.trim(), hours.trim(), about.trim(), yourName.trim(), yourPhone.trim(), relationship))
+            val result = sendPlace(NewPlace(name.trim(), category!!, phone.trim(), landmark.trim(), hours.trim(), about.trim(), yourName.trim(), yourPhone.trim(), relationship), progress.cloudCode)
             sending = false
             if (result == null) {
                 sent = true
-                progress.addedPlace()
+                pointsLater = !progress.addedPlace()
             } else {
                 error = result
             }
@@ -110,7 +111,7 @@ fun AddPlaceScreen(categories: List<Category>, onBack: () -> Unit) {
 
     AnimatedContent(sent, transitionSpec = { (fadeIn() + scaleIn(initialScale = 0.92f)) togetherWith fadeOut() }, label = "add") { done ->
         if (done) {
-            Sent(onDone = onBack, onAnother = {
+            Sent(pointsLater, onDone = onBack, onAnother = {
                 name = ""; category = null; phone = ""; landmark = ""; hours = ""; about = ""; consent = false; sent = false
             })
             return@AnimatedContent
@@ -239,7 +240,7 @@ private fun Pill(label: String, selected: Boolean, onClick: () -> Unit) {
 }
 
 @Composable
-private fun Sent(onDone: () -> Unit, onAnother: () -> Unit) {
+private fun Sent(pointsLater: Boolean, onDone: () -> Unit, onAnother: () -> Unit) {
     val pop = remember { Animatable(0.4f) }
     LaunchedEffect(Unit) {
         delay(100)
@@ -255,6 +256,10 @@ private fun Sent(onDone: () -> Unit, onAnother: () -> Unit) {
         Text(stringResource(R.string.thank_you), style = MaterialTheme.typography.headlineLarge, textAlign = TextAlign.Center)
         Spacer(Modifier.height(8.dp))
         Text(stringResource(R.string.added_body), style = MaterialTheme.typography.bodyLarge, color = MaterialTheme.colorScheme.onSurfaceVariant, textAlign = TextAlign.Center)
+        if (pointsLater) {
+            Spacer(Modifier.height(10.dp))
+            Text(stringResource(R.string.points_on_approval, Xp.ADDED), fontWeight = FontWeight.Bold, color = MarigoldDeep, textAlign = TextAlign.Center)
+        }
         Spacer(Modifier.weight(1f))
         ChunkyButton(stringResource(R.string.done), onDone, Modifier.fillMaxWidth())
         Spacer(Modifier.height(10.dp))

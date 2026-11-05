@@ -77,6 +77,8 @@ fun RateCard(place: Place, modifier: Modifier = Modifier) {
     var rating by rememberSaveable(place.slug) { mutableIntStateOf(0) }
     var open by rememberSaveable { mutableStateOf(false) }
     var sent by rememberSaveable(place.slug) { mutableStateOf(false) }
+    // Signed in, the points wait for an admin to publish the review.
+    var pointsLater by rememberSaveable(place.slug) { mutableStateOf(false) }
 
     Column(
         modifier
@@ -93,7 +95,7 @@ fun RateCard(place: Place, modifier: Modifier = Modifier) {
                         Icon(painterResource(R.drawable.ic_check), contentDescription = null, tint = Color.White, modifier = Modifier.size(20.dp))
                     }
                     Spacer(Modifier.width(12.dp))
-                    Text(stringResource(R.string.review_thanks), style = MaterialTheme.typography.bodyLarge)
+                    Text(stringResource(if (pointsLater) R.string.review_thanks_later else R.string.review_thanks), style = MaterialTheme.typography.bodyLarge)
                 }
             } else {
                 Column {
@@ -120,8 +122,9 @@ fun RateCard(place: Place, modifier: Modifier = Modifier) {
         val sheet = rememberModalBottomSheetState(skipPartiallyExpanded = true)
         val scope = rememberCoroutineScope()
         ModalBottomSheet(onDismissRequest = { open = false }, sheetState = sheet, containerColor = colors.background) {
-            ReviewForm(place, rating, onRating = { rating = it }) {
+            ReviewForm(place, rating, onRating = { rating = it }) { now ->
                 sent = true
+                pointsLater = !now
                 scope.launch { sheet.hide() }.invokeOnCompletion { open = false }
             }
         }
@@ -161,7 +164,7 @@ fun Stars(rating: Int, size: Dp, onRate: (Int) -> Unit) {
 }
 
 @Composable
-private fun ReviewForm(place: Place, rating: Int, onRating: (Int) -> Unit, onSent: () -> Unit) {
+private fun ReviewForm(place: Place, rating: Int, onRating: (Int) -> Unit, onSent: (pointsNow: Boolean) -> Unit) {
     val progress = LocalProgress.current
     val colors = MaterialTheme.colorScheme
     val locale = if (LocalConfiguration.current.locales[0].language == "am") "am" else "en"
@@ -180,12 +183,11 @@ private fun ReviewForm(place: Place, rating: Int, onRating: (Int) -> Unit, onSen
         scope.launch {
             val wait = 3_200 - (System.currentTimeMillis() - drawn)
             if (wait > 0) delay(wait)
-            val result = sendReview(place.slug, rating, name.trim(), text.trim(), locale, drawn)
+            val result = sendReview(place.slug, rating, name.trim(), text.trim(), locale, drawn, progress.cloudCode)
             sending = false
             if (result == null) {
                 if (progress.name.isBlank()) progress.rename(name)
-                progress.reviewed()
-                onSent()
+                onSent(progress.reviewed())
             } else {
                 error = result
             }

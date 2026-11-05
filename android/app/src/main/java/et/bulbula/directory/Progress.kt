@@ -10,6 +10,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.core.content.edit
+import org.json.JSONArray
+import org.json.JSONObject
 import java.time.DayOfWeek
 import java.time.LocalDate
 import java.time.ZoneId
@@ -46,6 +48,9 @@ enum class Badge(@DrawableRes val icon: Int, val color: Long, @StringRes val tit
     Builder(R.drawable.ic_store, 0xFF9A5B13, R.string.badge_builder, R.string.badge_builder_d),
 }
 
+/** Points for a published review or place, from the site (app/m/player). */
+class Approval(val id: String, val kind: String, val xp: Int, val place: String?)
+
 /** Points just earned, shown by [Celebrations]; [levelUp] and [badges] get their own moment. */
 class Reward(val xp: Int, @StringRes val reason: Int, val big: Boolean, val levelUp: Level?, val badges: List<Badge>) {
     val id = next++
@@ -67,7 +72,8 @@ object Xp {
 }
 
 /**
- * The player's progress, kept on this phone only: no account, no leaderboard. Points reward
+ * The player's progress, kept on this phone, and saved to the site too when they sign in
+ * with Google (Profile, or the welcome screen on a new phone). Points reward
  * using Bulbula (opening places, calling them, coming back) and adding to it (reviews and new
  * places, which an admin still checks before they show).
  *
@@ -97,6 +103,18 @@ class Progress(context: Context) {
     val goalDone get() = goalWeek == thisWeek()
     val level get() = levelFor(xp)
 
+    /** When signed in: the key the site gave this player, sent with every sync (never shown). */
+    var cloudCode by mutableStateOf(prefs.getString("cloudCode", null)); private set
+    val cloud get() = cloudCode != null
+    /**
+     * The Google account the backup is linked to: its email when signed in on this phone,
+     * "" when linked elsewhere (known from a sync), null when not linked.
+     */
+    var google by mutableStateOf(prefs.getString("google", null)); private set
+    /** Approval points already added, and the ones the site still needs to hear about. */
+    private var applied = prefs.getStringSet("applied", null).orEmpty().toSet()
+    var toAck = prefs.getStringSet("toAck", null).orEmpty().toSet(); private set
+
     /** Waiting to be shown, oldest first. */
     val rewards = mutableStateListOf<Reward>()
 
@@ -115,6 +133,104 @@ class Progress(context: Context) {
         putStringSet("weekOpened", weekOpened)
         putString("lastWeek", lastWeek)
         putString("goalWeek", goalWeek)
+        putString("cloudCode", cloudCode)
+        putString("google", google)
+        putStringSet("applied", applied)
+        putStringSet("toAck", toAck)
+    }
+
+    /** Everything that is saved to the account, as the site stores it. */
+    fun export(): JSONObject = JSONObject()
+        .put("version", 1)
+        .put("name", name)
+        .put("why", why?.name)
+        .put("xp", xp)
+        .put("streak", streak)
+        .put("opened", JSONArray(opened.toList()))
+        .put("acted", JSONArray(acted.toList()))
+        .put("reviews", reviews)
+        .put("added", added)
+        .put("badges", JSONArray(badges.map { it.name }))
+        .put("week", week)
+        .put("weekOpened", JSONArray(weekOpened.toList()))
+        .put("lastWeek", lastWeek)
+        .put("goalWeek", goalWeek)
+        .put("applied", JSONArray(applied.toList()))
+
+    private fun JSONObject.strings(key: String): Set<String> =
+        optJSONArray(key)?.let { a -> (0 until a.length()).mapNotNull { a.optString(it).takeIf(String::isNotEmpty) }.toSet() }.orEmpty()
+
+    private fun JSONObject.text(key: String): String? = if (isNull(key)) null else optString(key).takeIf { it.isNotEmpty() }
+
+    /** Signing in to an account with saved progress: it replaces what's here, and saving continues with [code]. */
+    fun restore(code: String, name: String, saved: JSONObject?) {
+        val p = saved ?: JSONObject()
+        this.name = (p.text("name") ?: name).take(40)
+        why = p.text("why")?.let { runCatching { Why.valueOf(it) }.getOrNull() }
+        xp = p.optInt("xp", 0)
+        streak = p.optInt("streak", 0)
+        opened = p.strings("opened")
+        acted = p.strings("acted")
+        reviews = p.optInt("reviews", 0)
+        added = p.optInt("added", 0)
+        badges = p.strings("badges").mapNotNull { runCatching { Badge.valueOf(it) }.getOrNull() }.toSet() + Badge.Hello
+        week = p.text("week")
+        weekOpened = if (week == thisWeek()) p.strings("weekOpened") else emptySet()
+        lastWeek = p.text("lastWeek")
+        goalWeek = p.text("goalWeek")
+        applied = p.strings("applied")
+        toAck = emptySet()
+        onboarded = true
+        cloudCode = code
+        prefs.edit { putBoolean("welcomed", true) }
+        save()
+    }
+
+    fun signedIn(code: String, email: String) {
+        cloudCode = code
+        google = email
+        save()
+    }
+
+    /** Linked to Google: [email] on this phone, or "" when only the site says it's linked. */
+    fun linkedGoogle(email: String) {
+        if (email.isEmpty() && google != null) return
+        google = email
+        save()
+    }
+
+    /** Signed out (or the site no longer knows this player): progress stays on the phone. */
+    fun signOut() {
+        cloudCode = null
+        google = null
+        toAck = emptySet()
+        save()
+    }
+
+    /**
+     * Points for reviews and places an admin has published, from a sync. Each counts once;
+     * all of them go back to the site in [toAck] so it stops sending them.
+     */
+    fun approved(awards: List<Approval>) {
+        for (a in awards) {
+            toAck = toAck + a.id
+            if (a.id in applied) continue
+            applied = (applied + a.id).toList().takeLast(500).toSet()
+            if (a.kind == "place") {
+                added += 1
+                award(a.xp, R.string.xp_place_approved, big = true)
+            } else {
+                reviews += 1
+                award(a.xp, R.string.xp_review_approved, big = true)
+            }
+        }
+        save()
+    }
+
+    /** The site has heard about these. */
+    fun acked(ids: Set<String>) {
+        toAck = toAck - ids
+        save()
     }
 
     private fun earned(badge: Badge) = when (badge) {
@@ -193,14 +309,23 @@ class Progress(context: Context) {
         award(Xp.REACHED, R.string.xp_reached)
     }
 
-    fun reviewed() {
+    /**
+     * A review was sent. Not signed in, the points come now; signed in, they come
+     * when an admin publishes it ([approved]), so they can be trusted. Returns whether they came now.
+     */
+    fun reviewed(): Boolean {
+        if (cloud) return false
         reviews += 1
         award(Xp.REVIEW, R.string.xp_review, big = true)
+        return true
     }
 
-    fun addedPlace() {
+    /** A place was sent; see [reviewed]. */
+    fun addedPlace(): Boolean {
+        if (cloud) return false
         added += 1
         award(Xp.ADDED, R.string.xp_added, big = true)
+        return true
     }
 
     fun shown(reward: Reward) {

@@ -9,6 +9,7 @@ import * as migration_20261029_110236_menu_visibility from './20261029_110236_me
 import * as migration_20261029_111213_site_settings from './20261029_111213_site_settings';
 import * as migration_20261104_120000_analytics_platform from './20261104_120000_analytics_platform';
 import * as migration_20261104_130000_android_update from './20261104_130000_android_update';
+import * as migration_20261105_095205_cloud_progress from './20261105_095205_cloud_progress';
 
 export const migrations = [
   {
@@ -65,5 +66,10 @@ export const migrations = [
     up: migration_20261104_130000_android_update.up,
     down: migration_20261104_130000_android_update.down,
     name: '20261104_130000_android_update',
+  },
+  {
+    up: migration_20261105_095205_cloud_progress.up,
+    down: migration_20261105_095205_cloud_progress.down,
+    name: '20261105_095205_cloud_progress'
   },
 ];

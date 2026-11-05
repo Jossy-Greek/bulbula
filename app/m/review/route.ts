@@ -9,7 +9,7 @@ export async function POST(req: Request) {
   const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
   if (!body) return Response.json({ ok: false, error: "failed" }, { status: 400 });
   const form = new FormData();
-  for (const key of ["slug", "rating", "author", "text", "locale", "t", "company"]) {
+  for (const key of ["slug", "rating", "author", "text", "locale", "t", "company", "player"]) {
     if (body[key] != null) form.set(key, String(body[key]));
   }
   return Response.json(await submitReview({ ok: false }, form));

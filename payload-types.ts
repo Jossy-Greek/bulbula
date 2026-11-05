@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     businesses: Business;
     reviews: Review;
+    players: Player;
     categories: Category;
     media: Media;
     users: User;
@@ -82,6 +83,7 @@ export interface Config {
   collectionsSelect: {
     businesses: BusinessesSelect<false> | BusinessesSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
+    players: PlayersSelect<false> | PlayersSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -266,6 +268,10 @@ export interface Business {
    */
   osmId?: string | null;
   /**
+   * Added from the app by a player with cloud backup; publishing gives them points.
+   */
+  player?: (number | null) | Player;
+  /**
    * This submission claims an existing listing — merge it, then reject this one.
    */
   claims?: (number | null) | Business;
@@ -320,7 +326,6 @@ export interface Category {
 export interface Media {
   id: number;
   alt?: string | null;
-  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -352,6 +357,57 @@ export interface Media {
   };
 }
 /**
+ * App users who signed in with Google to save their XP and badges. Reviews and places they send earn points when you publish them.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "players".
+ */
+export interface Player {
+  id: number;
+  name?: string | null;
+  xp?: number | null;
+  lastSyncAt?: string | null;
+  codeHash: string;
+  codeSealed?: string | null;
+  googleHash?: string | null;
+  /**
+   * The app's saved progress (level, badges, streak), as the phone last sent it.
+   */
+  progress?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Points for published reviews and places, waiting for the app to pick up.
+   */
+  awards?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  given?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  visitor?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "reviews".
  */
@@ -369,6 +425,10 @@ export interface Review {
    * Site language the review was written from.
    */
   locale?: string | null;
+  /**
+   * Sent from the app by a player with cloud backup; publishing gives them points.
+   */
+  player?: (number | null) | Player;
   /**
    * Daily-rotating hash; not a person's identity.
    */
@@ -471,6 +531,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'reviews';
         value: number | Review;
+      } | null)
+    | ({
+        relationTo: 'players';
+        value: number | Player;
       } | null)
     | ({
         relationTo: 'categories';
@@ -581,6 +645,7 @@ export interface BusinessesSelect<T extends boolean = true> {
   googleCheckedAt?: T;
   source?: T;
   osmId?: T;
+  player?: T;
   claims?: T;
   slug?: T;
   submitter?:
@@ -605,6 +670,25 @@ export interface ReviewsSelect<T extends boolean = true> {
   status?: T;
   text?: T;
   locale?: T;
+  player?: T;
+  visitor?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "players_select".
+ */
+export interface PlayersSelect<T extends boolean = true> {
+  name?: T;
+  xp?: T;
+  lastSyncAt?: T;
+  codeHash?: T;
+  codeSealed?: T;
+  googleHash?: T;
+  progress?: T;
+  awards?: T;
+  given?: T;
   visitor?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -628,7 +712,6 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
-  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

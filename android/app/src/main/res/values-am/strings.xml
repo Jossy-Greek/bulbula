@@ -213,4 +213,32 @@
     <string-array name="star_words">
         <item>ደካማ</item><item>መካከለኛ</item><item>ጥሩ</item><item>በጣም ጥሩ</item><item>እጅግ በጣም ጥሩ</item>
     </string-array>
+    <!-- Cloud backup of progress (opt-in). Amharic: draft, to be reviewed. -->
+    <string name="backup_limit">ዛሬ ከዚህ ስልክ ብዙ አዲስ መግቢያ ተሞክሯል። ነገ ይሞክሩ።</string>
+    <string name="welcome_back">እንኳን ደህና ተመለሱ!</string>
+    <string name="your_progress">የእርስዎ ነጥብ</string>
+    <string name="points_note_cloud">ነጥቦችዎና ባጆችዎ በGoogle መለያዎ ተቀምጠዋል።</string>
+    <string name="review_thanks_later">እናመሰግናለን! ስናትመው ነጥብዎ ይደርስዎታል።</string>
+    <string name="points_on_approval">ስናትመው +%1$d XP</string>
+    <string name="xp_review_approved">ግምገማዎ ታትሟል</string>
+    <string name="xp_place_approved">ቦታዎ ታትሟል</string>
+    <string name="have_code">ቡልቡላን ተጠቅመው ያውቃሉ? በGoogle ይግቡ</string>
+    <string name="continue_google">በGoogle ይቀጥሉ</string>
+    <string name="google_no_account">በዚህ ስልክ የGoogle መለያ የለም። በስልኩ Settings ያክሉ።</string>
+    <string name="google_failed">በGoogle መግባት አልተሳካም። እባክዎ እንደገና ይሞክሩ።</string>
+    <string name="google_none">ለዚህ የGoogle መለያ እስካሁን የተቀመጠ ነጥብ የለም። «እንጀምር»ን ይንኩ።</string>
+    <string name="google_existing_title">ያለዎት ነጥብ አለ</string>
+    <string name="google_existing_body">%1$s ነጥብ አለው፦ %2$s፣ %3$d XP። በዚህ ስልክ ይጠቀሙበት? እዚህ ያለው ነጥብ ይተካል።</string>
+    <string name="google_use_backup">ተጠቀም</string>
+    <string name="google_account">የGoogle መለያ</string>
+    <string name="signed_in">በGoogle ገብተዋል</string>
+    <string name="sign_in_why">ስልክ ቢቀይሩ እንዲመለስ XP እና ባጆችዎን በGoogle መለያዎ ያስቀምጡ። የምናስቀምጠው የመጀመሪያ ስምዎንና ነጥብዎን ብቻ ነው፤ ኢሜይልዎን አይደለም።</string>
+    <string name="sign_out_q">ይውጡ?</string>
+    <string name="sign_out_body">ነጥብዎ በዚህ ስልክ ይቆያል፤ ግን በGoogle መለያዎ መቀመጡ ይቆማል።</string>
+    <string name="sign_out_delete">የተቀመጠውን ነጥቤንም ሰርዝ</string>
+    <string name="sign_out_body_email">XP እና ባጆችዎ በዚህ ስልክ ይቆያሉ፤ ግን በ%1$s መቀመጣቸው ይቆማል።</string>
+    <string name="stay_signed_in">እንደገባሁ ልቆይ</string>
+    <string name="delete_q">የተቀመጠውን ነጥብዎን ይሰርዙ?</string>
+    <string name="delete_body">XP እና ባጆችዎን ከGoogle መለያዎ እናስወግዳለን፣ ከዚያ እናስወጣዎታለን። ይህ ስልክ የራሱን ቅጂ ይይዛል።</string>
+    <string name="delete_confirm">ሰርዝና ውጣ</string>
 </resources>
