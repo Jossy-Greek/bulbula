@@ -71,7 +71,7 @@ fun ProfileScreen(onSettings: () -> Unit) {
     var picked by remember { mutableStateOf<Badge?>(null) }
     val xpShown by animateIntAsState(progress.xp, tween(1100, easing = FastOutSlowInEasing), label = "xp")
 
-    Column(Modifier.fillMaxSize().background(colors.background).verticalScroll(rememberScrollState()).statusBarsPadding().padding(bottom = tabBarSpace())) {
+    Column(Modifier.fillMaxSize().background(colors.background).statusBarsPadding().verticalScroll(rememberScrollState()).padding(bottom = tabBarSpace())) {
         // Avatar with the level ring around it.
         Column(Modifier.fillMaxWidth().padding(top = 24.dp).enter(0), horizontalAlignment = Alignment.CenterHorizontally) {
             Box(Modifier.size(132.dp), contentAlignment = Alignment.Center) {

@@ -51,7 +51,7 @@ fun SettingsScreen(
     val locale = if (LocalConfiguration.current.locales[0].language == "am") "am" else "en"
     val open = { path: String -> context.startActivity(Intent(Intent.ACTION_VIEW, "${BuildConfig.SITE_URL}/$locale$path".toUri())) }
 
-    Column(Modifier.fillMaxSize().background(colors.background).verticalScroll(rememberScrollState()).statusBarsPadding().navigationBarsPadding().padding(bottom = 32.dp)) {
+    Column(Modifier.fillMaxSize().background(colors.background).statusBarsPadding().verticalScroll(rememberScrollState()).navigationBarsPadding().padding(bottom = 32.dp)) {
         IconButton(onClick = onBack, modifier = Modifier.padding(4.dp)) { Icon(painterResource(R.drawable.ic_back), contentDescription = stringResource(R.string.back)) }
         Text(stringResource(R.string.settings), style = MaterialTheme.typography.headlineLarge, modifier = Modifier.padding(start = 20.dp, end = 20.dp, bottom = 20.dp))
 
