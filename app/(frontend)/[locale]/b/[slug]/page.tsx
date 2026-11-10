@@ -19,6 +19,7 @@ import { site } from "@/data/site";
 import { getContent, isLocale, locales } from "@/data/content";
 import { directionsUrl, externalUrl, getListing, getListings, getSiteSettings, googleMapsUrl, telHref } from "@/lib/directory";
 import { localeHref } from "@/lib/href";
+import { alternates, clip, placeLine } from "@/lib/seo";
 import { formatDistance, metres } from "@/lib/geo";
 import { getReviews } from "@/lib/reviews";
 
@@ -35,7 +36,19 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/b/[slug]
   const { locale, slug } = await params;
   if (!isLocale(locale)) return {};
   const l = await getListing(slug, locale);
-  return l ? { title: `${l.name} — ${l.category.name}`, description: l.description ?? undefined } : {};
+  if (!l) return {};
+  const where = l.landmark ?? l.address;
+  // The owner's own words when there are any; otherwise a sentence that says what searchers
+  // want to know (what, where, how to reach it) instead of the bare "Banks — Bulbula."
+  const description = clip(
+    l.description && !l.generated
+      ? l.description
+      : locale === "am"
+        ? `${l.name} (${l.category.name})፣ ${placeLine(where, locale)}።${l.phone ? ` ስልክ ${l.phone}።` : ""}${l.hours ? ` ${l.hours}።` : ""} አቅጣጫና ግምገማዎች በቡልቡላ ማውጫ።`
+        : `${l.name} (${l.category.name}), ${placeLine(where, locale)}.${l.phone ? ` Call ${l.phone}.` : ""}${l.hours ? ` ${l.hours}.` : ""} Directions and reviews on Bulbula Directory.`,
+  );
+  const title = `${l.name} — ${l.category.name}`;
+  return { title, description, alternates: alternates(locale, `/b/${l.slug}`), openGraph: { title, description, type: "website" } };
 }
 
 export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[slug]">) {
@@ -323,7 +336,7 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
                   <p className="mt-2 text-xs text-muted">{c.ui.unclaimedHint}</p>
                 ) : null}
                 <Link href={`${localeHref(locale, "/add")}?claim=${l.slug}`} className="action-link mt-4">
-                  {c.ui.claim} <ArrowUpRight className="h-4 w-4" />
+                  {c.ui.claimLink} <ArrowUpRight className="h-4 w-4" />
                 </Link>
               </div>
             ) : null}

@@ -120,9 +120,10 @@ export default function DirectoryBrowser({ listings, categories, c }: { listings
             style={{ paddingLeft: "3rem" }}
           />
         </label>
-        <p className="text-sm font-semibold text-muted" aria-live="polite">
+        {/* An h2 so the cards' h3 headings follow in order (h1 → h2 → h3). */}
+        <h2 className="text-sm font-semibold text-muted" aria-live="polite">
           {shown.length === 1 ? c.ui.resultOne : c.ui.results.replace("{n}", String(shown.length))}
-        </p>
+        </h2>
       </div>
 
       <div className="-mx-4 mt-5 flex gap-2 overflow-x-auto px-4 pb-1 [scrollbar-width:none] sm:mx-0 sm:flex-wrap sm:px-0">

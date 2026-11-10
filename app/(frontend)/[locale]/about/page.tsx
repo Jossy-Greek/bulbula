@@ -4,13 +4,20 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import SocialIcon from "@/components/SocialIcon";
+import { alternates } from "@/lib/seo";
 import { getContent, isLocale } from "@/data/content";
 import { site } from "@/data/site";
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/about">) {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
-  return { title: getContent(locale).aboutPage.title };
+  const c = getContent(locale);
+  return {
+    title: c.aboutPage.title,
+    description: c.meta.about,
+    alternates: alternates(locale, "/about"),
+    openGraph: { title: c.aboutPage.title, description: c.meta.about },
+  };
 }
 
 export default async function AboutPage({ params }: PageProps<"/[locale]/about">) {
