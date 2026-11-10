@@ -208,106 +208,107 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
           </div>
 
           <aside className="space-y-6 lg:col-span-5">
+            {/* Each row: one div holding its dt and dd (the only nesting <dl> allows); the icon sits in the dt. */}
             <dl className="divide-y divide-border rounded-2xl border border-border bg-raised">
               {l.landmark || l.address ? (
-                <div className="flex gap-3 p-5">
-                  <MapPin className="mt-0.5 h-5 w-5 flex-none text-teal" aria-hidden="true" />
-                  <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wide text-muted">{c.ui.address}</dt>
-                    <dd className="mt-1 text-ink">
-                      {l.landmark}
-                      {l.landmark && l.address ? <br /> : null}
-                      {l.address}
-                    </dd>
-                  </div>
+                <div className="relative min-w-0 p-5 pl-13">
+                  <dt className="text-xs font-semibold uppercase tracking-wide text-muted">
+                    <MapPin className="absolute left-5 top-5.5 h-5 w-5 text-teal" aria-hidden="true" />
+                    {c.ui.address}
+                  </dt>
+                  <dd className="mt-1 text-ink">
+                    {l.landmark}
+                    {l.landmark && l.address ? <br /> : null}
+                    {l.address}
+                  </dd>
                 </div>
               ) : null}
               {l.hours ? (
-                <div className="flex gap-3 p-5">
-                  <Clock className="mt-0.5 h-5 w-5 flex-none text-teal" aria-hidden="true" />
-                  <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wide text-muted">{c.ui.hours}</dt>
-                    <dd className="mt-1 text-ink">{l.hours}</dd>
-                    <dd className="mt-1.5">
-                      <OpenBadge spec={l.hoursSpec} ui={c.ui} size="lg" />
-                    </dd>
-                  </div>
+                <div className="relative min-w-0 p-5 pl-13">
+                  <dt className="text-xs font-semibold uppercase tracking-wide text-muted">
+                    <Clock className="absolute left-5 top-5.5 h-5 w-5 text-teal" aria-hidden="true" />
+                    {c.ui.hours}
+                  </dt>
+                  <dd className="mt-1 text-ink">{l.hours}</dd>
+                  <dd className="mt-1.5">
+                    <OpenBadge spec={l.hoursSpec} ui={c.ui} size="lg" />
+                  </dd>
                 </div>
               ) : null}
               {l.phone || l.phone2 ? (
-                <div className="flex gap-3 p-5">
-                  <Phone className="mt-0.5 h-5 w-5 flex-none text-teal" aria-hidden="true" />
-                  <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wide text-muted">{c.ui.phone}</dt>
-                    {[l.phone, l.phone2].filter(Boolean).map((p) => (
-                      <dd key={p} className="mt-1">
-                        <a href={telHref(p!)} className="font-semibold text-teal-text hover:underline">{p}</a>
-                      </dd>
-                    ))}
-                  </div>
+                <div className="relative min-w-0 p-5 pl-13">
+                  <dt className="text-xs font-semibold uppercase tracking-wide text-muted">
+                    <Phone className="absolute left-5 top-5.5 h-5 w-5 text-teal" aria-hidden="true" />
+                    {c.ui.phone}
+                  </dt>
+                  {[l.phone, l.phone2].filter(Boolean).map((p) => (
+                    <dd key={p} className="mt-1">
+                      <a href={telHref(p!)} className="font-semibold text-teal-text hover:underline">{p}</a>
+                    </dd>
+                  ))}
                 </div>
               ) : null}
               {l.priceRange ? (
-                <div className="flex gap-3 p-5">
-                  <Banknote className="mt-0.5 h-5 w-5 flex-none text-teal" aria-hidden="true" />
-                  <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wide text-muted">{c.ui.priceRange}</dt>
-                    <dd className="mt-1 text-ink">{l.priceRange}</dd>
-                  </div>
+                <div className="relative min-w-0 p-5 pl-13">
+                  <dt className="text-xs font-semibold uppercase tracking-wide text-muted">
+                    <Banknote className="absolute left-5 top-5.5 h-5 w-5 text-teal" aria-hidden="true" />
+                    {c.ui.priceRange}
+                  </dt>
+                  <dd className="mt-1 text-ink">{l.priceRange}</dd>
                 </div>
               ) : null}
               {l.menuLink ? (
-                <div className="flex gap-3 p-5">
-                  <UtensilsCrossed className="mt-0.5 h-5 w-5 flex-none text-teal" aria-hidden="true" />
-                  <div className="min-w-0">
-                    <dt className="text-xs font-semibold uppercase tracking-wide text-muted">{c.ui.menu}</dt>
-                    <dd className="mt-1 truncate">
-                      <a href={externalUrl(l.menuLink)} target="_blank" rel="noopener noreferrer" className="font-semibold text-teal-text hover:underline">
-                        {l.menuLink.replace(/^https?:\/\//, "").replace(/\/$/, "")}
-                      </a>
-                    </dd>
-                  </div>
+                <div className="relative min-w-0 p-5 pl-13">
+                  <dt className="text-xs font-semibold uppercase tracking-wide text-muted">
+                    <UtensilsCrossed className="absolute left-5 top-5.5 h-5 w-5 text-teal" aria-hidden="true" />
+                    {c.ui.menu}
+                  </dt>
+                  <dd className="mt-1 truncate">
+                    <a href={externalUrl(l.menuLink)} target="_blank" rel="noopener noreferrer" className="font-semibold text-teal-text hover:underline">
+                      {l.menuLink.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                    </a>
+                  </dd>
                 </div>
               ) : null}
               {l.services.length ? (
-                <div className="flex gap-3 p-5">
-                  <ListChecks className="mt-0.5 h-5 w-5 flex-none text-teal" aria-hidden="true" />
-                  <div>
-                    <dt className="text-xs font-semibold uppercase tracking-wide text-muted">{c.ui.servicesTitle}</dt>
-                    <dd className="mt-2">
-                      <ul className="flex flex-wrap gap-1.5">
-                        {l.services.map((s) => (
-                          <li key={s} className="rounded-full bg-tint px-2.5 py-1 text-xs font-semibold text-teal-text">
-                            {serviceNames[s][locale]}
-                          </li>
-                        ))}
-                      </ul>
-                    </dd>
-                  </div>
+                <div className="relative min-w-0 p-5 pl-13">
+                  <dt className="text-xs font-semibold uppercase tracking-wide text-muted">
+                    <ListChecks className="absolute left-5 top-5.5 h-5 w-5 text-teal" aria-hidden="true" />
+                    {c.ui.servicesTitle}
+                  </dt>
+                  <dd className="mt-2">
+                    <ul className="flex flex-wrap gap-1.5">
+                      {l.services.map((s) => (
+                        <li key={s} className="rounded-full bg-tint px-2.5 py-1 text-xs font-semibold text-teal-text">
+                          {serviceNames[s][locale]}
+                        </li>
+                      ))}
+                    </ul>
+                  </dd>
                 </div>
               ) : null}
               {l.website || socials.length ? (
-                <div className="flex gap-3 p-5">
-                  <Globe className="mt-0.5 h-5 w-5 flex-none text-teal" aria-hidden="true" />
-                  <div className="min-w-0">
-                    <dt className="text-xs font-semibold uppercase tracking-wide text-muted">{c.ui.socials}</dt>
-                    {l.website ? (
-                      <dd className="mt-1 truncate">
-                        <a href={externalUrl(l.website)} target="_blank" rel="noopener noreferrer" className="font-semibold text-teal-text hover:underline">
-                          {l.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                <div className="relative min-w-0 p-5 pl-13">
+                  <dt className="text-xs font-semibold uppercase tracking-wide text-muted">
+                    <Globe className="absolute left-5 top-5.5 h-5 w-5 text-teal" aria-hidden="true" />
+                    {c.ui.socials}
+                  </dt>
+                  {l.website ? (
+                    <dd className="mt-1 truncate">
+                      <a href={externalUrl(l.website)} target="_blank" rel="noopener noreferrer" className="font-semibold text-teal-text hover:underline">
+                        {l.website.replace(/^https?:\/\//, "").replace(/\/$/, "")}
+                      </a>
+                    </dd>
+                  ) : null}
+                  {socials.length ? (
+                    <dd className="mt-2 flex gap-2">
+                      {socials.map(([p, u]) => (
+                        <a key={p} href={externalUrl(u)} target="_blank" rel="noopener noreferrer" aria-label={p} className="grid h-10 w-10 place-items-center rounded-xl border border-border text-river hover:border-teal">
+                          <SocialIcon platform={p} className="h-4 w-4" />
                         </a>
-                      </dd>
-                    ) : null}
-                    {socials.length ? (
-                      <dd className="mt-2 flex gap-2">
-                        {socials.map(([p, u]) => (
-                          <a key={p} href={externalUrl(u)} target="_blank" rel="noopener noreferrer" aria-label={p} className="grid h-10 w-10 place-items-center rounded-xl border border-border text-river hover:border-teal">
-                            <SocialIcon platform={p} className="h-4 w-4" />
-                          </a>
-                        ))}
-                      </dd>
-                    ) : null}
-                  </div>
+                      ))}
+                    </dd>
+                  ) : null}
                 </div>
               ) : null}
             </dl>

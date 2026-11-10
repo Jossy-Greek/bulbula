@@ -27,7 +27,7 @@ export default async function Footer({ c }: { c: Content }) {
               >
                 <Smartphone className="h-4 w-4" aria-hidden="true" />
                 {c.footer.androidApp}
-                {android.versionName ? <span className="font-semibold opacity-70">{android.versionName}</span> : null}
+                {android.versionName ? <span className="font-medium">{android.versionName}</span> : null}
               </a>
             ) : null}
           </div>
