@@ -19,7 +19,7 @@ import { site } from "@/data/site";
 import { getContent, isLocale, locales } from "@/data/content";
 import { directionsUrl, externalUrl, getListing, getListings, getSiteSettings, googleMapsUrl, telHref } from "@/lib/directory";
 import { localeHref } from "@/lib/href";
-import { alternates, clip } from "@/lib/seo";
+import { alternates, clip, placeLine } from "@/lib/seo";
 import { formatDistance, metres } from "@/lib/geo";
 import { getReviews } from "@/lib/reviews";
 
@@ -44,8 +44,8 @@ export async function generateMetadata({ params }: PageProps<"/[locale]/b/[slug]
     l.description && !l.generated
       ? l.description
       : locale === "am"
-        ? `${l.name}፦ ${l.category.name}${where ? `፣ ${where}` : ""}፣ ቦሌ ቡልቡላ።${l.phone ? ` ስልክ ${l.phone}።` : ""}${l.hours ? ` ${l.hours}።` : ""} አቅጣጫና ግምገማዎች በቡልቡላ ማውጫ።`
-        : `${l.name}: ${l.category.name.toLowerCase()} in ${where ? `${where}, ` : ""}Bole Bulbula, Addis Ababa.${l.phone ? ` Call ${l.phone}.` : ""}${l.hours ? ` ${l.hours}.` : ""} Directions and reviews on Bulbula Directory.`,
+        ? `${l.name} (${l.category.name})፣ ${placeLine(where, locale)}።${l.phone ? ` ስልክ ${l.phone}።` : ""}${l.hours ? ` ${l.hours}።` : ""} አቅጣጫና ግምገማዎች በቡልቡላ ማውጫ።`
+        : `${l.name} (${l.category.name}), ${placeLine(where, locale)}.${l.phone ? ` Call ${l.phone}.` : ""}${l.hours ? ` ${l.hours}.` : ""} Directions and reviews on Bulbula Directory.`,
   );
   const title = `${l.name} — ${l.category.name}`;
   return { title, description, alternates: alternates(locale, `/b/${l.slug}`), openGraph: { title, description, type: "website" } };

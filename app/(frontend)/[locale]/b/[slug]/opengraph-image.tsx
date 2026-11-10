@@ -2,7 +2,7 @@ import { isLocale } from "@/data/content";
 import { site } from "@/data/site";
 import { getListing } from "@/lib/directory";
 import { OG_SIZE, ogCard } from "@/lib/og";
-import { brand } from "@/lib/seo";
+import { brand, placeLine } from "@/lib/seo";
 
 /** A place's own card: what people see when a listing is shared on Telegram or WhatsApp. */
 export const alt = "A place in Bole Bulbula on Bulbula Directory";
@@ -20,7 +20,7 @@ export default async function Image({ params }: { params: Promise<{ locale: stri
   return ogCard({
     pill: l.category.name,
     title: l.name,
-    lines: [where ? `${where} · ${area}` : area, ...(l.phone ? [l.phone] : [])],
+    lines: [placeLine(where, locale), ...(l.phone ? [l.phone] : [])],
     footer: brand(locale),
   });
 }

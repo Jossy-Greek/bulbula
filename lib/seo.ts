@@ -18,6 +18,16 @@ export function alternates(locale: Locale, path: string): Metadata["alternates"]
   };
 }
 
+/**
+ * Where a place is, without saying the area twice: listings' landmarks often already end in
+ * "Bole Bulbula" ("93 Mazoria, Bole Bulbula").
+ */
+export function placeLine(where: string | null | undefined, locale: Locale) {
+  const area = locale === "am" ? site.areaAm : site.areaEn;
+  if (!where) return area;
+  return /bulbula|ቡልቡላ/i.test(where) ? `${where}${locale === "am" ? "፣ አዲስ አበባ" : ", Addis Ababa"}` : `${where}, ${area}`;
+}
+
 /** Search-result and link-preview text, trimmed to what Google shows (~160 characters). */
 export function clip(text: string, max = 158) {
   const t = text.replace(/\s+/g, " ").trim();
