@@ -3,6 +3,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import AddForm from "@/components/AddForm";
+import { alternates } from "@/lib/seo";
 import { getContent, isLocale } from "@/data/content";
 import { getCategories, getListing, getListings } from "@/lib/directory";
 
@@ -12,7 +13,13 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }: PageProps<"/[locale]/add">) {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
-  return { title: getContent(locale).addPage.title };
+  const c = getContent(locale);
+  return {
+    title: c.addPage.title,
+    description: c.meta.add,
+    alternates: alternates(locale, "/add"),
+    openGraph: { title: c.addPage.title, description: c.meta.add },
+  };
 }
 
 export default async function AddPage({ params, searchParams }: PageProps<"/[locale]/add">) {

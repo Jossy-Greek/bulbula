@@ -12,7 +12,7 @@ export type GoogleAmenity = (typeof googleAmenities)[number];
 
 export type Content = {
   locale: Locale;
-  meta: { title: string; description: string };
+  meta: { title: string; description: string; businesses: string; about: string; add: string };
   ui: {
     openMenu: string;
     closeMenu: string;
@@ -42,6 +42,7 @@ export type Content = {
     socials: string;
     claim: string;
     claimHint: string;
+    claimLink: string;
     generated: string;
     osmCredit: string;
     back: string;
@@ -113,6 +114,7 @@ export type Content = {
   mapSection: { eyebrow: string; title: string; body: string };
   newest: { eyebrow: string; title: string; link: Link };
   ownerBand: { title: string; body: string; button: string };
+  appBand: { title: string; body: string; button: string; note: string };
   listPage: { eyebrow: string; title: string; intro: string };
   addPage: {
     eyebrow: string;
@@ -186,6 +188,9 @@ const en: Content = {
   meta: {
     title: "Bulbula Directory — businesses in Bole Bulbula, Addis Ababa",
     description: "Find cafés, shops, pharmacies, banks, services and community places in Bole Bulbula, Addis Ababa — with contacts, hours, websites and map.",
+    businesses: "Every café, bakery, pharmacy, bank, shop and service in Bole Bulbula, Addis Ababa: search by name or category, see who's open now, call or get directions.",
+    about: "Bulbula Directory is a free local guide to Bole Bulbula, Addis Ababa: who runs it, where the listings come from, and how to add or correct a place.",
+    add: "List your business in Bole Bulbula for free, or claim your listing to add photos, hours, a description and your website. Reviewed before it goes live.",
   },
   ui: {
     openMenu: "Open menu",
@@ -215,6 +220,7 @@ const en: Content = {
     socials: "Online",
     claim: "Is this your business? Claim it",
     claimHint: "Add your description, photos, hours and contacts — free.",
+    claimLink: "Claim it for free",
     generated: "Summary built from the listing's details. The owner can replace it with their own description.",
     osmCredit: "Location data © OpenStreetMap contributors",
     back: "All businesses",
@@ -307,6 +313,12 @@ const en: Content = {
     title: "Own a business in Bulbula?",
     body: "Add it for free, or claim your listing to add a description, photos, hours and your website. We review every submission before it goes live.",
     button: "Add your business",
+  },
+  appBand: {
+    title: "Bulbula in your pocket",
+    body: "The free Android app: what's open now, one tap to call or get directions, and XP and badges for exploring, reviewing and adding places.",
+    button: "Get the Android app",
+    note: "Free · Android",
   },
   listPage: { eyebrow: "Directory", title: "Businesses in Bole Bulbula", intro: "Search by name or filter by category." },
   addPage: {
@@ -416,6 +428,9 @@ const am: Content = {
   meta: {
     title: "ቡልቡላ ማውጫ — በቦሌ ቡልቡላ ያሉ ንግዶች",
     description: "በቦሌ ቡልቡላ ያሉ ካፌዎች፣ ሱቆች፣ ፋርማሲዎች፣ ባንኮች፣ አገልግሎቶችና የማህበረሰብ ቦታዎች — ከስልክ፣ ሰዓት፣ ድረ ገጽና ካርታ ጋር።",
+    businesses: "በቦሌ ቡልቡላ፣ አዲስ አበባ ያሉ ካፌዎች፣ ዳቦ ቤቶች፣ ፋርማሲዎች፣ ባንኮች፣ ሱቆችና አገልግሎቶች፦ በስም ወይም በዘርፍ ይፈልጉ፣ ክፍት የሆኑትን ይመልከቱ፣ ይደውሉ ወይም አቅጣጫ ያግኙ።",
+    about: "ቡልቡላ ማውጫ የቦሌ ቡልቡላ ነፃ የአካባቢ መመሪያ ነው፦ ማን እንደሚያስተዳድረው፣ ዝርዝሮቹ ከየት እንደመጡ፣ እንዲሁም ቦታ እንዴት እንደሚጨምሩ ወይም እንደሚያርሙ።",
+    add: "በቦሌ ቡልቡላ ያለ ንግድዎን በነፃ ያስመዝግቡ፣ ወይም ዝርዝርዎን ተረክበው ፎቶ፣ ሰዓት፣ መግለጫና ድረ ገጽ ያክሉ። ከመታተሙ በፊት ይገመገማል።",
   },
   ui: {
     openMenu: "ማውጫ ክፈት",
@@ -445,6 +460,7 @@ const am: Content = {
     socials: "በኢንተርኔት",
     claim: "ይህ የእርስዎ ንግድ ነው? ይረከቡት",
     claimHint: "መግለጫ፣ ፎቶ፣ ሰዓትና አድራሻ በነፃ ያክሉ።",
+    claimLink: "በነፃ ይረከቡት",
     generated: "ከዝርዝሩ መረጃ የተዘጋጀ ማጠቃለያ። ባለቤቱ በራሱ መግለጫ ሊተካው ይችላል።",
     osmCredit: "የቦታ መረጃ © OpenStreetMap አበርካቾች",
     back: "ሁሉም ንግዶች",
@@ -537,6 +553,12 @@ const am: Content = {
     title: "በቡልቡላ ንግድ አለዎት?",
     body: "በነፃ ያክሉት፣ ወይም ዝርዝርዎን ተረክበው መግለጫ፣ ፎቶ፣ ሰዓትና ድረ ገጽ ያክሉ። እያንዳንዱን ማመልከቻ ከመታተሙ በፊት እንገመግማለን።",
     button: "ንግድዎን ያክሉ",
+  },
+  appBand: {
+    title: "ቡልቡላ በኪስዎ",
+    body: "ነፃው የአንድሮይድ መተግበሪያ፦ አሁን ክፍት የሆኑ ቦታዎች፣ በአንድ ንክኪ መደወልና አቅጣጫ፣ ቦታዎችን ሲያስሱ፣ ሲገመግሙና ሲያክሉ ነጥብና ባጅ።",
+    button: "የአንድሮይድ መተግበሪያውን ያግኙ",
+    note: "ነፃ · አንድሮይድ",
   },
   listPage: { eyebrow: "ማውጫ", title: "በቦሌ ቡልቡላ ያሉ ንግዶች", intro: "በስም ይፈልጉ ወይም በዘርፍ ይምረጡ።" },
   addPage: {

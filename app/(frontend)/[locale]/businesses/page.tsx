@@ -4,6 +4,7 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import DirectoryBrowser from "@/components/DirectoryBrowser";
+import { alternates } from "@/lib/seo";
 import { getContent, isLocale } from "@/data/content";
 import { getCategories, getListings } from "@/lib/directory";
 
@@ -12,7 +13,13 @@ export const revalidate = 300;
 export async function generateMetadata({ params }: PageProps<"/[locale]/businesses">) {
   const { locale } = await params;
   if (!isLocale(locale)) return {};
-  return { title: getContent(locale).listPage.title };
+  const c = getContent(locale);
+  return {
+    title: c.listPage.title,
+    description: c.meta.businesses,
+    alternates: alternates(locale, "/businesses"),
+    openGraph: { title: c.listPage.title, description: c.meta.businesses },
+  };
 }
 
 export default async function BusinessesPage({ params }: PageProps<"/[locale]/businesses">) {
