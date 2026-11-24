@@ -99,7 +99,7 @@ link; confirm it, fill in phone and hours, then **Publish**.
 ## Stack
 
 Next.js 16 (App Router) · React 19 · Tailwind CSS v4 · Payload CMS 3 on Neon
-Postgres · Vercel Blob for photos · Leaflet + OpenStreetMap tiles ·
+Postgres · Cloudflare R2 for photos (Vercel Blob as fallback) · Leaflet + OpenStreetMap tiles ·
 lucide-react. Fonts: Plus Jakarta Sans, Inter, Noto Sans Ethiopic.
 
 ```
@@ -130,6 +130,27 @@ Vercel project `yoseph4/bulbula` is connected to this repo (`Jossy-Greek/bulbula
   the pull request. Preview builds use the same Neon database, so migrations in
   a PR run against live data. Review them before pushing.
 - Direct pushes to `main` are blocked locally by the Synheart guard; open a PR.
+
+### Photos (Cloudflare R2)
+
+Uploaded photos go to an R2 bucket and load straight from its public address, so
+neither the site nor the apps carry them (the apps download and cache them).
+Set these on Vercel (Production and Preview) and in `.env.local`; without all
+five the site falls back to Vercel Blob:
+
+| Variable | Value |
+|---|---|
+| `R2_ACCOUNT_ID` | Cloudflare account ID |
+| `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY` | an R2 API token with Object Read & Write on this bucket only |
+| `R2_BUCKET` | the bucket name |
+| `R2_PUBLIC_URL` | the bucket's public address (r2.dev or a custom domain), no trailing slash |
+
+The bucket needs public access on, and a CORS rule letting the admin upload from
+the browser:
+
+```json
+[{ "AllowedOrigins": ["https://bulbula-directory.vercel.app"], "AllowedMethods": ["PUT", "GET", "HEAD"], "AllowedHeaders": ["content-type"], "MaxAgeSeconds": 3600 }]
+```
 
 ## Commands
 

@@ -233,7 +233,7 @@ private fun PlaceRow(place: Place, showCategory: Boolean, now: Pair<Int, Int>, f
     val shape = RoundedCornerShape(topStart = if (first) 18.dp else 0.dp, topEnd = if (first) 18.dp else 0.dp, bottomStart = if (last) 18.dp else 0.dp, bottomEnd = if (last) 18.dp else 0.dp)
     Column(Modifier.padding(horizontal = 16.dp).clip(shape).background(MaterialTheme.colorScheme.surface)) {
         Row(Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 14.dp, vertical = 12.dp), verticalAlignment = Alignment.CenterVertically) {
-            IconTile(place.category)
+            PlaceThumb(place)
             Spacer(Modifier.width(14.dp))
             Column(Modifier.weight(1f)) {
                 Text(place.name, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold, maxLines = 2, overflow = TextOverflow.Ellipsis)

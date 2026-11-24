@@ -16,6 +16,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -48,7 +49,13 @@ data class AdminPlace(
     val submitter: Submitter? = null,
     /** The listing this submission claims: an id, or the listing itself at depth=1. */
     val claims: JsonElement? = null,
+    /** The photo (a media id, or the media itself at depth=1). */
+    val photo: JsonElement? = null,
 ) {
+    /** The photo's address, ready for the image loader; null without one. */
+    val photoUrl: String?
+        get() = (photo as? JsonObject)?.get("url")?.jsonPrimitive?.contentOrNull?.let(::absoluteUrl)
+
     val pending get() = status == "pending"
 
     /** As the web dashboard: owner and manager submissions publish as claimed; tips and leads don't. */

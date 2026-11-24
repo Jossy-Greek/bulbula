@@ -171,6 +171,15 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
                 <Image src={l.photo.url} alt={l.photo.alt} fill sizes="(min-width: 1024px) 55vw, 100vw" className="object-cover" />
               </div>
             ) : null}
+            {l.gallery.length ? (
+              <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                {l.gallery.map((g) => (
+                  <li key={g.url} className="relative aspect-square overflow-hidden rounded-xl bg-tint">
+                    <Image src={g.url} alt={g.alt} fill sizes="(min-width: 1024px) 18vw, (min-width: 640px) 30vw, 50vw" className="object-cover" />
+                  </li>
+                ))}
+              </ul>
+            ) : null}
             {l.description ? (
               <div className="rounded-2xl border border-border bg-raised p-6">
                 <p className="text-[17px] leading-relaxed text-ink">{l.description}</p>

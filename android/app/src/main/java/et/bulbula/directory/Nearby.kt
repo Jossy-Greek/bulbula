@@ -166,7 +166,7 @@ private fun NearbyRow(place: Place, metres: Double, rank: Int, now: Pair<Int, In
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box {
-            IconTile(place.category, size = 48.dp)
+            PlaceThumb(place, size = 48.dp)
             if (top) {
                 Box(Modifier.align(Alignment.TopStart).size(20.dp).background(Marigold, CircleShape), contentAlignment = Alignment.Center) {
                     Text("${rank + 1}", fontSize = 11.sp, fontWeight = FontWeight.Black, color = Color(0xFF3A2600))

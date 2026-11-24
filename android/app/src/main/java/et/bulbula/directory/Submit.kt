@@ -10,7 +10,7 @@ import org.json.JSONObject
 /**
  * What the site said about a review or a new place: null when sent, otherwise the website's
  * error code ("rating", "name", "links", "already", "required", "contact", "consent",
- * "failed"), or "offline" when the site couldn't be reached.
+ * "photo", "failed"), or "offline" when the site couldn't be reached.
  */
 suspend fun send(path: String, body: JSONObject, siteUrl: String = BuildConfig.SITE_URL): String? = withContext(Dispatchers.IO) {
     runCatching {
@@ -38,6 +38,8 @@ class NewPlace(
     val yourName: String,
     val yourPhone: String,
     val relationship: String,
+    /** A JPEG as base64 ([PlacePhoto.base64]), or null. */
+    val photo: String? = null,
 )
 
 /** [player] is the recovery code when cloud backup is on, so the points come on approval. */
@@ -47,5 +49,5 @@ suspend fun sendPlace(p: NewPlace, player: String? = null): String? =
         JSONObject()
             .put("nameEn", p.name).put("category", p.category).put("phone", p.phone).put("landmark", p.landmark)
             .put("hours", p.hours).put("descriptionEn", p.description).put("yourName", p.yourName).put("yourPhone", p.yourPhone)
-            .put("relationship", p.relationship).put("consent", true).put("player", player),
+            .put("relationship", p.relationship).put("consent", true).put("player", player).put("photo", p.photo),
     )

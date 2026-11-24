@@ -168,7 +168,22 @@ export const Businesses: CollectionConfig = {
         },
       ],
     },
-    { name: "photo", type: "upload", relationTo: "media" },
+    {
+      name: "photo",
+      type: "upload",
+      relationTo: "media",
+      admin: { description: "The main photo: the place itself, its front or inside, so people know it when they arrive." },
+    },
+    {
+      // Shown below the main photo, on the website and in the apps.
+      name: "gallery",
+      type: "upload",
+      relationTo: "media",
+      hasMany: true,
+      maxRows: 12,
+      label: "More photos",
+      admin: { description: "Food, drinks, rooms, products: shown in a row below the main photo." },
+    },
     {
       name: "status",
       type: "select",
