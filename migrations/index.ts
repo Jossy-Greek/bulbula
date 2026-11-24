@@ -13,6 +13,7 @@ import * as migration_20261105_095205_cloud_progress from './20261105_095205_clo
 import * as migration_20261124_042710_business_gallery from './20261124_042710_business_gallery';
 import * as migration_20261124_051134_media_storage_prefix from './20261124_051134_media_storage_prefix';
 import * as migration_20261124_083649_corrections_and_submission_limits from './20261124_083649_corrections_and_submission_limits';
+import * as migration_20261124_112823_users_reviewer_role from './20261124_112823_users_reviewer_role';
 
 export const migrations = [
   {
@@ -88,6 +89,11 @@ export const migrations = [
   {
     up: migration_20261124_083649_corrections_and_submission_limits.up,
     down: migration_20261124_083649_corrections_and_submission_limits.down,
-    name: '20261124_083649_corrections_and_submission_limits'
+    name: '20261124_083649_corrections_and_submission_limits',
+  },
+  {
+    up: migration_20261124_112823_users_reviewer_role.up,
+    down: migration_20261124_112823_users_reviewer_role.down,
+    name: '20261124_112823_users_reviewer_role'
   },
 ];

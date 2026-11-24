@@ -108,7 +108,9 @@ function Card({ id, title, intro, children }: { id?: string; title: string; intr
  * only of real work, the queues to act on, and a dark quick-actions panel.
  * Bulbula's own colours (river, teal, marigold); near-square corners.
  */
-export default async function DirectoryDashboard({ payload }: { payload: Payload }) {
+export default async function DirectoryDashboard({ payload, user }: { payload: Payload; user?: { role?: string | null } | null }) {
+  // The read-only reviewer role (for app-store review) sees the queues without people's details or buttons.
+  const reviewer = user?.role === "reviewer";
   const now = new Date();
   const weekAgo = new Date(now.getTime() - 7 * DAY).toISOString();
   const [all, cats, waiting, views] = await Promise.all([
@@ -258,14 +260,19 @@ export default async function DirectoryDashboard({ payload }: { payload: Payload
                         {b.name}
                       </Link>
                       <span className="bb-queue__meta">
-                        {catOf(b)?.name ?? "No category"} · {ago(b.createdAt, now)} · from {b.submitter?.name} ({b.submitter?.relationship ?? "owner"}
-                        {b.submitter?.phone ? `, ${b.submitter.phone}` : ""})
+                        {catOf(b)?.name ?? "No category"} · {ago(b.createdAt, now)}
+                        {reviewer ? null : (
+                          <>
+                            {" "}· from {b.submitter?.name} ({b.submitter?.relationship ?? "owner"}
+                            {b.submitter?.phone ? `, ${b.submitter.phone}` : ""})
+                          </>
+                        )}
                       </span>
                       {idOf(b.claims) ? <span className="bb-tag">Claims “{byName.get(idOf(b.claims)!) ?? "a listing"}”</span> : null}
                       <Facts b={b} />
                       <SentPhoto b={b} />
                     </div>
-                    <ReviewButtons id={b.id} name={b.name} claims={idOf(b.claims)} byOwner={byOwner(b)} />
+                    {reviewer ? null : <ReviewButtons id={b.id} name={b.name} claims={idOf(b.claims)} byOwner={byOwner(b)} />}
                   </li>
                 ))}
               </ul>
@@ -293,7 +300,7 @@ export default async function DirectoryDashboard({ payload }: { payload: Payload
                         </span>
                         {r.text ? <p className="bb-quote">{r.text}</p> : null}
                       </div>
-                      <ModerateReview id={r.id} />
+                      {reviewer ? null : <ModerateReview id={r.id} />}
                     </li>
                   );
                 })}
@@ -324,7 +331,7 @@ export default async function DirectoryDashboard({ payload }: { payload: Payload
                           ) : null}
                           {b.adminNotes ? <span className="bb-note">{b.adminNotes}</span> : null}
                         </div>
-                        <ReviewButtons id={b.id} name={b.name} byOwner={false} lead />
+                        {reviewer ? null : <ReviewButtons id={b.id} name={b.name} byOwner={false} lead />}
                       </li>
                     ))}
                   </ul>

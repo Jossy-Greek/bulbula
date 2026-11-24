@@ -1,10 +1,11 @@
 import type { CollectionConfig } from "payload";
+import { canEdit } from "@/lib/access";
 
 /** Photos for listings. Stored in Cloudflare R2 in production (payload.config.ts). */
 export const Media: CollectionConfig = {
   slug: "media",
   admin: { group: "Directory" },
-  access: { read: () => true, create: ({ req }) => Boolean(req.user), update: ({ req }) => Boolean(req.user), delete: ({ req }) => Boolean(req.user) },
+  access: { read: () => true, create: canEdit, update: canEdit, delete: canEdit },
   upload: {
     mimeTypes: ["image/*"],
     imageSizes: [

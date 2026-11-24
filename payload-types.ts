@@ -478,7 +478,7 @@ export interface Correction {
 export interface User {
   id: number;
   name?: string | null;
-  role: 'admin' | 'staff';
+  role: 'admin' | 'staff' | 'reviewer';
   updatedAt: string;
   createdAt: string;
   email: string;
