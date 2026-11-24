@@ -115,6 +115,7 @@ export type Content = {
   newest: { eyebrow: string; title: string; link: Link };
   ownerBand: { title: string; body: string; button: string };
   appBand: { title: string; body: string; button: string; note: string };
+  categoryPage: { title: string; description: string; intro: string; browse: string; all: string };
   listPage: { eyebrow: string; title: string; intro: string };
   addPage: {
     eyebrow: string;
@@ -325,6 +326,13 @@ const en: Content = {
     body: "The free Android app: what's open now, one tap to call or get directions, and XP and badges for exploring, reviewing and adding places.",
     button: "Get the Android app",
     note: "Free · Android",
+  },
+  categoryPage: {
+    title: "{c} in Bole Bulbula",
+    description: "{c} in Bole Bulbula, Addis Ababa: {n} places with phone numbers, opening hours, directions and reviews.",
+    intro: "{n} places. Call, check who's open now, or get directions.",
+    browse: "Browse by category",
+    all: "All businesses",
   },
   listPage: { eyebrow: "Directory", title: "Businesses in Bole Bulbula", intro: "Search by name or filter by category." },
   addPage: {
@@ -571,6 +579,13 @@ const am: Content = {
     body: "ነፃው የአንድሮይድ መተግበሪያ፦ አሁን ክፍት የሆኑ ቦታዎች፣ በአንድ ንክኪ መደወልና አቅጣጫ፣ ቦታዎችን ሲያስሱ፣ ሲገመግሙና ሲያክሉ ነጥብና ባጅ።",
     button: "የአንድሮይድ መተግበሪያውን ያግኙ",
     note: "ነፃ · አንድሮይድ",
+  },
+  categoryPage: {
+    title: "{c} በቦሌ ቡልቡላ",
+    description: "{c} በቦሌ ቡልቡላ፣ አዲስ አበባ፦ {n} ቦታዎች ከስልክ ቁጥር፣ ከስራ ሰዓት፣ ከአቅጣጫና ከግምገማ ጋር።",
+    intro: "{n} ቦታዎች። ይደውሉ፣ አሁን ክፍት የሆኑትን ይመልከቱ ወይም አቅጣጫ ያግኙ።",
+    browse: "በምድብ ይመልከቱ",
+    all: "ሁሉም ድርጅቶች",
   },
   listPage: { eyebrow: "ማውጫ", title: "በቦሌ ቡልቡላ ያሉ ንግዶች", intro: "በስም ይፈልጉ ወይም በዘርፍ ይምረጡ።" },
   addPage: {
