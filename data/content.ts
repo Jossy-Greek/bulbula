@@ -166,7 +166,7 @@ export type Content = {
     errors: { required: string; contact: string; consent: string; photo: string; failed: string };
   };
   aboutPage: { eyebrow: string; title: string; intro: string; sections: { title: string; body: string }[]; contactTitle: string; privacy: string };
-  footer: { blurb: string; explore: string; contact: string; rights: string; androidApp: string };
+  footer: { blurb: string; explore: string; contact: string; rights: string; androidApp: string; privacy: string };
   reviews: {
     title: string;
     /** "{n}" = number of reviews. */
@@ -425,7 +425,7 @@ const en: Content = {
       },
     ],
     contactTitle: "Questions or corrections",
-    privacy: "We count visits to improve the directory — anonymously: no cookies, no accounts, no IP addresses stored.",
+    privacy: "We count visits to improve the directory, anonymously: no cookies and no IP addresses stored. Details are in the privacy policy.",
   },
   footer: {
     blurb: "Businesses, services and community places in Bole Bulbula, Addis Ababa.",
@@ -433,6 +433,7 @@ const en: Content = {
     contact: "Contact",
     rights: "Map data © OpenStreetMap contributors.",
     androidApp: "Get the Android app",
+    privacy: "Privacy",
   },
   reviews: {
     title: "Reviews",
@@ -696,7 +697,7 @@ const am: Content = {
       },
     ],
     contactTitle: "ጥያቄ ወይም እርማት",
-    privacy: "ማውጫውን ለማሻሻል ጉብኝቶችን ስማቸው ሳይታወቅ እንቆጥራለን፤ ኩኪ፣ መለያ ወይም የIP አድራሻ አናስቀምጥም።",
+    privacy: "ማውጫውን ለማሻሻል ጉብኝቶችን ስማቸው ሳይታወቅ እንቆጥራለን፤ ኩኪ ወይም የIP አድራሻ አናስቀምጥም። ዝርዝሩ በግላዊነት ፖሊሲው ውስጥ አለ።",
   },
   footer: {
     blurb: "በቦሌ ቡልቡላ፣ አዲስ አበባ ያሉ ንግዶች፣ አገልግሎቶችና የማህበረሰብ ቦታዎች።",
@@ -704,6 +705,7 @@ const am: Content = {
     contact: "ያግኙን",
     rights: "የካርታ መረጃ © OpenStreetMap አበርካቾች።",
     androidApp: "የአንድሮይድ መተግበሪያውን ያግኙ",
+    privacy: "ግላዊነት",
   },
   reviews: {
     title: "ግምገማዎች",

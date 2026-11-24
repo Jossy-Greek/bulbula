@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Mail, Phone, Smartphone } from "lucide-react";
 import { Wordmark } from "./Nav";
 import SocialIcon from "./SocialIcon";
@@ -61,8 +62,13 @@ export default async function Footer({ c }: { c: Content }) {
             </ul>
           </div>
         </div>
-        <p className="mt-10 border-t border-white/10 pt-6 text-xs text-white/55">
-          © {new Date().getFullYear()} {c.locale === "am" ? site.nameAm : site.nameEn}. {c.footer.rights}
+        <p className="mt-10 flex flex-wrap items-center gap-x-4 gap-y-2 border-t border-white/10 pt-6 text-xs text-white/55">
+          <span>
+            © {new Date().getFullYear()} {c.locale === "am" ? site.nameAm : site.nameEn}. {c.footer.rights}
+          </span>
+          <Link href={localeHref(c.locale, "/privacy")} className="font-semibold text-white/75 hover:text-marigold-soft">
+            {c.footer.privacy}
+          </Link>
         </p>
       </div>
     </footer>
