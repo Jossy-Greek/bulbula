@@ -8,7 +8,6 @@ import android.location.LocationManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
-import coil3.compose.AsyncImage
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.foundation.layout.aspectRatio
@@ -290,11 +289,10 @@ fun EditScreen(id: Int, preloaded: AdminPlace?, vm: AdminViewModel, onDone: () -
         Spacer(Modifier.height(20.dp))
         // The photo sent with it: check it before publishing.
         p.photoUrl?.let { url ->
-            AsyncImage(
-                model = url,
+            PlaceImage(
+                url,
                 contentDescription = p.name,
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp).fillMaxWidth().aspectRatio(4f / 3f).clip(RoundedCornerShape(18.dp)).background(colors.surfaceVariant),
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 12.dp).fillMaxWidth().aspectRatio(4f / 3f).clip(RoundedCornerShape(18.dp)),
             )
         }
 
