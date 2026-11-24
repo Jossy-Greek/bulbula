@@ -7,6 +7,7 @@ import { revalidatePath } from "next/cache";
 export function revalidateDirectory() {
   try {
     revalidatePath("/", "layout");
+    revalidatePath("/sitemap.xml");
   } catch {
     // Not running inside Next.js.
   }

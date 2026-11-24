@@ -81,6 +81,7 @@ export type Content = {
     menu: string;
     /** "{n}" = number of reviews. Shown next to a rating copied from Google Maps. */
     onGoogle: string;
+    onGoogleOne: string;
     googleBoxTitle: string;
     /** "{n}" = star count. */
     starsRow: string;
@@ -115,6 +116,7 @@ export type Content = {
   newest: { eyebrow: string; title: string; link: Link };
   ownerBand: { title: string; body: string; button: string };
   appBand: { title: string; body: string; button: string; note: string };
+  notFound: { title: string; body: string; search: string; searchButton: string; home: string; browse: string };
   listPage: { eyebrow: string; title: string; intro: string };
   addPage: {
     eyebrow: string;
@@ -261,6 +263,7 @@ const en: Content = {
     priceRange: "Prices",
     menu: "Menu",
     onGoogle: "{n} reviews on Google",
+    onGoogleOne: "1 review on Google",
     googleBoxTitle: "On Google Maps",
     starsRow: "{n} stars",
     peopleMention: "People mention",
@@ -322,9 +325,17 @@ const en: Content = {
   },
   appBand: {
     title: "Bulbula in your pocket",
-    body: "The free Android app: what's open now, one tap to call or get directions, and XP and badges for exploring, reviewing and adding places.",
+    body: "Find what's open now, call or get directions in one tap, and keep working without internet. Free for Android.",
     button: "Get the Android app",
     note: "Free · Android",
+  },
+  notFound: {
+    title: "We couldn't find that page",
+    body: "The link may be old, or the place may have moved. Search the directory or go back home.",
+    search: "Search places, e.g. pharmacy",
+    searchButton: "Search",
+    home: "Home",
+    browse: "All businesses",
   },
   listPage: { eyebrow: "Directory", title: "Businesses in Bole Bulbula", intro: "Search by name or filter by category." },
   addPage: {
@@ -507,6 +518,7 @@ const am: Content = {
     priceRange: "ዋጋ",
     menu: "ሜኑ",
     onGoogle: "{n} ግምገማዎች በGoogle",
+    onGoogleOne: "1 ግምገማ በGoogle",
     googleBoxTitle: "በGoogle ካርታ",
     starsRow: "{n} ኮከብ",
     peopleMention: "ሰዎች የሚጠቅሱት",
@@ -568,9 +580,17 @@ const am: Content = {
   },
   appBand: {
     title: "ቡልቡላ በኪስዎ",
-    body: "ነፃው የአንድሮይድ መተግበሪያ፦ አሁን ክፍት የሆኑ ቦታዎች፣ በአንድ ንክኪ መደወልና አቅጣጫ፣ ቦታዎችን ሲያስሱ፣ ሲገመግሙና ሲያክሉ ነጥብና ባጅ።",
+    body: "አሁን ክፍት የሆኑ ቦታዎችን ያግኙ፣ በአንድ ንክኪ ይደውሉ ወይም አቅጣጫ ያግኙ፣ ያለ ኢንተርኔትም ይሰራል። ለአንድሮይድ ነፃ።",
     button: "የአንድሮይድ መተግበሪያውን ያግኙ",
     note: "ነፃ · አንድሮይድ",
+  },
+  notFound: {
+    title: "ገጹ አልተገኘም",
+    body: "ሊንኩ የቆየ ሊሆን ወይም ቦታው ተቀይሮ ሊሆን ይችላል። ማውጫውን ይፈልጉ ወይም ወደ መነሻ ይመለሱ።",
+    search: "ቦታዎችን ይፈልጉ፣ ለምሳሌ ፋርማሲ",
+    searchButton: "ፈልግ",
+    home: "መነሻ",
+    browse: "ሁሉም ድርጅቶች",
   },
   listPage: { eyebrow: "ማውጫ", title: "በቦሌ ቡልቡላ ያሉ ንግዶች", intro: "በስም ይፈልጉ ወይም በዘርፍ ይምረጡ።" },
   addPage: {

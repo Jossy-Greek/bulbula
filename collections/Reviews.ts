@@ -21,7 +21,9 @@ export const Reviews: CollectionConfig = {
   },
   defaultSort: "-createdAt",
   access: {
-    read: ({ req }) => (req.user ? true : { status: { equals: "published" } }),
+    // The site reads published ones through the local API; anonymous REST and GraphQL get
+    // nothing (the apps use directory.json; their admin screens sign in).
+    read: ({ req }) => (req.user ? true : req.payloadAPI === "local" ? { status: { equals: "published" } } : false),
     create: () => false, // only the server action writes, with overrideAccess
     update: signedIn,
     delete: signedIn,

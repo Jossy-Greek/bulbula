@@ -31,7 +31,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   const points = listings
     .filter((l) => l.lat != null && l.lng != null)
     .map((l) => ({ slug: l.slug, name: l.name, category: l.category.name, group: l.category.group, claimed: l.claimed, lat: l.lat!, lng: l.lng!, mapsUrl: googleMapsUrl(l) }));
-  const showcase = listings.filter((l) => l.category.group === "business").slice(0, 6);
+  const showcase = pickShowcase(listings);
 
   // For Google: the site, its search box (sitelinks search), and who runs it.
   const jsonLd = {
@@ -202,4 +202,18 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
       <Footer c={c} />
     </>
   );
+}
+
+/**
+ * Six businesses for the home page: ones with a photo first, then ones with a phone and hours,
+ * at most one per category on the first pass, so it isn't four banks in a row.
+ */
+function pickShowcase(listings: Awaited<ReturnType<typeof getListings>>) {
+  const score = (l: (typeof listings)[number]) => (l.photo ? 0 : 2) + (l.phone && l.hoursSpec ? 0 : 1);
+  const pool = listings.filter((l) => l.category.group === "business").sort((a, b) => score(a) - score(b));
+  const picked: typeof pool = [];
+  const seen = new Set<string>();
+  for (const l of pool) if (picked.length < 6 && !seen.has(l.category.slug)) { picked.push(l); seen.add(l.category.slug); }
+  for (const l of pool) if (picked.length < 6 && !picked.includes(l)) picked.push(l);
+  return picked;
 }
