@@ -68,19 +68,19 @@ const en: Privacy = {
       title: "Services we use",
       body: [
         "Vercel hosts the website, Neon stores the database, Cloudflare R2 stores photos, and Telegram carries the admin notifications described above. They process data only to provide these services.",
-        "Maps are drawn with tiles from OpenStreetMap; your browser or app downloads them from OpenStreetMap's servers, which see your internet address. \"Google Maps\" and \"Directions\" buttons open Google Maps, and Google sign-in is handled by Google; Google's own privacy policy applies there.",
+        "Maps on the website are drawn with tiles from OpenStreetMap; your browser downloads them from OpenStreetMap's servers, which see your internet address (the app has no map; its Directions button opens Google Maps). \"Google Maps\" and \"Directions\" buttons open Google Maps, and Google sign-in is handled by Google; Google's own privacy policy applies there.",
       ],
     },
     {
       title: "How long we keep it",
       body: [
-        "Published reviews, listings and photos stay while the listing is on Bulbula. Submissions we don't publish, corrections and contact details are kept only as long as we need them to review and follow up. Visit and search records contain no names or internet addresses and are kept for statistics. Signed-in progress is kept until you ask us to delete it.",
+        "Published reviews, listings and photos stay while the listing is on Bulbula. Submissions we don't publish, corrections and contact details are kept only as long as we need them to review and follow up. Visit and search records contain no names or internet addresses and are kept for statistics. Signed-in progress is kept until you delete it in the app or ask us to.",
       ],
     },
     {
       title: "Your choices",
       body: [
-        `You can ask us to show you, correct or delete what we hold about you (a review, a submission, your contact details or your app progress) by writing to ${email}. We reply within 30 days. Signing out in the app removes the backup link from your phone; uninstalling the app removes everything stored on the phone.`,
+        `You can ask us to show you, correct or delete what we hold about you (a review, a submission, your contact details or your app progress) by writing to ${email}. We reply within 30 days. To delete your saved app progress yourself, open Profile → Sign out and choose \"Delete my saved progress too\": it is removed from our server at once (reviews and places you sent stay, without the link to you). Uninstalling the app removes everything stored on the phone.`,
       ],
     },
     {
@@ -150,19 +150,19 @@ const am: Privacy = {
       title: "የምንጠቀማቸው አገልግሎቶች",
       body: [
         "Vercel ድረ-ገጹን ያስተናግዳል፣ Neon የመረጃ ቋቱን ያስቀምጣል፣ Cloudflare R2 ፎቶዎችን ያስቀምጣል፣ ቴሌግራም ከላይ የተጠቀሱትን የአስተዳዳሪ ማሳወቂያዎች ያደርሳል። መረጃን የሚያስተናግዱት እነዚህን አገልግሎቶች ለመስጠት ብቻ ነው።",
-        "ካርታዎች ከOpenStreetMap በሚመጡ ምስሎች ይሳላሉ፤ ብራውዘርዎ ወይም መተግበሪያው ከOpenStreetMap አገልጋዮች ያወርዳቸዋል፤ እነሱም የኢንተርኔት አድራሻዎን ያያሉ። «Google Maps» እና «አቅጣጫ» ቁልፎች Google Mapsን ይከፍታሉ፣ በGoogle መግባትም በGoogle ይስተናገዳል፤ እዚያ የGoogle የራሱ የግላዊነት ፖሊሲ ይሠራል።",
+        "በድረ-ገጹ ላይ ያሉ ካርታዎች ከOpenStreetMap በሚመጡ ምስሎች ይሳላሉ፤ ብራውዘርዎ ከOpenStreetMap አገልጋዮች ያወርዳቸዋል፤ እነሱም የኢንተርኔት አድራሻዎን ያያሉ (መተግበሪያው ካርታ የለውም፤ የ«አቅጣጫ» ቁልፉ Google Mapsን ይከፍታል)። «Google Maps» እና «አቅጣጫ» ቁልፎች Google Mapsን ይከፍታሉ፣ በGoogle መግባትም በGoogle ይስተናገዳል፤ እዚያ የGoogle የራሱ የግላዊነት ፖሊሲ ይሠራል።",
       ],
     },
     {
       title: "ለምን ያህል ጊዜ እናስቀምጣለን",
       body: [
-        "የታተሙ ግምገማዎች፣ ዝርዝሮችና ፎቶዎች ዝርዝሩ በቡልቡላ ላይ እስካለ ድረስ ይቀራሉ። ያላተምናቸው ማስገቢያዎች፣ እርማቶችና የዕውቂያ መረጃዎች የሚቀመጡት ለመገምገምና ለመከታተል እስከሚያስፈልጉን ድረስ ብቻ ነው። የጉብኝትና የፍለጋ መዝገቦች ስም ወይም የኢንተርኔት አድራሻ የላቸውም፤ ለስታቲስቲክስ ይቀመጣሉ። በGoogle የገቡበት እድገት እንድንሰርዘው እስኪጠይቁ ድረስ ይቀመጣል።",
+        "የታተሙ ግምገማዎች፣ ዝርዝሮችና ፎቶዎች ዝርዝሩ በቡልቡላ ላይ እስካለ ድረስ ይቀራሉ። ያላተምናቸው ማስገቢያዎች፣ እርማቶችና የዕውቂያ መረጃዎች የሚቀመጡት ለመገምገምና ለመከታተል እስከሚያስፈልጉን ድረስ ብቻ ነው። የጉብኝትና የፍለጋ መዝገቦች ስም ወይም የኢንተርኔት አድራሻ የላቸውም፤ ለስታቲስቲክስ ይቀመጣሉ። በGoogle የገቡበት እድገት በመተግበሪያው ውስጥ እስኪሰርዙት ወይም እንድንሰርዘው እስኪጠይቁ ድረስ ይቀመጣል።",
       ],
     },
     {
       title: "ምርጫዎችዎ",
       body: [
-        `ስለ እርስዎ የያዝነውን (ግምገማ፣ ማስገቢያ፣ የዕውቂያ መረጃዎ ወይም የመተግበሪያ እድገትዎ) እንድናሳይዎ፣ እንድናርመው ወይም እንድንሰርዘው ወደ ${email} በመጻፍ መጠየቅ ይችላሉ። በ30 ቀናት ውስጥ እንመልሳለን። በመተግበሪያው ውስጥ መውጣት (sign out) የመጠባበቂያ ግንኙነቱን ከስልክዎ ያስወግዳል፤ መተግበሪያውን ማራገፍ በስልኩ ላይ የተቀመጠውን ሁሉ ያስወግዳል።`,
+        `ስለ እርስዎ የያዝነውን (ግምገማ፣ ማስገቢያ፣ የዕውቂያ መረጃዎ ወይም የመተግበሪያ እድገትዎ) እንድናሳይዎ፣ እንድናርመው ወይም እንድንሰርዘው ወደ ${email} በመጻፍ መጠየቅ ይችላሉ። በ30 ቀናት ውስጥ እንመልሳለን። የተቀመጠውን የመተግበሪያ እድገትዎን ራስዎ ለመሰረዝ «መገለጫ» → «ውጣ» ከፍተው «የተቀመጠውን ነጥቤንም ሰርዝ» የሚለውን ይምረጡ፤ ወዲያውኑ ከአገልጋያችን ይሰረዛል (የላኳቸው ግምገማዎችና ቦታዎች ይቀራሉ፣ ከእርስዎ ጋር ያለው ግንኙነት ግን ይወገዳል)። መተግበሪያውን ማራገፍ በስልኩ ላይ የተቀመጠውን ሁሉ ያስወግዳል።`,
       ],
     },
     {
