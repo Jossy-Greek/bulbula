@@ -115,6 +115,7 @@ export type Content = {
   newest: { eyebrow: string; title: string; link: Link };
   ownerBand: { title: string; body: string; button: string };
   appBand: { title: string; body: string; button: string; note: string };
+  correction: { prompt: string; message: string; contact: string; send: string; sending: string; thanks: string; error: string };
   listPage: { eyebrow: string; title: string; intro: string };
   addPage: {
     eyebrow: string;
@@ -326,6 +327,15 @@ const en: Content = {
     button: "Get the Android app",
     note: "Free · Android",
   },
+  correction: {
+    prompt: "What's wrong or missing? A new phone number, hours, a closed place…",
+    message: "Your correction",
+    contact: "Your phone or Telegram (optional, if we may ask you)",
+    send: "Send correction",
+    sending: "Sending…",
+    thanks: "Thank you! We'll check it and update the page.",
+    error: "Please write at least a few words.",
+  },
   listPage: { eyebrow: "Directory", title: "Businesses in Bole Bulbula", intro: "Search by name or filter by category." },
   addPage: {
     eyebrow: "Free listing",
@@ -384,7 +394,7 @@ const en: Content = {
     sections: [
       {
         title: "Where the listings come from",
-        body: "The first listings come from OpenStreetMap, a free map made by volunteers. Those are marked “Unclaimed” until the business confirms them. Everything else is added by business owners and reviewed by us.",
+        body: "Listings come from OpenStreetMap (a free map made by volunteers), from our own research on Google Maps and in the street, and from business owners. Places we have not yet checked by phone or visit are marked “Not yet confirmed”. Owners can claim their listing to add or correct details, and we review every change.",
       },
       {
         title: "Free for businesses",
@@ -572,6 +582,15 @@ const am: Content = {
     button: "የአንድሮይድ መተግበሪያውን ያግኙ",
     note: "ነፃ · አንድሮይድ",
   },
+  correction: {
+    prompt: "ምን ተሳስቷል ወይም ጎድሏል? አዲስ ስልክ ቁጥር፣ የስራ ሰዓት፣ የተዘጋ ቦታ…",
+    message: "እርማትዎ",
+    contact: "ስልክዎ ወይም ቴሌግራም (አማራጭ፣ ልንጠይቅዎ ከቻልን)",
+    send: "እርማቱን ላክ",
+    sending: "በመላክ ላይ…",
+    thanks: "እናመሰግናለን! አረጋግጠን ገጹን እናስተካክላለን።",
+    error: "እባክዎ ጥቂት ቃላት ይጻፉ።",
+  },
   listPage: { eyebrow: "ማውጫ", title: "በቦሌ ቡልቡላ ያሉ ንግዶች", intro: "በስም ይፈልጉ ወይም በዘርፍ ይምረጡ።" },
   addPage: {
     eyebrow: "ነፃ ምዝገባ",
@@ -630,7 +649,7 @@ const am: Content = {
     sections: [
       {
         title: "ዝርዝሮቹ ከየት ይመጣሉ",
-        body: "የመጀመሪያዎቹ ዝርዝሮች ከOpenStreetMap — በበጎ ፈቃደኞች ከተሠራ ነፃ ካርታ — የተወሰዱ ናቸው፤ ንግዱ እስኪያረጋግጣቸው “ያልተረጋገጠ” ተብለው ይታያሉ። የተቀሩት በንግድ ባለቤቶች ተጨምረው በእኛ ይገመገማሉ።",
+        body: "ዝርዝሮቹ ከOpenStreetMap (በበጎ ፈቃደኞች ከተሠራ ነፃ ካርታ)፣ በGoogle Maps እና በመንገድ ላይ ካደረግነው ጥናት፣ እንዲሁም ከንግድ ባለቤቶች የተሰበሰቡ ናቸው። በስልክ ወይም በአካል ያላረጋገጥናቸው ቦታዎች “ገና ያልተረጋገጠ” ተብለው ይታያሉ። ባለቤቶች ዝርዝራቸውን ወስደው መረጃ መጨመር ወይም ማስተካከል ይችላሉ፤ እያንዳንዱን ለውጥ እንገመግማለን።",
       },
       {
         title: "ለንግዶች ነፃ",

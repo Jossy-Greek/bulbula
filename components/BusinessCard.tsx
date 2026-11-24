@@ -75,7 +75,8 @@ export default function BusinessCard({
             <BadgeCheck className="ml-auto h-5 w-5 flex-none text-teal" aria-label={c.ui.verified} />
           ) : null}
         </div>
-        {l.description ? <p className="mt-3 line-clamp-2 text-[14px] leading-relaxed text-ink/85">{l.description}</p> : null}
+        {/* An auto-written line ("Banks — Bulbula.") only repeats the card; show the place's own words only. */}
+        {l.description && !l.generated ? <p className="mt-3 line-clamp-2 text-[14px] leading-relaxed text-ink/85">{l.description}</p> : null}
         <ul className="mt-auto space-y-1.5 pt-4 text-[13px] text-muted">
           {l.landmark ? (
             <li className="flex items-center gap-2">
@@ -108,11 +109,10 @@ export default function BusinessCard({
           <a href={l.mapsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex h-11 items-center gap-1.5 rounded-lg bg-tint px-3 text-[13px] font-semibold text-teal-text hover:bg-marigold-soft hover:text-river">
             <MapIcon className="h-3.5 w-3.5" aria-hidden="true" /> Google Maps
           </a>
-          {l.unconfirmed ? (
+          {/* One status only: the tick (claimed) above, or this. Unclaimed-but-checked places say nothing; their page invites a claim. */}
+          {l.unconfirmed && !l.claimed ? (
             // Quiet on purpose: most research listings carry it, so a loud badge would be noise. The page explains it.
             <span className="ml-auto text-[11.5px] text-muted">{c.ui.unconfirmed}</span>
-          ) : !l.claimed ? (
-            <span className="ml-auto rounded-full bg-page px-2.5 py-1 text-[11px] font-semibold text-muted ring-1 ring-border">{c.ui.unclaimed}</span>
           ) : null}
         </div>
       </div>

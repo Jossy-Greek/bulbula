@@ -10,7 +10,7 @@ import { dailyVisitor } from "@/lib/visitor";
 
 const BOT = /bot|crawl|spider|slurp|preview|facebookexternalhit|telegram|whatsapp|headless|lighthouse|vercel|curl|wget|python|node-fetch|go-http/i;
 const TYPES = new Set(["pageview", "action", "search", "filter"]);
-const ACTIONS = new Set(["call", "directions", "maps", "website", "social", "share", "telegram", "copy", "claim", "add", "review"]);
+const ACTIONS = new Set(["call", "directions", "maps", "website", "social", "share", "telegram", "whatsapp", "copy", "claim", "add", "review"]);
 
 const clip = (v: unknown, n: number) => (typeof v === "string" ? v.slice(0, n) : undefined);
 

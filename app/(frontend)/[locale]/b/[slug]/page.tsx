@@ -1,13 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, BadgeCheck, Banknote, Clock, ExternalLink, Globe, Info, ListChecks, Map as MapIcon, MapPin, Navigation, Phone, UtensilsCrossed } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, BadgeCheck, Banknote, Clock, ExternalLink, Globe, ListChecks, Map as MapIcon, MapPin, Navigation, Phone, UtensilsCrossed } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CategoryIcon from "@/components/CategoryIcon";
 import MapLoader from "@/components/MapLoader";
 import SocialIcon from "@/components/SocialIcon";
 import OpenBadge from "@/components/OpenBadge";
+import CorrectionForm from "@/components/CorrectionForm";
 import ShareButtons from "@/components/ShareButtons";
 import GoogleReviews from "@/components/GoogleReviews";
 import Reviews from "@/components/Reviews";
@@ -15,7 +16,6 @@ import Stars from "@/components/Stars";
 import GoogleSummary from "@/components/GoogleSummary";
 import MenuSection from "@/components/MenuSection";
 import { services as serviceNames } from "@/data/services";
-import { site } from "@/data/site";
 import { getContent, isLocale, locales } from "@/data/content";
 import { directionsUrl, externalUrl, getListing, getListings, getSiteSettings, googleMapsUrl, telHref } from "@/lib/directory";
 import { localeHref } from "@/lib/href";
@@ -115,17 +115,17 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
               <p className="text-sm font-semibold text-marigold-soft">{l.category.name}</p>
               <h1 className="font-display mt-1 text-[2.1rem] font-extrabold leading-tight tracking-tight sm:text-5xl">{l.name}</h1>
               <div className="mt-3 flex flex-wrap items-center gap-2">
-                <p className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/20">
-                  {l.claimed ? (
-                    <>
-                      <BadgeCheck className="h-3.5 w-3.5 text-marigold" aria-hidden="true" /> {c.ui.verified}
-                    </>
-                  ) : l.unconfirmed ? (
-                    c.ui.unconfirmed
-                  ) : (
-                    c.ui.unclaimed
-                  )}
-                </p>
+                {l.claimed || l.unconfirmed ? (
+                  <p className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/20">
+                    {l.claimed ? (
+                      <>
+                        <BadgeCheck className="h-3.5 w-3.5 text-marigold" aria-hidden="true" /> {c.ui.verified}
+                      </>
+                    ) : (
+                      c.ui.unconfirmed
+                    )}
+                  </p>
+                ) : null}
                 {l.google ? (
                   <a
                     href={maps}
@@ -180,14 +180,10 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
                 ))}
               </ul>
             ) : null}
-            {l.description ? (
+            {/* Only the place's own description; the auto-written one stays in the meta description for search engines. */}
+            {l.description && !l.generated ? (
               <div className="rounded-2xl border border-border bg-raised p-6">
                 <p className="text-[17px] leading-relaxed text-ink">{l.description}</p>
-                {l.generated ? (
-                  <p className="mt-3 flex items-start gap-2 text-xs text-muted">
-                    <Info className="mt-0.5 h-3.5 w-3.5 flex-none" aria-hidden="true" /> {c.ui.generated}
-                  </p>
-                ) : null}
               </div>
             ) : null}
             {showMenus && l.menu.length ? <MenuSection menu={l.menu} source={l.menuSource} ui={c.ui} locale={locale} /> : null}
@@ -326,14 +322,8 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
               <ShareButtons name={l.name} ui={c.ui} />
               <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
                 <span>{c.ui.source[l.source]}</span>
-                <span aria-hidden="true">·</span>
-                <a
-                  href={`mailto:${site.operator.email}?subject=${encodeURIComponent(`${c.ui.suggestEdit}: ${l.name}`)}&body=${encodeURIComponent(`${process.env.NEXT_PUBLIC_SITE_URL ?? ""}/${locale}/b/${l.slug}\n\n`)}`}
-                  className="font-semibold text-teal-text hover:underline"
-                >
-                  {c.ui.suggestEdit}
-                </a>
               </p>
+              <CorrectionForm slug={l.slug} t={c.correction} label={c.ui.suggestEdit} />
             </div>
 
             {!l.claimed ? (

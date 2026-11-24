@@ -12,6 +12,7 @@ import * as migration_20261104_130000_android_update from './20261104_130000_and
 import * as migration_20261105_095205_cloud_progress from './20261105_095205_cloud_progress';
 import * as migration_20261124_042710_business_gallery from './20261124_042710_business_gallery';
 import * as migration_20261124_051134_media_storage_prefix from './20261124_051134_media_storage_prefix';
+import * as migration_20261124_083649_corrections_and_submission_limits from './20261124_083649_corrections_and_submission_limits';
 
 export const migrations = [
   {
@@ -82,6 +83,11 @@ export const migrations = [
   {
     up: migration_20261124_051134_media_storage_prefix.up,
     down: migration_20261124_051134_media_storage_prefix.down,
-    name: '20261124_051134_media_storage_prefix'
+    name: '20261124_051134_media_storage_prefix',
+  },
+  {
+    up: migration_20261124_083649_corrections_and_submission_limits.up,
+    down: migration_20261124_083649_corrections_and_submission_limits.down,
+    name: '20261124_083649_corrections_and_submission_limits'
   },
 ];

@@ -169,6 +169,14 @@ export const Businesses: CollectionConfig = {
       ],
     },
     {
+      // "Add your business" from one visitor is capped per day (actions.ts).
+      name: "visitor",
+      type: "text",
+      index: true,
+      access: { read: signedIn },
+      admin: { readOnly: true, position: "sidebar", description: "Daily-rotating hash of who sent it; not a person's identity." },
+    },
+    {
       name: "photo",
       type: "upload",
       relationTo: "media",

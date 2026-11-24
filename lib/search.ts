@@ -58,9 +58,45 @@ for (const group of SYNONYMS) {
   for (const w of norm) LOOKUP.set(w, norm);
 }
 
-/** Every word of the query must match (as itself or a synonym) somewhere in the text. */
+/** Every word of the query must match (as itself or a synonym) somewhere in the text, allowing a typo. */
 export function matchesQuery(text: string, query: string) {
   const hay = normalize(text);
   const words = normalize(query).split(" ").filter(Boolean);
-  return words.every((w) => (LOOKUP.get(w) ?? [w]).some((alt) => hay.includes(alt)));
+  return words.every((w) => {
+    if ((LOOKUP.get(w) ?? [w]).some((alt) => hay.includes(alt))) return true;
+    // A typo ("pharmcy"): the nearest known word stands in for it, or a word of the text is close enough.
+    const fix = nearSynonym(w);
+    if (fix && fix.some((alt) => hay.includes(alt))) return true;
+    return hay.split(" ").some((h) => close(w, h));
+  });
+}
+
+/** Typos allowed for a word of this length: none under 4 letters, 1 up to 7, then 2. */
+const allowed = (len: number) => (len < 4 ? 0 : len < 8 ? 1 : 2);
+
+/** True when `a` is within the typo allowance of `b` (whole words; partial words still match exactly above). */
+function close(a: string, b: string) {
+  const k = allowed(a.length);
+  if (!k || Math.abs(a.length - b.length) > k) return false;
+  return distance(a, b) <= k;
+}
+
+/** The synonym group whose word is closest to a misspelled query word. */
+function nearSynonym(w: string) {
+  for (const [word, group] of LOOKUP) if (close(w, word)) return group;
+  return null;
+}
+
+/** Edit distance with swaps counted as one edit (Damerau–Levenshtein, restricted). */
+function distance(a: string, b: string) {
+  const d = Array.from({ length: a.length + 1 }, (_, i) => [i, ...Array(b.length).fill(0)]);
+  for (let j = 1; j <= b.length; j++) d[0][j] = j;
+  for (let i = 1; i <= a.length; i++) {
+    for (let j = 1; j <= b.length; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+    }
+  }
+  return d[a.length][b.length];
 }
