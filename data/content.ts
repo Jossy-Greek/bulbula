@@ -149,6 +149,10 @@ export type Content = {
       manager: string;
       customer: string;
       consent: string;
+      photo: string;
+      photoHint: string;
+      photoChange: string;
+      photoRemove: string;
     };
     submit: string;
     sending: string;
@@ -355,6 +359,10 @@ const en: Content = {
       manager: "Manager / staff",
       customer: "Customer",
       consent: "I confirm the details are correct and may be published.",
+      photo: "Photo (optional)",
+      photoHint: "The front or inside, so people know it when they see it.",
+      photoChange: "Change photo",
+      photoRemove: "Remove",
     },
     submit: "Send for review",
     sending: "Sending…",
@@ -597,6 +605,10 @@ const am: Content = {
       manager: "ሥራ አስኪያጅ / ሠራተኛ",
       customer: "ደንበኛ",
       consent: "መረጃው ትክክል እንደሆነና ሊታተም እንደሚችል አረጋግጣለሁ።",
+      photo: "ፎቶ (አማራጭ)",
+      photoHint: "የፊት ለፊቱ ወይም የውስጡ፣ ሰዎች ሲያዩት እንዲያውቁት።",
+      photoChange: "ፎቶ ይቀይሩ",
+      photoRemove: "ያስወግዱ",
     },
     submit: "ለግምገማ ይላኩ",
     sending: "በመላክ ላይ…",

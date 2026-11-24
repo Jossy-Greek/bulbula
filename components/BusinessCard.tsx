@@ -41,7 +41,7 @@ export default function BusinessCard({
       className={`group relative flex flex-col overflow-hidden rounded-2xl border bg-raised transition-all duration-200 hover:-translate-y-0.5 hover:border-teal/40 hover:shadow-[0_18px_40px_-26px_rgba(14,61,71,0.5)] ${active ? "border-teal ring-2 ring-teal/30" : "border-border"}`}
     >
       {l.photo ? (
-        <div className="relative aspect-[16/9] bg-tint">
+        <div className="photo-shimmer relative aspect-[16/9]">
           <Image src={l.photo.url} alt={l.photo.alt} fill sizes="(min-width: 1024px) 30vw, (min-width: 640px) 50vw, 100vw" className="object-cover" />
         </div>
       ) : null}

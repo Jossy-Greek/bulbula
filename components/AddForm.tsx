@@ -1,8 +1,8 @@
 "use client";
 
-import { startTransition, useActionState, useState } from "react";
+import { startTransition, useActionState, useEffect, useState } from "react";
 import Link from "next/link";
-import { CheckCircle2, Send } from "lucide-react";
+import { CheckCircle2, ImagePlus, Send } from "lucide-react";
 import type { Content } from "@/data/content";
 import type { CategoryInfo } from "@/lib/directory";
 import { submitBusiness, type AddState } from "@/app/(frontend)/[locale]/add/actions";
@@ -14,6 +14,25 @@ type Props = {
   categories: CategoryInfo[];
   claim?: { slug: string; name: string; categoryId?: number };
 };
+
+/** The longest side of a sent photo, as in the app: a camera photo goes up as a few hundred KB. */
+const MAX_SIDE = 1600;
+
+/** The picked image, upright and shrunk to a JPEG; null if the browser can't read it. */
+async function shrink(file: File): Promise<Blob | null> {
+  try {
+    const bitmap = await createImageBitmap(file); // applies the camera's rotation
+    const scale = Math.min(1, MAX_SIDE / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    canvas.getContext("2d")?.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    bitmap.close();
+    return await new Promise((done) => canvas.toBlob(done, "image/jpeg", 0.82));
+  } catch {
+    return null;
+  }
+}
 
 function Field({ label, hint, children }: { label: string; hint?: string; children: React.ReactNode }) {
   return (
@@ -31,6 +50,18 @@ export default function AddForm({ t, locale, categories, claim }: Props) {
   // Customers may leave their phone out; owners and staff are called to confirm.
   const [relationship, setRelationship] = useState<"owner" | "manager" | "customer">("owner");
   const phoneNeeded = relationship !== "customer";
+  const [photo, setPhoto] = useState<{ blob: Blob; url: string } | null>(null);
+  const [photoFailed, setPhotoFailed] = useState(false);
+  useEffect(() => () => { if (photo) URL.revokeObjectURL(photo.url); }, [photo]);
+
+  async function pickPhoto(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = ""; // picking the same file again still fires
+    if (!file) return;
+    const blob = await shrink(file);
+    setPhotoFailed(!blob);
+    setPhoto(blob ? { blob, url: URL.createObjectURL(blob) } : null);
+  }
 
   if (state.ok) {
     return (
@@ -54,6 +85,7 @@ export default function AddForm({ t, locale, categories, claim }: Props) {
       onSubmit={(e) => {
         e.preventDefault();
         const data = new FormData(e.currentTarget);
+        if (photo) data.set("photo", new File([photo.blob], "photo.jpg", { type: "image/jpeg" }));
         startTransition(() => action(data));
       }}
       className="space-y-6"
@@ -137,6 +169,33 @@ export default function AddForm({ t, locale, categories, claim }: Props) {
           <Field label={f.descriptionAm}>
             <textarea name="descriptionAm" rows={4} maxLength={1200} lang="am" className="field" />
           </Field>
+          <div>
+            <span className="label">{f.photo}</span>
+            {photo ? (
+              <div className="space-y-3">
+                {/* eslint-disable-next-line @next/next/no-img-element -- a local preview, not a hosted image */}
+                <img src={photo.url} alt="" className="aspect-[4/3] w-full max-w-md rounded-xl object-cover" />
+                <div className="flex flex-wrap gap-2">
+                  <label className="btn btn-outline cursor-pointer">
+                    {f.photoChange}
+                    <input type="file" accept="image/*" onChange={pickPhoto} className="sr-only" />
+                  </label>
+                  <button type="button" className="btn btn-outline" onClick={() => setPhoto(null)}>
+                    {f.photoRemove}
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <label className="flex cursor-pointer items-center gap-4 rounded-xl border border-dashed border-border p-4 transition hover:border-teal hover:bg-tint/50">
+                <span className="grid h-11 w-11 flex-none place-items-center rounded-xl bg-tint text-teal-text">
+                  <ImagePlus className="h-5 w-5" aria-hidden="true" />
+                </span>
+                <span className="text-sm text-muted">{f.photoHint}</span>
+                <input type="file" accept="image/*" onChange={pickPhoto} className="sr-only" />
+              </label>
+            )}
+            {photoFailed ? <p className="mt-2 text-sm font-semibold text-[#8f2a1d]">{t.errors.photo}</p> : null}
+          </div>
         </div>
       </section>
 
