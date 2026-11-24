@@ -4,8 +4,8 @@ import { getCategories, getListings } from "@/lib/directory";
 
 const site = process.env.NEXT_PUBLIC_SITE_URL ?? "https://bulbula-directory.vercel.app";
 
-// Rebuilt at most hourly; new listings appear in it without a deploy.
-export const revalidate = 3600;
+// Refreshed by admin edits (lib/revalidate.ts) and daily; new listings appear without a deploy.
+export const revalidate = 86400;
 
 /** Every page in both languages, so search engines can find each place. */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {

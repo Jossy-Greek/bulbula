@@ -5,10 +5,12 @@ import { getCategories, getListings, getSiteSettings } from "@/lib/directory";
 /**
  * The whole directory in one file, for the mobile apps: /en/directory.json, /am/directory.json.
  * Same listings, order and switches as the website. Static, refreshed by admin edits
- * (lib/revalidate.ts) and every 5 minutes as a fallback.
+ * (lib/revalidate.ts) and once a day as a fallback.
  */
 export const dynamic = "force-static";
-export const revalidate = 300;
+// Admin edits refresh this at once (lib/revalidate.ts); the daily refresh is only a fallback,
+// kept long so the database (billed while awake) can sleep between edits.
+export const revalidate = 86400;
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));

@@ -23,7 +23,9 @@ import { alternates, clip, placeLine } from "@/lib/seo";
 import { formatDistance, metres } from "@/lib/geo";
 import { getReviews } from "@/lib/reviews";
 
-export const revalidate = 300;
+// Admin edits refresh this at once (lib/revalidate.ts); the daily refresh is only a fallback,
+// kept long so the database (billed while awake) can sleep between edits.
+export const revalidate = 86400;
 // New listings published after a deploy are rendered on first visit.
 export const dynamicParams = true;
 

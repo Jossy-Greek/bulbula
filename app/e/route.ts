@@ -1,6 +1,8 @@
+import { after } from "next/server";
 import { getPayload } from "payload";
 import config from "@payload-config";
 import { dailyVisitor } from "@/lib/visitor";
+import { drain, due, enqueue } from "@/lib/analytics-buffer";
 
 /**
  * The analytics beacon. Public pages POST small JSON events here
@@ -74,25 +76,37 @@ export async function POST(req: Request) {
   const visitor = dailyVisitor(req.headers);
   const ownHost = new URL(req.url).hostname.replace(/^www\./, "");
 
-  const payload = await getPayload({ config });
-  await payload.create({
-    collection: "analytics-events",
-    overrideAccess: true,
-    data: {
-      type: type as "pageview" | "action" | "search" | "filter",
-      path: clip(body.path, 200),
-      slug: clip(body.slug, 120),
-      action,
-      query: clip(body.query, 100)?.trim().toLowerCase(),
-      results: typeof body.results === "number" ? Math.max(0, Math.min(10_000, Math.round(body.results))) : undefined,
-      locale: clip(body.locale, 5),
-      // An app has no referrer, and runs on a phone (its user agent isn't a browser's).
-      source: app ? "App" : source(clip(body.utm, 60), clip(body.ref, 500), ownHost),
-      device: app ? "mobile" : device(ua),
-      platform,
-      country: req.headers.get("x-vercel-ip-country") ?? undefined,
-      visitor,
-    },
+  enqueue({
+    type: type as "pageview" | "action" | "search" | "filter",
+    path: clip(body.path, 200),
+    slug: clip(body.slug, 120),
+    action,
+    query: clip(body.query, 100)?.trim().toLowerCase(),
+    results: typeof body.results === "number" ? Math.max(0, Math.min(10_000, Math.round(body.results))) : undefined,
+    locale: clip(body.locale, 5),
+    // An app has no referrer, and runs on a phone (its user agent isn't a browser's).
+    source: app ? "App" : source(clip(body.utm, 60), clip(body.ref, 500), ownHost),
+    device: app ? "mobile" : device(ua),
+    platform,
+    country: req.headers.get("x-vercel-ip-country") ?? undefined,
+    visitor,
+    // When it happened, not when the batch is written.
+    createdAt: new Date().toISOString(),
   });
+  // Write a batch after the response, so the visitor never waits for the database.
+  if (due()) after(() => writeBatch(drain()));
   return new Response(null, { status: 204 });
+}
+
+async function writeBatch(batch: ReturnType<typeof drain>) {
+  if (!batch.length) return;
+  try {
+    const payload = await getPayload({ config });
+    for (const data of batch) {
+      await payload.create({ collection: "analytics-events", overrideAccess: true, data: data as never });
+    }
+  } catch (e) {
+    // The database is unreachable (or over its quota): drop these counts rather than retry and pile up.
+    console.error("analytics batch failed", batch.length, e);
+  }
 }
