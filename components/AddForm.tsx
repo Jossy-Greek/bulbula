@@ -211,7 +211,7 @@ export default function AddForm({ t, locale, categories, claim }: Props) {
           <fieldset className="sm:col-span-2">
             <legend className="label">{f.relationship}</legend>
             <div className="flex flex-wrap gap-2">
-              {(["owner", "manager", "customer"] as const).map((r, i) => (
+              {(claim ? (["owner", "manager"] as const) : (["owner", "manager", "customer"] as const)).map((r, i) => (
                 <label key={r} className="flex cursor-pointer items-center gap-2 rounded-xl border border-border px-4 py-2.5 has-[:checked]:border-teal has-[:checked]:bg-tint">
                   <input type="radio" name="relationship" value={r} defaultChecked={i === 0} onChange={() => setRelationship(r)} className="accent-[#1f7a85]" />
                   {f[r]}

@@ -19,7 +19,7 @@ export default function GoogleSummary({ google, mapsUrl, ui }: { google: NonNull
         <div>
           <p className="font-display text-4xl font-extrabold text-river">{google.rating.toFixed(1)}</p>
           <Stars value={google.rating} />
-          <p className="mt-1 text-sm text-muted">{ui.onGoogle.replace("{n}", String(google.count))}</p>
+          <p className="mt-1 text-sm text-muted">{(google.count === 1 ? ui.onGoogleOne : ui.onGoogle.replace("{n}", String(google.count)))}</p>
         </div>
         {google.stars ? (
           <ul className="min-w-[12rem] flex-1 space-y-1.5" aria-label={ui.googleBoxTitle}>

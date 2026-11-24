@@ -63,7 +63,7 @@ export default function BusinessCard({
                   {l.google.rating.toFixed(1)}
                   <span className="font-normal text-muted">
                     <span aria-hidden="true">({l.google.count})</span>
-                    <span className="sr-only">{c.ui.onGoogle.replace("{n}", String(l.google.count))}</span>
+                    <span className="sr-only">{(l.google.count === 1 ? c.ui.onGoogleOne : c.ui.onGoogle.replace("{n}", String(l.google.count)))}</span>
                   </span>
                   <span aria-hidden="true">·</span>
                 </span>
