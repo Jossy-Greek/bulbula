@@ -7,6 +7,9 @@ const nextConfig: NextConfig = {
   async rewrites() {
     return { beforeFiles: [{ source: "/", destination: "/en" }] };
   },
+  // "Add your business" can carry a photo; the browser shrinks it first, so this is headroom
+  // (Vercel's own request limit is 4.5 MB).
+  experimental: { serverActions: { bodySizeLimit: "4mb" } },
   images: {
     // Photos live in Cloudflare R2 (R2_PUBLIC_URL, see payload.config.ts); the first ones went to Vercel Blob.
     remotePatterns: [

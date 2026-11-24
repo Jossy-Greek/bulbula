@@ -167,14 +167,14 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
         <div className="container-x grid gap-8 lg:grid-cols-12">
           <div className="space-y-6 lg:col-span-7">
             {l.photo ? (
-              <div className="relative aspect-[16/9] overflow-hidden rounded-2xl bg-tint">
+              <div className="photo-shimmer relative aspect-[16/9] overflow-hidden rounded-2xl">
                 <Image src={l.photo.url} alt={l.photo.alt} fill sizes="(min-width: 1024px) 55vw, 100vw" className="object-cover" />
               </div>
             ) : null}
             {l.gallery.length ? (
               <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
                 {l.gallery.map((g) => (
-                  <li key={g.url} className="relative aspect-square overflow-hidden rounded-xl bg-tint">
+                  <li key={g.url} className="photo-shimmer relative aspect-square overflow-hidden rounded-xl">
                     <Image src={g.url} alt={g.alt} fill sizes="(min-width: 1024px) 18vw, (min-width: 640px) 30vw, 50vw" className="object-cover" />
                   </li>
                 ))}
