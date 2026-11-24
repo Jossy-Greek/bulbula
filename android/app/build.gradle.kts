@@ -16,8 +16,8 @@ android {
         applicationId = "et.bulbula.directory"
         minSdk = 26
         targetSdk = 36
-        versionCode = 2
-        versionName = "1.1"
+        versionCode = 3
+        versionName = "1.2"
         buildConfigField("String", "SITE_URL", "\"$siteUrl\"")
         // Google sign-in for the progress backup: the Web client ID of Firebase project
         // bulbula-89af3 (not a secret). The release and debug keys' SHA-1s are registered there.
