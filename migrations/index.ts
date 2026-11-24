@@ -11,6 +11,7 @@ import * as migration_20261104_120000_analytics_platform from './20261104_120000
 import * as migration_20261104_130000_android_update from './20261104_130000_android_update';
 import * as migration_20261105_095205_cloud_progress from './20261105_095205_cloud_progress';
 import * as migration_20261124_042710_business_gallery from './20261124_042710_business_gallery';
+import * as migration_20261124_051134_media_storage_prefix from './20261124_051134_media_storage_prefix';
 
 export const migrations = [
   {
@@ -76,6 +77,11 @@ export const migrations = [
   {
     up: migration_20261124_042710_business_gallery.up,
     down: migration_20261124_042710_business_gallery.down,
-    name: '20261124_042710_business_gallery'
+    name: '20261124_042710_business_gallery',
+  },
+  {
+    up: migration_20261124_051134_media_storage_prefix.up,
+    down: migration_20261124_051134_media_storage_prefix.down,
+    name: '20261124_051134_media_storage_prefix'
   },
 ];
