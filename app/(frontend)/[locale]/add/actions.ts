@@ -2,10 +2,14 @@
 
 import { getPayload } from "payload";
 import config from "@payload-config";
+import { headers } from "next/headers";
 import { adminUrl, notifyAdmin } from "@/lib/notify";
+import { dailyVisitor } from "@/lib/visitor";
 import { findPlayer } from "@/lib/players";
 
 export type AddState = { ok: boolean; error?: "required" | "contact" | "consent" | "photo" | "failed" };
+
+const PER_DAY = 5;
 
 const clean = (v: FormDataEntryValue | null, max = 300) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
@@ -56,6 +60,14 @@ export async function submitBusiness(_prev: AddState, form: FormData): Promise<A
 
   try {
     const payload = await getPayload({ config });
+    // At most a few submissions a day from one visitor; past that, a flood: say thanks, keep nothing.
+    const visitor = dailyVisitor(await headers());
+    const recent = await payload.count({
+      collection: "businesses",
+      overrideAccess: true,
+      where: { and: [{ visitor: { equals: visitor } }, { createdAt: { greater_than: new Date(Date.now() - 86_400_000).toISOString() } }] },
+    });
+    if (recent.totalDocs >= PER_DAY) return { ok: true };
     const claimSlug = clean(form.get("claim"), 80);
     let claims: number | undefined;
     // Only the owner or staff can claim a listing.
@@ -95,6 +107,7 @@ export async function submitBusiness(_prev: AddState, form: FormData): Promise<A
         photo: media?.id,
         status: "pending",
         source: "owner",
+        visitor,
         player: player?.id,
         claimed: false,
         featured: false,

@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     businesses: Business;
     reviews: Review;
+    corrections: Correction;
     players: Player;
     categories: Category;
     media: Media;
@@ -83,6 +84,7 @@ export interface Config {
   collectionsSelect: {
     businesses: BusinessesSelect<false> | BusinessesSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
+    corrections: CorrectionsSelect<false> | CorrectionsSelect<true>;
     players: PlayersSelect<false> | PlayersSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -227,6 +229,10 @@ export interface Business {
    * Where and when the menu is from, e.g. “Google Maps photo, Dec 2023”. Shown under the menu.
    */
   menuSource?: string | null;
+  /**
+   * Daily-rotating hash of who sent it; not a person's identity.
+   */
+  visitor?: string | null;
   /**
    * The main photo: the place itself, its front or inside, so people know it when they arrive.
    */
@@ -447,6 +453,26 @@ export interface Review {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "corrections".
+ */
+export interface Correction {
+  id: number;
+  business: number | Business;
+  message: string;
+  /**
+   * Phone or Telegram the visitor gave, if any.
+   */
+  contact?: string | null;
+  status?: ('open' | 'done' | 'ignored') | null;
+  /**
+   * Daily-rotating hash, for the 5-a-day limit; not a person's identity.
+   */
+  visitor?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
@@ -540,6 +566,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'reviews';
         value: number | Review;
+      } | null)
+    | ({
+        relationTo: 'corrections';
+        value: number | Correction;
       } | null)
     | ({
         relationTo: 'players';
@@ -642,6 +672,7 @@ export interface BusinessesSelect<T extends boolean = true> {
         id?: T;
       };
   menuSource?: T;
+  visitor?: T;
   photo?: T;
   gallery?: T;
   status?: T;
@@ -681,6 +712,19 @@ export interface ReviewsSelect<T extends boolean = true> {
   text?: T;
   locale?: T;
   player?: T;
+  visitor?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "corrections_select".
+ */
+export interface CorrectionsSelect<T extends boolean = true> {
+  business?: T;
+  message?: T;
+  contact?: T;
+  status?: T;
   visitor?: T;
   updatedAt?: T;
   createdAt?: T;

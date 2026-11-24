@@ -73,3 +73,36 @@ export async function submitReview(_prev: ReviewState, form: FormData): Promise<
     return { ok: false, error: "failed" };
   }
 }
+
+export type CorrectionState = { ok: boolean; error?: "short" | "failed" };
+
+/**
+ * "Suggest a correction": saved for the admin (Corrections) and sent to Telegram. `company` is a
+ * honeypot; one visitor can send 5 a day (more are thanked and dropped).
+ */
+export async function suggestCorrection(_prev: CorrectionState, form: FormData): Promise<CorrectionState> {
+  if (clean(form.get("company"), 10)) return { ok: true };
+  const message = clean(form.get("message"), 1000);
+  if (message.length < 5) return { ok: false, error: "short" };
+  try {
+    const payload = await getPayload({ config });
+    const business = (
+      await payload.find({ collection: "businesses", where: { and: [{ slug: { equals: clean(form.get("slug"), 120) } }, { status: { equals: "published" } }] }, limit: 1, depth: 0 })
+    ).docs[0];
+    if (!business) return { ok: false, error: "failed" };
+    const visitor = dailyVisitor(await headers());
+    const today = await payload.count({
+      collection: "corrections",
+      overrideAccess: true,
+      where: { and: [{ visitor: { equals: visitor } }, { createdAt: { greater_than: new Date(Date.now() - 86_400_000).toISOString() } }] },
+    });
+    if (today.totalDocs >= PER_DAY) return { ok: true };
+    const contact = clean(form.get("contact"), 120);
+    const doc = await payload.create({ collection: "corrections", overrideAccess: true, data: { business: business.id, message, contact: contact || undefined, visitor, status: "open" } });
+    await notifyAdmin(`✏️ Correction for ${business.name}\n${message}${contact ? `\nContact: ${contact}` : ""}\nOpen: ${adminUrl(`/collections/corrections/${doc.id}`)}`);
+    return { ok: true };
+  } catch (e) {
+    console.error("suggestCorrection failed", e);
+    return { ok: false, error: "failed" };
+  }
+}

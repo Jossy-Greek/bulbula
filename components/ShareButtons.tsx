@@ -6,8 +6,8 @@ import SocialIcon from "./SocialIcon";
 import type { Content } from "@/data/content";
 
 /**
- * Share a place. Phones get the native share sheet; everyone gets Telegram
- * (how most people in Addis pass links around) and copy-link.
+ * Share a place. Phones get the native share sheet; everyone gets Telegram and
+ * WhatsApp (how most people in Addis pass links around) and copy-link.
  */
 export default function ShareButtons({ name, ui }: { name: string; ui: Content["ui"] }) {
   const [copied, setCopied] = useState(false);
@@ -38,6 +38,15 @@ export default function ShareButtons({ name, ui }: { name: string; ui: Content["
         onClick={() => window.open(`https://t.me/share/url?url=${encodeURIComponent(url())}&text=${encodeURIComponent(name)}`, "_blank", "noopener")}
       >
         <SocialIcon platform="Telegram" className="h-4 w-4" /> Telegram
+      </button>
+      <button
+        type="button"
+        className={btn}
+        data-track="whatsapp"
+        aria-label="WhatsApp"
+        onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(`${name} ${url()}`)}`, "_blank", "noopener")}
+      >
+        <SocialIcon platform="WhatsApp" className="h-4 w-4" /> WhatsApp
       </button>
       <button
         type="button"
