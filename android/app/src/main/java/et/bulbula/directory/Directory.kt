@@ -69,7 +69,20 @@ data class Place(
     val services: List<String> = emptyList(),
     val google: Rating? = null,
     val menu: List<MenuSection> = emptyList(),
+    /** A photo of the place, from its owner or an admin; most places have none yet. */
+    val photo: Photo? = null,
+    /** More photos below the main one: food, drinks, rooms… */
+    val gallery: List<Photo> = emptyList(),
 )
+
+/** [url] may be relative to the site ("/api/media/file/…"); use [src]. */
+@Serializable
+data class Photo(val url: String, val alt: String = "") {
+    val src get() = absoluteUrl(url)
+}
+
+/** A media URL from the site, made absolute for the image loader. */
+fun absoluteUrl(url: String, siteUrl: String = BuildConfig.SITE_URL) = if (url.startsWith("/")) "$siteUrl$url" else url
 
 @Serializable
 data class Rating(val rating: Double, val count: Int)

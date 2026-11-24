@@ -190,6 +190,14 @@
     <string name="about_optional">Describe it (optional)</string>
     <string name="your_name">Your name</string>
     <string name="your_phone">Your phone (not published)</string>
+    <string name="your_phone_optional">Your phone (optional, not published)</string>
+    <string name="photo">Photo of the place</string>
+    <string name="photos">Photos</string>
+    <string name="add_photo">Add a photo (optional)</string>
+    <string name="add_photo_hint">The front or inside, so people know it when they see it.</string>
+    <string name="change_photo">Change photo</string>
+    <string name="remove_photo">Remove</string>
+    <string name="error_photo">That photo couldn\'t be sent. Try another one.</string>
     <string name="relationship">You are the…</string>
     <string name="owner">Owner</string>
     <string name="manager">Staff</string>

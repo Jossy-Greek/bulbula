@@ -33,6 +33,8 @@ export type Listing = {
   telegram: string | null;
   hours: string | null;
   photo: { url: string; alt: string } | null;
+  /** More photos below the main one (food, rooms…), in the admin's order. */
+  gallery: { url: string; alt: string }[];
   claimed: boolean;
   /** Published from research, not yet checked by phone or visit. */
   unconfirmed: boolean;
@@ -122,6 +124,9 @@ function toListing(b: Business, locale: Locale): Listing {
     telegram: b.telegram ?? null,
     hours,
     photo: media?.url ? { url: media.sizes?.card?.url || media.url, alt: media.alt || b.name } : null,
+    gallery: (b.gallery ?? [])
+      .filter((m): m is Media => typeof m === "object" && m !== null && Boolean(m.url))
+      .map((m) => ({ url: m.sizes?.card?.url || m.url!, alt: m.alt || b.name })),
     claimed: Boolean(b.claimed),
     unconfirmed: Boolean(b.unconfirmed),
     source: (b.source as Listing["source"]) ?? "admin",

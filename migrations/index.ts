@@ -10,6 +10,7 @@ import * as migration_20261029_111213_site_settings from './20261029_111213_site
 import * as migration_20261104_120000_analytics_platform from './20261104_120000_analytics_platform';
 import * as migration_20261104_130000_android_update from './20261104_130000_android_update';
 import * as migration_20261105_095205_cloud_progress from './20261105_095205_cloud_progress';
+import * as migration_20261124_042710_business_gallery from './20261124_042710_business_gallery';
 
 export const migrations = [
   {
@@ -70,6 +71,11 @@ export const migrations = [
   {
     up: migration_20261105_095205_cloud_progress.up,
     down: migration_20261105_095205_cloud_progress.down,
-    name: '20261105_095205_cloud_progress'
+    name: '20261105_095205_cloud_progress',
+  },
+  {
+    up: migration_20261124_042710_business_gallery.up,
+    down: migration_20261124_042710_business_gallery.down,
+    name: '20261124_042710_business_gallery'
   },
 ];

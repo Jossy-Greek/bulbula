@@ -184,6 +184,14 @@
     <string name="about_optional">ይግለጹት (አማራጭ)</string>
     <string name="your_name">ስምዎ</string>
     <string name="your_phone">ስልክዎ (አይታተምም)</string>
+    <string name="your_phone_optional">ስልክዎ (አማራጭ፣ አይታተምም)</string>
+    <string name="photo">የቦታው ፎቶ</string>
+    <string name="photos">ፎቶዎች</string>
+    <string name="add_photo">ፎቶ ያክሉ (አማራጭ)</string>
+    <string name="add_photo_hint">የፊት ለፊቱ ወይም የውስጡ፣ ሰዎች ሲያዩት እንዲያውቁት።</string>
+    <string name="change_photo">ፎቶ ይቀይሩ</string>
+    <string name="remove_photo">ያስወግዱ</string>
+    <string name="error_photo">ይህ ፎቶ መላክ አልተቻለም። ሌላ ይሞክሩ።</string>
     <string name="relationship">እርስዎ…</string>
     <string name="owner">ባለቤት</string>
     <string name="manager">ሠራተኛ</string>

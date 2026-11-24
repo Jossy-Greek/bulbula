@@ -227,7 +227,14 @@ export interface Business {
    * Where and when the menu is from, e.g. “Google Maps photo, Dec 2023”. Shown under the menu.
    */
   menuSource?: string | null;
+  /**
+   * The main photo: the place itself, its front or inside, so people know it when they arrive.
+   */
   photo?: (number | null) | Media;
+  /**
+   * Food, drinks, rooms, products: shown in a row below the main photo.
+   */
+  gallery?: (number | Media)[] | null;
   status: 'pending' | 'published' | 'rejected';
   /**
    * The business has confirmed this listing.
@@ -634,6 +641,7 @@ export interface BusinessesSelect<T extends boolean = true> {
       };
   menuSource?: T;
   photo?: T;
+  gallery?: T;
   status?: T;
   claimed?: T;
   unconfirmed?: T;

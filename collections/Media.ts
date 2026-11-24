@@ -1,6 +1,6 @@
 import type { CollectionConfig } from "payload";
 
-/** Photos for listings. Stored in Vercel Blob in production. */
+/** Photos for listings. Stored in Cloudflare R2 in production (payload.config.ts). */
 export const Media: CollectionConfig = {
   slug: "media",
   admin: { group: "Directory" },

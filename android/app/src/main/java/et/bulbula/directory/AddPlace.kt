@@ -1,5 +1,9 @@
 package et.bulbula.directory
 
+import android.graphics.Bitmap
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateColorAsState
@@ -12,6 +16,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -21,6 +26,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -57,6 +63,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -65,6 +74,7 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -88,17 +98,29 @@ fun AddPlaceScreen(categories: List<Category>, onBack: () -> Unit) {
     var yourPhone by rememberSaveable { mutableStateOf("") }
     var relationship by rememberSaveable { mutableStateOf(if (progress.why == Why.Owner) "owner" else "customer") }
     var consent by rememberSaveable { mutableStateOf(false) }
+    // The picked photo's address survives rotation; the shrunk image is read from it again.
+    var photoUri by rememberSaveable { mutableStateOf<String?>(null) }
+    var photo by remember { mutableStateOf<Bitmap?>(null) }
+    val context = LocalContext.current
+    val pick = rememberLauncherForActivityResult(PickVisualMedia()) { uri -> if (uri != null) photoUri = uri.toString() }
+    LaunchedEffect(photoUri) {
+        photo = photoUri?.let { PlacePhoto.load(context, it.toUri()) }
+        if (photo == null) photoUri = null
+    }
     var sending by remember { mutableStateOf(false) }
     var error by remember { mutableStateOf<String?>(null) }
     var sent by rememberSaveable { mutableStateOf(false) }
     var pointsLater by rememberSaveable { mutableStateOf(false) }
-    val ready = name.isNotBlank() && category != null && phone.isNotBlank() && yourName.isNotBlank() && yourPhone.isNotBlank() && consent
+    // A customer's tip doesn't need their phone; owners and staff are called to confirm.
+    val phoneNeeded = relationship != "customer"
+    val ready = name.isNotBlank() && category != null && phone.isNotBlank() && yourName.isNotBlank() && (yourPhone.isNotBlank() || !phoneNeeded) && consent
 
     fun submit() {
         sending = true
         error = null
         scope.launch {
-            val result = sendPlace(NewPlace(name.trim(), category!!, phone.trim(), landmark.trim(), hours.trim(), about.trim(), yourName.trim(), yourPhone.trim(), relationship), progress.cloudCode)
+            val image = photo?.let { PlacePhoto.base64(it) }
+            val result = sendPlace(NewPlace(name.trim(), category!!, phone.trim(), landmark.trim(), hours.trim(), about.trim(), yourName.trim(), yourPhone.trim(), relationship, image), progress.cloudCode)
             sending = false
             if (result == null) {
                 sent = true
@@ -112,7 +134,7 @@ fun AddPlaceScreen(categories: List<Category>, onBack: () -> Unit) {
     AnimatedContent(sent, transitionSpec = { (fadeIn() + scaleIn(initialScale = 0.92f)) togetherWith fadeOut() }, label = "add") { done ->
         if (done) {
             Sent(pointsLater, onDone = onBack, onAnother = {
-                name = ""; category = null; phone = ""; landmark = ""; hours = ""; about = ""; consent = false; sent = false
+                name = ""; category = null; phone = ""; landmark = ""; hours = ""; about = ""; photoUri = null; consent = false; sent = false
             })
             return@AnimatedContent
         }
@@ -132,10 +154,11 @@ fun AddPlaceScreen(categories: List<Category>, onBack: () -> Unit) {
                     Input(landmark, { landmark = it }, stringResource(R.string.landmark), hint = stringResource(R.string.landmark_hint))
                     Input(hours, { hours = it }, stringResource(R.string.hours_optional), hint = stringResource(R.string.hours_hint))
                     Input(about, { about = it }, stringResource(R.string.about_optional), single = false)
+                    PhotoField(photo, onPick = { pick.launch(PickVisualMediaRequest(PickVisualMedia.ImageOnly)) }, onRemove = { photoUri = null })
                 }
                 Section(stringResource(R.string.section_you)) {
                     Input(yourName, { yourName = it }, stringResource(R.string.your_name), capitalize = true)
-                    Input(yourPhone, { yourPhone = it }, stringResource(R.string.your_phone), keyboard = KeyboardType.Phone)
+                    Input(yourPhone, { yourPhone = it }, stringResource(if (phoneNeeded) R.string.your_phone else R.string.your_phone_optional), keyboard = KeyboardType.Phone)
                     Text(stringResource(R.string.relationship), style = MaterialTheme.typography.labelLarge, color = colors.onSurfaceVariant, modifier = Modifier.padding(top = 4.dp))
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         listOf("owner" to R.string.owner, "manager" to R.string.manager, "customer" to R.string.customer).forEach { (value, label) ->
@@ -176,8 +199,43 @@ fun errorText(code: String?): Int = when (code) {
     "required" -> R.string.error_required
     "contact" -> R.string.error_contact
     "consent" -> R.string.error_consent
+    "photo" -> R.string.error_photo
     "offline" -> R.string.offline
     else -> R.string.error_failed
+}
+
+/** "Add a photo (optional)", or the picked photo with Change and Remove. */
+@Composable
+private fun PhotoField(photo: Bitmap?, onPick: () -> Unit, onRemove: () -> Unit) {
+    val colors = MaterialTheme.colorScheme
+    if (photo == null) {
+        Row(
+            Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).border(1.dp, colors.outlineVariant, RoundedCornerShape(14.dp)).clickable(onClick = onPick).padding(14.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Box(Modifier.size(44.dp).background(colors.primary.copy(alpha = 0.12f), RoundedCornerShape(12.dp)), contentAlignment = Alignment.Center) {
+                Icon(painterResource(R.drawable.ic_image), contentDescription = null, tint = colors.primary, modifier = Modifier.size(22.dp))
+            }
+            Spacer(Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                Text(stringResource(R.string.add_photo), style = MaterialTheme.typography.titleSmall, fontWeight = FontWeight.Bold)
+                Text(stringResource(R.string.add_photo_hint), style = MaterialTheme.typography.bodySmall, color = colors.onSurfaceVariant)
+            }
+        }
+        return
+    }
+    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        Image(
+            photo.asImageBitmap(),
+            contentDescription = stringResource(R.string.photo),
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxWidth().aspectRatio(4f / 3f).clip(RoundedCornerShape(14.dp)),
+        )
+        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            Pill(stringResource(R.string.change_photo), selected = false, onClick = onPick)
+            Pill(stringResource(R.string.remove_photo), selected = false, onClick = onRemove)
+        }
+    }
 }
 
 @Composable

@@ -142,6 +142,8 @@ export type Content = {
       descriptionAm: string;
       yourName: string;
       yourPhone: string;
+      /** The same, when a customer sends it: we only call owners and staff. */
+      yourPhoneOptional: string;
       relationship: string;
       owner: string;
       manager: string;
@@ -153,7 +155,7 @@ export type Content = {
     successTitle: string;
     successBody: string;
     another: string;
-    errors: { required: string; contact: string; consent: string; failed: string };
+    errors: { required: string; contact: string; consent: string; photo: string; failed: string };
   };
   aboutPage: { eyebrow: string; title: string; intro: string; sections: { title: string; body: string }[]; contactTitle: string; privacy: string };
   footer: { blurb: string; explore: string; contact: string; rights: string; androidApp: string };
@@ -347,6 +349,7 @@ const en: Content = {
       descriptionAm: "Description (Amharic, optional)",
       yourName: "Your name",
       yourPhone: "Your phone (not published)",
+      yourPhoneOptional: "Your phone (optional, not published)",
       relationship: "You are the…",
       owner: "Owner",
       manager: "Manager / staff",
@@ -362,6 +365,7 @@ const en: Content = {
       required: "Please fill in the business name, category and your name and phone.",
       contact: "Add at least one way to reach the business: phone, website or a social link.",
       consent: "Please confirm the details may be published.",
+      photo: "The photo must be a JPEG, PNG or WebP image under 5 MB.",
       failed: "Sorry, something went wrong. Please try again.",
     },
   },
@@ -587,6 +591,7 @@ const am: Content = {
       descriptionAm: "መግለጫ (በአማርኛ፣ አማራጭ)",
       yourName: "ስምዎ",
       yourPhone: "ስልክዎ (አይታተምም)",
+      yourPhoneOptional: "ስልክዎ (አማራጭ፣ አይታተምም)",
       relationship: "እርስዎ…",
       owner: "ባለቤት",
       manager: "ሥራ አስኪያጅ / ሠራተኛ",
@@ -602,6 +607,7 @@ const am: Content = {
       required: "እባክዎ የንግዱን ስም፣ ዘርፍ እንዲሁም ስምዎንና ስልክዎን ይሙሉ።",
       contact: "ቢያንስ አንድ መገናኛ ያክሉ፦ ስልክ፣ ድረ ገጽ ወይም የማህበራዊ ሚዲያ ሊንክ።",
       consent: "እባክዎ መረጃው ሊታተም እንደሚችል ያረጋግጡ።",
+      photo: "ፎቶው ከ5 ሜባ በታች የሆነ JPEG፣ PNG ወይም WebP ምስል መሆን አለበት።",
       failed: "ይቅርታ፣ ችግር ተፈጥሯል። እባክዎ እንደገና ይሞክሩ።",
     },
   },

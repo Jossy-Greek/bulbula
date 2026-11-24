@@ -1,6 +1,6 @@
 "use client";
 
-import { startTransition, useActionState } from "react";
+import { startTransition, useActionState, useState } from "react";
 import Link from "next/link";
 import { CheckCircle2, Send } from "lucide-react";
 import type { Content } from "@/data/content";
@@ -28,6 +28,9 @@ function Field({ label, hint, children }: { label: string; hint?: string; childr
 export default function AddForm({ t, locale, categories, claim }: Props) {
   const [state, action, pending] = useActionState<AddState, FormData>(submitBusiness, { ok: false });
   const f = t.fields;
+  // Customers may leave their phone out; owners and staff are called to confirm.
+  const [relationship, setRelationship] = useState<"owner" | "manager" | "customer">("owner");
+  const phoneNeeded = relationship !== "customer";
 
   if (state.ok) {
     return (
@@ -143,15 +146,15 @@ export default function AddForm({ t, locale, categories, claim }: Props) {
           <Field label={f.yourName}>
             <input name="yourName" required maxLength={120} className="field" />
           </Field>
-          <Field label={f.yourPhone}>
-            <input name="yourPhone" required type="tel" inputMode="tel" maxLength={40} className="field" />
+          <Field label={phoneNeeded ? f.yourPhone : f.yourPhoneOptional}>
+            <input name="yourPhone" required={phoneNeeded} type="tel" inputMode="tel" maxLength={40} className="field" />
           </Field>
           <fieldset className="sm:col-span-2">
             <legend className="label">{f.relationship}</legend>
             <div className="flex flex-wrap gap-2">
               {(["owner", "manager", "customer"] as const).map((r, i) => (
                 <label key={r} className="flex cursor-pointer items-center gap-2 rounded-xl border border-border px-4 py-2.5 has-[:checked]:border-teal has-[:checked]:bg-tint">
-                  <input type="radio" name="relationship" value={r} defaultChecked={i === 0} className="accent-[#1f7a85]" />
+                  <input type="radio" name="relationship" value={r} defaultChecked={i === 0} onChange={() => setRelationship(r)} className="accent-[#1f7a85]" />
                   {f[r]}
                 </label>
               ))}

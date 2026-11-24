@@ -5,7 +5,7 @@ import { submitBusiness } from "@/app/(frontend)/[locale]/add/actions";
 /**
  * "Add a place" from the apps. The JSON becomes the website's add form, so it lands in the
  * same pending queue with the same checks and Telegram alert. The apps know categories by
- * slug (directory.json); the form wants the id.
+ * slug (directory.json); the form wants the id. An optional `photo` is base64.
  */
 export async function POST(req: Request) {
   const body = (await req.json().catch(() => null)) as Record<string, unknown> | null;
@@ -18,5 +18,10 @@ export async function POST(req: Request) {
     if (body[key] != null) form.set(key, String(body[key]));
   }
   if (body.consent === true) form.set("consent", "on");
+  // The photo comes as base64 (a JPEG the app has already shrunk); the form checks type and size.
+  if (typeof body.photo === "string" && body.photo) {
+    if (body.photo.length > 7_000_000) return Response.json({ ok: false, error: "photo" });
+    form.set("photo", new File([Buffer.from(body.photo, "base64")], "photo"));
+  }
   return Response.json(await submitBusiness({ ok: false }, form));
 }

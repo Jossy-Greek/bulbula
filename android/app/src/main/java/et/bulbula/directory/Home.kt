@@ -403,7 +403,7 @@ fun PlaceCard(place: Place, now: Pair<Int, Int>, here: Pair<Double, Double>?, on
             .padding(14.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            IconTile(place.category, size = 44.dp)
+            PlaceThumb(place, size = 44.dp)
             Spacer(Modifier.weight(1f))
             if (metres != null) {
                 Text(distanceLabel(metres), style = MaterialTheme.typography.labelLarge, fontWeight = FontWeight.Bold, color = colors.primary)

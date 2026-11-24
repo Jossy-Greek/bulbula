@@ -8,8 +8,11 @@ const nextConfig: NextConfig = {
     return { beforeFiles: [{ source: "/", destination: "/en" }] };
   },
   images: {
-    // Menu photos uploaded in the admin live in Vercel Blob.
-    remotePatterns: [{ protocol: "https", hostname: "*.public.blob.vercel-storage.com" }],
+    // Photos live in Cloudflare R2 (R2_PUBLIC_URL, see payload.config.ts); the first ones went to Vercel Blob.
+    remotePatterns: [
+      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
+      ...(process.env.R2_PUBLIC_URL ? [{ protocol: "https" as const, hostname: new URL(process.env.R2_PUBLIC_URL).hostname }] : []),
+    ],
   },
 };
 

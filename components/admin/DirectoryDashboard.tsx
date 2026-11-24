@@ -17,7 +17,7 @@ import {
   Store,
   Users,
 } from "lucide-react";
-import type { Business, Category, Review } from "@/payload-types";
+import type { Business, Category, Media, Review } from "@/payload-types";
 import ReviewButtons from "./ReviewButtons";
 import ModerateReview from "./ModerateReview";
 
@@ -38,6 +38,18 @@ const catOf = (b: Business) => (typeof b.category === "object" ? (b.category as 
 const idOf = (v: Business["claims"]) => (v ? (typeof v === "object" ? v.id : v) : null);
 const hasContact = (b: Business) => Boolean(b.phone || b.website || b.facebook || b.instagram || b.telegram);
 /** Owner/manager submissions publish as claimed; customers' tips and research leads do not. */
+/** The photo sent with a submission (depth 1), opened full size on tap: check it before approving. */
+function SentPhoto({ b }: { b: Business }) {
+  const m = b.photo && typeof b.photo === "object" ? (b.photo as Media) : null;
+  if (!m?.url) return null;
+  return (
+    <a href={m.url} target="_blank" rel="noreferrer" style={{ display: "inline-block", marginTop: 8 }}>
+      {/* eslint-disable-next-line @next/next/no-img-element -- a small admin preview */}
+      <img src={m.sizes?.thumb?.url || m.url} alt={`Photo sent for ${b.name}`} width={96} height={96} style={{ borderRadius: 10, objectFit: "cover" }} />
+    </a>
+  );
+}
+
 const byOwner = (b: Business) => Boolean(b.submitter?.name) && (b.submitter?.relationship ?? "owner") !== "customer";
 
 function Facts({ b }: { b: Business }) {
@@ -251,6 +263,7 @@ export default async function DirectoryDashboard({ payload }: { payload: Payload
                       </span>
                       {idOf(b.claims) ? <span className="bb-tag">Claims “{byName.get(idOf(b.claims)!) ?? "a listing"}”</span> : null}
                       <Facts b={b} />
+                      <SentPhoto b={b} />
                     </div>
                     <ReviewButtons id={b.id} name={b.name} claims={idOf(b.claims)} byOwner={byOwner(b)} />
                   </li>

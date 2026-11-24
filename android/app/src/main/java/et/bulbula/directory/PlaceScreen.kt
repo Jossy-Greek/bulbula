@@ -5,6 +5,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -27,10 +28,19 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.Dialog
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -39,6 +49,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
+import coil3.compose.AsyncImage
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -75,7 +86,17 @@ fun PlaceScreen(place: Place, serviceLabels: Map<String, String>, now: Pair<Int,
         }
 
         Column(Modifier.padding(horizontal = 20.dp)) {
-            IconTile(place.category, size = 56.dp)
+            val photo = place.photo
+            if (photo != null) {
+                AsyncImage(
+                    model = photo.src,
+                    contentDescription = photo.alt.ifBlank { place.name },
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.fillMaxWidth().aspectRatio(4f / 3f).clip(RoundedCornerShape(24.dp)).background(colors.surfaceVariant),
+                )
+            } else {
+                IconTile(place.category, size = 56.dp)
+            }
             Spacer(Modifier.height(14.dp))
             Text(place.name, style = MaterialTheme.typography.headlineMedium)
             Spacer(Modifier.height(4.dp))
@@ -98,6 +119,7 @@ fun PlaceScreen(place: Place, serviceLabels: Map<String, String>, now: Pair<Int,
             if (!place.generated && !place.description.isNullOrBlank()) {
                 Card { Text(place.description, style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(16.dp)) }
             }
+            if (place.gallery.isNotEmpty()) Gallery(place.gallery, place.name)
 
             // Facts without labels: the icon says what each one is.
             val facts = buildList {
@@ -132,6 +154,32 @@ fun PlaceScreen(place: Place, serviceLabels: Map<String, String>, now: Pair<Int,
 
             if (place.menu.isNotEmpty()) Menu(place.menu)
             RateCard(place)
+        }
+    }
+}
+
+/** The place's other photos in a row; one opens full screen on tap, and a tap closes it. */
+@Composable
+private fun Gallery(photos: List<Photo>, name: String) {
+    var open by remember { mutableStateOf<Photo?>(null) }
+    Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
+        Text(stringResource(R.string.photos), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(horizontal = 4.dp))
+        LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+            items(photos, key = { it.url }) { photo ->
+                AsyncImage(
+                    model = photo.src,
+                    contentDescription = photo.alt.ifBlank { name },
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier.size(width = 200.dp, height = 150.dp).clip(RoundedCornerShape(16.dp)).background(MaterialTheme.colorScheme.surfaceVariant).clickable { open = photo },
+                )
+            }
+        }
+    }
+    open?.let { photo ->
+        Dialog(onDismissRequest = { open = null }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
+            Box(Modifier.fillMaxSize().background(Color.Black).clickable { open = null }, contentAlignment = Alignment.Center) {
+                AsyncImage(model = photo.src, contentDescription = photo.alt.ifBlank { name }, contentScale = ContentScale.Fit, modifier = Modifier.fillMaxWidth())
+            }
         }
     }
 }
