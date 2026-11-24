@@ -1,6 +1,6 @@
 import type { CollectionConfig } from "payload";
 
-const signedIn = ({ req }: { req: { user?: unknown } }) => Boolean(req.user);
+import { canEdit, signedIn } from "@/lib/access";
 
 /**
  * One row per tracked event, written by /e (app/e/route.ts) with the local API.
@@ -15,7 +15,7 @@ export const AnalyticsEvents: CollectionConfig = {
     create: () => false, // only the /e route writes, with overrideAccess
     read: signedIn,
     update: () => false,
-    delete: signedIn,
+    delete: canEdit,
   },
   endpoints: [
     {

@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { canEdit } from "@/lib/access";
 import { revalidateDirectory } from "@/lib/revalidate";
 
 /** Directory sections. `group` splits businesses from community places (worship, public services). */
@@ -6,7 +7,7 @@ export const Categories: CollectionConfig = {
   slug: "categories",
   admin: { useAsTitle: "name", group: "Directory", defaultColumns: ["name", "group", "order"] },
   defaultSort: "order",
-  access: { read: () => true, create: ({ req }) => Boolean(req.user), update: ({ req }) => Boolean(req.user), delete: ({ req }) => Boolean(req.user) },
+  access: { read: () => true, create: canEdit, update: canEdit, delete: canEdit },
   hooks: { afterChange: [() => revalidateDirectory()], afterDelete: [() => revalidateDirectory()] },
   fields: [
     { name: "name", type: "text", required: true, localized: true },

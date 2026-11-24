@@ -1,9 +1,11 @@
 import { serviceKeys, services } from "@/data/services";
+import { canEdit, canSeePersonal } from "@/lib/access";
 import type { CollectionConfig, FieldAccess } from "payload";
 import { AWARD_XP, grant } from "@/lib/players";
 import { revalidateDirectory } from "@/lib/revalidate";
 
-const signedIn: FieldAccess = ({ req }) => Boolean(req.user);
+/** Personal details (who sent a place, from where): not for the read-only reviewer role. */
+const personal: FieldAccess = ({ req }) => canSeePersonal({ req });
 
 function slugify(s: string) {
   return s
@@ -33,9 +35,9 @@ export const Businesses: CollectionConfig = {
     // The site reads published ones through the local API; anonymous REST and GraphQL get
     // nothing (the apps use directory.json; their admin screens sign in).
     read: ({ req }) => (req.user ? true : req.payloadAPI === "local" ? { status: { equals: "published" } } : false),
-    create: ({ req }) => Boolean(req.user),
-    update: ({ req }) => Boolean(req.user),
-    delete: ({ req }) => Boolean(req.user),
+    create: canEdit,
+    update: canEdit,
+    delete: canEdit,
   },
   hooks: {
     beforeValidate: [
@@ -175,7 +177,7 @@ export const Businesses: CollectionConfig = {
       name: "visitor",
       type: "text",
       index: true,
-      access: { read: signedIn },
+      access: { read: personal },
       admin: { readOnly: true, position: "sidebar", description: "Daily-rotating hash of who sent it; not a person's identity." },
     },
     {
@@ -251,7 +253,7 @@ export const Businesses: CollectionConfig = {
       type: "relationship",
       relationTo: "players",
       index: true,
-      access: { read: ({ req }) => Boolean(req.user) },
+      access: { read: personal },
       admin: { readOnly: true, position: "sidebar", description: "Added from the app by a player with cloud backup; publishing gives them points." },
     },
     {
@@ -269,7 +271,7 @@ export const Businesses: CollectionConfig = {
         {
           name: "submitter",
           type: "group",
-          access: { read: signedIn, update: signedIn },
+          access: { read: personal, update: personal },
           fields: [
             { name: "name", type: "text" },
             { name: "phone", type: "text" },
@@ -284,7 +286,7 @@ export const Businesses: CollectionConfig = {
             },
           ],
         },
-        { name: "adminNotes", type: "textarea", access: { read: signedIn, update: signedIn } },
+        { name: "adminNotes", type: "textarea", access: { read: personal, update: personal } },
       ],
     },
   ],

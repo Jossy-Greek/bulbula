@@ -1,6 +1,6 @@
 import type { CollectionConfig } from "payload";
 
-const signedIn = ({ req }: { req: { user?: unknown } }) => Boolean(req.user);
+import { canEdit, canSeePersonal } from "@/lib/access";
 
 /**
  * App players who signed in with Google to save their progress (Profile). Written
@@ -18,10 +18,10 @@ export const Players: CollectionConfig = {
   },
   defaultSort: "-xp",
   access: {
-    read: signedIn,
+    read: canSeePersonal,
     create: () => false, // only app/m/player, with overrideAccess
-    update: signedIn,
-    delete: signedIn,
+    update: canEdit,
+    delete: canEdit,
   },
   fields: [
     {
