@@ -1,4 +1,5 @@
 import "server-only";
+import { unstable_cache } from "next/cache";
 import { getPayload } from "payload";
 import config from "@payload-config";
 import type { Locale } from "@/data/content";
@@ -152,8 +153,19 @@ function toListing(b: Business, locale: Locale): Listing {
   };
 }
 
+/**
+ * Reads from the database are cached and shared by every page (tag "directory"): the database is
+ * billed for the data it sends, and each page used to read all listings on every 5-minute refresh.
+ * Admin edits clear the cache at once (lib/revalidate.ts); otherwise it lasts a day.
+ */
+export const DIRECTORY_TAG = "directory";
+const cached = <A extends unknown[], R>(name: string, fn: (...args: A) => Promise<R>) =>
+  unstable_cache(fn, [name], { tags: [DIRECTORY_TAG], revalidate: 86400 });
+
 /** All published listings, featured and claimed first, then by name. */
-export async function getListings(locale: Locale): Promise<Listing[]> {
+export const getListings = cached("listings", readListings);
+
+async function readListings(locale: Locale): Promise<Listing[]> {
   const payload = await getPayload({ config });
   const res = await payload.find({
     collection: "businesses",
@@ -179,7 +191,9 @@ export async function getListings(locale: Locale): Promise<Listing[]> {
 /** Site-wide switches from the admin's Site settings. Defaults apply until it is first saved. */
 export type AndroidRelease = { versionCode: number; versionName: string; url: string };
 
-export async function getSiteSettings(): Promise<{ showMenus: boolean; android: AndroidRelease | null }> {
+export const getSiteSettings = cached("site-settings", readSiteSettings);
+
+async function readSiteSettings(): Promise<{ showMenus: boolean; android: AndroidRelease | null }> {
   const payload = await getPayload({ config });
   const s = await payload.findGlobal({ slug: "site-settings", depth: 0 }).catch(() => null);
   const a = s?.androidApp;
@@ -188,24 +202,21 @@ export async function getSiteSettings(): Promise<{ showMenus: boolean; android: 
   return { showMenus: s?.showMenus !== false, android };
 }
 
+/** One published listing, from the shared cached list (no database read of its own). */
 export async function getListing(slug: string, locale: Locale): Promise<Listing | null> {
-  const payload = await getPayload({ config });
-  const res = await payload.find({
-    collection: "businesses",
-    locale,
-    where: { and: [{ slug: { equals: slug } }, { status: { equals: "published" } }] },
-    limit: 1,
-    depth: 1,
-    overrideAccess: false,
-  });
-  return res.docs[0] ? toListing(res.docs[0] as Business, locale) : null;
+  return (await getListings(locale)).find((l) => l.slug === slug) ?? null;
 }
 
-export async function getCategories(locale: Locale, listings?: Listing[]): Promise<CategoryInfo[]> {
+const readCategoryDocs = cached("categories", async (locale: Locale) => {
   const payload = await getPayload({ config });
-  const res = await payload.find({ collection: "categories", locale, sort: "order", limit: 100 });
+  const res = await payload.find({ collection: "categories", locale, sort: "order", limit: 100, depth: 0 });
+  return res.docs as Category[];
+});
+
+export async function getCategories(locale: Locale, listings?: Listing[]): Promise<CategoryInfo[]> {
+  const docs = await readCategoryDocs(locale);
   const all = listings ?? (await getListings(locale));
-  return (res.docs as Category[]).map((c) => ({
+  return docs.map((c) => ({
     id: c.id,
     slug: c.slug,
     name: c.name,

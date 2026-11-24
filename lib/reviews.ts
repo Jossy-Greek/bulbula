@@ -1,3 +1,4 @@
+import { unstable_cache } from "next/cache";
 import { getPayload } from "payload";
 import config from "@payload-config";
 import type { Business, Review as ReviewDoc } from "@/payload-types";
@@ -26,7 +27,9 @@ function toReview(r: ReviewDoc): Review {
 }
 
 /** Approved reviews of one place, newest first, with the average rating. */
-export async function getReviews(businessId: number): Promise<ReviewSummary> {
+export const getReviews = unstable_cache(readReviews, ["reviews"], { tags: ["directory"], revalidate: 86400 });
+
+async function readReviews(businessId: number): Promise<ReviewSummary> {
   const payload = await getPayload({ config });
   const res = await payload.find({
     collection: "reviews",
@@ -42,7 +45,9 @@ export async function getReviews(businessId: number): Promise<ReviewSummary> {
 }
 
 /** The newest approved reviews across the directory, for the home page. */
-export async function getLatestReviews(locale: Locale, limit = 6): Promise<Review[]> {
+export const getLatestReviews = unstable_cache(readLatestReviews, ["latest-reviews"], { tags: ["directory"], revalidate: 86400 });
+
+async function readLatestReviews(locale: Locale, limit = 6): Promise<Review[]> {
   const payload = await getPayload({ config });
   const res = await payload.find({
     collection: "reviews",

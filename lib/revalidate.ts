@@ -1,4 +1,4 @@
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 /**
  * Refreshes every cached public page (home, list, detail pages, both languages)
@@ -6,6 +6,8 @@ import { revalidatePath } from "next/cache";
  */
 export function revalidateDirectory() {
   try {
+    // The shared database reads (lib/directory.ts, lib/reviews.ts), then the pages built from them.
+    revalidateTag("directory", { expire: 0 });
     revalidatePath("/", "layout");
     revalidatePath("/sitemap.xml");
   } catch {

@@ -16,8 +16,9 @@ import { site } from "@/data/site";
 import { localeHref } from "@/lib/href";
 import { getLatestReviews } from "@/lib/reviews";
 
-// Admin edits refresh pages at once (lib/revalidate.ts); this is the fallback.
-export const revalidate = 300;
+// Admin edits refresh this at once (lib/revalidate.ts); the daily refresh is only a fallback,
+// kept long so the database (billed while awake) can sleep between edits.
+export const revalidate = 86400;
 
 export default async function Home({ params }: PageProps<"/[locale]">) {
   const { locale } = await params;

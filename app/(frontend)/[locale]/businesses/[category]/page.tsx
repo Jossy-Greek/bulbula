@@ -10,7 +10,9 @@ import { localeHref } from "@/lib/href";
 import { getContent, isLocale, locales } from "@/data/content";
 import { getCategories, getListings } from "@/lib/directory";
 
-export const revalidate = 300;
+// Admin edits refresh this at once (lib/revalidate.ts); the daily refresh is only a fallback,
+// kept long so the database (billed while awake) can sleep between edits.
+export const revalidate = 86400;
 
 /**
  * One page per category ("Pharmacies in Bole Bulbula"), so a search like "pharmacy in Bole

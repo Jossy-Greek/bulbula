@@ -10,7 +10,9 @@ import { alternates } from "@/lib/seo";
 import { getContent, isLocale } from "@/data/content";
 import { getCategories, getListings } from "@/lib/directory";
 
-export const revalidate = 300;
+// Admin edits refresh this at once (lib/revalidate.ts); the daily refresh is only a fallback,
+// kept long so the database (billed while awake) can sleep between edits.
+export const revalidate = 86400;
 
 export async function generateMetadata({ params }: PageProps<"/[locale]/businesses">) {
   const { locale } = await params;
