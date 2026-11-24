@@ -29,10 +29,24 @@ function pin(p: MapPoint, active: boolean) {
   });
 }
 
+/** Places further than this from the middle don't widen the first view; they're a pan away. */
+const CORE_KM = 1.5;
+
 function fitTo(map: L.Map, points: MapPoint[]) {
   if (!points.length) return;
-  if (points.length === 1) map.setView([points[0].lat, points[0].lng], 16);
-  else map.fitBounds(L.latLngBounds(points.map((p) => [p.lat, p.lng])), { padding: [36, 36], maxZoom: 16 });
+  if (points.length === 1) return void map.setView([points[0].lat, points[0].lng], 16);
+  map.fitBounds(L.latLngBounds(core(points).map((p) => [p.lat, p.lng])), { padding: [36, 36], maxZoom: 16 });
+}
+
+/** With many pins, the ones near the median: a few far places (2–3 km out) made the map zoom out over the airport. */
+function core(points: MapPoint[]) {
+  if (points.length < 10) return points;
+  const mid = (xs: number[]) => xs.slice().sort((a, b) => a - b)[Math.floor(xs.length / 2)];
+  const lat = mid(points.map((p) => p.lat));
+  const lng = mid(points.map((p) => p.lng));
+  const km = (p: MapPoint) => Math.hypot(p.lat - lat, (p.lng - lng) * Math.cos((lat * Math.PI) / 180)) * 111;
+  const near = points.filter((p) => km(p) <= CORE_KM);
+  return near.length >= 2 ? near : points;
 }
 
 /**
