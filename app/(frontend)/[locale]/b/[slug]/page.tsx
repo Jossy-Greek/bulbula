@@ -135,7 +135,7 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
                   >
                     <span className="text-sm font-extrabold text-white">{l.google.rating.toFixed(1)}</span>
                     <Stars value={l.google.rating} size={12} />
-                    <span className="text-white/80">{c.ui.onGoogle.replace("{n}", String(l.google.count))}</span>
+                    <span className="text-white/80">{(l.google.count === 1 ? c.ui.onGoogleOne : c.ui.onGoogle.replace("{n}", String(l.google.count)))}</span>
                   </a>
                 ) : null}
               </div>
@@ -349,7 +349,7 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
               <h2 id="nearby" className="font-display text-2xl font-extrabold tracking-tight text-river">
                 {c.ui.nearby}
               </h2>
-              <Link href={`${localeHref(locale, "/businesses")}?c=${l.category.slug}`} className="action-link">
+              <Link href={localeHref(locale, `/businesses/${l.category.slug}`)} className="action-link">
                 {c.ui.allInCategory.replace("{c}", l.category.name)} <ArrowUpRight className="h-4 w-4" />
               </Link>
             </div>

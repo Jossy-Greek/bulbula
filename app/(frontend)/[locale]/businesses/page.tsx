@@ -4,6 +4,8 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
 import DirectoryBrowser from "@/components/DirectoryBrowser";
+import BusinessCard from "@/components/BusinessCard";
+import CategoryLinks from "@/components/CategoryLinks";
 import { alternates } from "@/lib/seo";
 import { getContent, isLocale } from "@/data/content";
 import { getCategories, getListings } from "@/lib/directory";
@@ -35,9 +37,19 @@ export default async function BusinessesPage({ params }: PageProps<"/[locale]/bu
       <main className="py-10 sm:py-14">
         <div className="container-x">
           {/* The browser reads ?q= and ?c= from the URL, which needs a Suspense boundary on a static page. */}
-          <Suspense>
+          {/* Until the browser takes over, the first places are plain HTML: search engines and slow phones see them. */}
+          <Suspense
+            fallback={
+              <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {listings.slice(0, 24).map((l) => (
+                  <BusinessCard key={l.slug} l={l} c={{ locale, ui: c.ui }} />
+                ))}
+              </ul>
+            }
+          >
             <DirectoryBrowser listings={listings} categories={categories} c={{ locale, ui: c.ui }} />
           </Suspense>
+          <CategoryLinks locale={locale} categories={categories} title={c.categoryPage.browse} />
         </div>
       </main>
       <Footer c={c} />

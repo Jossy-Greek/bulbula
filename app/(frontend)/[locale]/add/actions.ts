@@ -70,6 +70,8 @@ export async function submitBusiness(_prev: AddState, form: FormData): Promise<A
     if (recent.totalDocs >= PER_DAY) return { ok: true };
     const claimSlug = clean(form.get("claim"), 80);
     let claims: number | undefined;
+    // Only the owner or staff can claim a listing.
+    if (claimSlug && relationship === "customer") return { ok: false, error: "required" };
     if (claimSlug) {
       const found = await payload.find({ collection: "businesses", where: { slug: { equals: claimSlug } }, limit: 1, depth: 0 });
       claims = found.docs[0]?.id;
