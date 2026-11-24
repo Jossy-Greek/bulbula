@@ -49,7 +49,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
-import coil3.compose.AsyncImage
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -88,11 +87,10 @@ fun PlaceScreen(place: Place, serviceLabels: Map<String, String>, now: Pair<Int,
         Column(Modifier.padding(horizontal = 20.dp)) {
             val photo = place.photo
             if (photo != null) {
-                AsyncImage(
-                    model = photo.src,
+                PlaceImage(
+                    photo.src,
                     contentDescription = photo.alt.ifBlank { place.name },
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxWidth().aspectRatio(4f / 3f).clip(RoundedCornerShape(24.dp)).background(colors.surfaceVariant),
+                    modifier = Modifier.fillMaxWidth().aspectRatio(4f / 3f).clip(RoundedCornerShape(24.dp)),
                 )
             } else {
                 IconTile(place.category, size = 56.dp)
@@ -166,11 +164,10 @@ private fun Gallery(photos: List<Photo>, name: String) {
         Text(stringResource(R.string.photos), style = MaterialTheme.typography.titleMedium, modifier = Modifier.padding(horizontal = 4.dp))
         LazyRow(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             items(photos, key = { it.url }) { photo ->
-                AsyncImage(
-                    model = photo.src,
+                PlaceImage(
+                    photo.src,
                     contentDescription = photo.alt.ifBlank { name },
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.size(width = 200.dp, height = 150.dp).clip(RoundedCornerShape(16.dp)).background(MaterialTheme.colorScheme.surfaceVariant).clickable { open = photo },
+                    modifier = Modifier.size(width = 200.dp, height = 150.dp).clip(RoundedCornerShape(16.dp)).clickable { open = photo },
                 )
             }
         }
@@ -178,7 +175,7 @@ private fun Gallery(photos: List<Photo>, name: String) {
     open?.let { photo ->
         Dialog(onDismissRequest = { open = null }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
             Box(Modifier.fillMaxSize().background(Color.Black).clickable { open = null }, contentAlignment = Alignment.Center) {
-                AsyncImage(model = photo.src, contentDescription = photo.alt.ifBlank { name }, contentScale = ContentScale.Fit, modifier = Modifier.fillMaxWidth())
+                PlaceImage(photo.src, contentDescription = photo.alt.ifBlank { name }, contentScale = ContentScale.Fit, modifier = Modifier.fillMaxWidth().aspectRatio(4f / 3f))
             }
         }
     }

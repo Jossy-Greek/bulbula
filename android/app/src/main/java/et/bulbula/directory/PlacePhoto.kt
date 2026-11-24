@@ -9,7 +9,6 @@ import android.media.ExifInterface
 import android.net.Uri
 import android.os.Build
 import android.util.Base64
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
@@ -19,7 +18,29 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import android.net.ConnectivityManager
+import android.net.Network
+import android.net.NetworkCapabilities
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.composed
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.lerp
+import androidx.compose.ui.graphics.luminance
+import androidx.compose.ui.platform.LocalContext
 import coil3.compose.AsyncImage
+import coil3.compose.AsyncImagePainter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.ByteArrayOutputStream
@@ -86,10 +107,64 @@ fun PlaceThumb(place: Place, size: Dp = 40.dp) {
         IconTile(place.category, size)
         return
     }
-    AsyncImage(
-        model = photo.src,
+    PlaceImage(
+        photo.src,
         contentDescription = null, // the place's name is right beside it
-        contentScale = ContentScale.Crop,
-        modifier = Modifier.size(size).clip(RoundedCornerShape(size * 0.28f)).background(MaterialTheme.colorScheme.surfaceVariant),
+        modifier = Modifier.size(size).clip(RoundedCornerShape(size * 0.28f)),
     )
+}
+
+/**
+ * A photo from the site. It shimmers while it loads, and keeps shimmering while it can't be
+ * fetched (no internet); when the connection comes back it tries again by itself. A photo
+ * seen before shows offline straight away: Coil keeps a copy on the phone.
+ */
+@Composable
+fun PlaceImage(url: String, contentDescription: String?, modifier: Modifier = Modifier, contentScale: ContentScale = ContentScale.Crop) {
+    val online = Connectivity.online(LocalContext.current)
+    var shown by remember(url) { mutableStateOf(false) }
+    key(url, online) {
+        AsyncImage(
+            model = url,
+            contentDescription = contentDescription,
+            contentScale = contentScale,
+            onState = { shown = it is AsyncImagePainter.State.Success },
+            modifier = modifier.then(if (shown) Modifier else Modifier.shimmer()),
+        )
+    }
+}
+
+/** A soft light band sweeping across, in the theme's colours: "a photo goes here". */
+fun Modifier.shimmer(): Modifier = composed {
+    val colors = MaterialTheme.colorScheme
+    val base = colors.surfaceVariant
+    val shine = lerp(base, Color.White, if (colors.background.luminance() < 0.5f) 0.12f else 0.55f)
+    val sweep by rememberInfiniteTransition(label = "shimmer")
+        .animateFloat(-1f, 2f, infiniteRepeatable(tween(1300, easing = LinearEasing)), label = "sweep")
+    drawBehind {
+        val w = size.width
+        drawRect(base)
+        drawRect(Brush.linearGradient(listOf(base, shine, base), start = Offset(w * sweep - w * 0.5f, 0f), end = Offset(w * sweep + w * 0.5f, size.height)))
+    }
+}
+
+/** Whether the phone is online, as Compose state. One listener for the whole app. */
+object Connectivity {
+    private var state: androidx.compose.runtime.MutableState<Boolean>? = null
+
+    fun online(context: Context): Boolean {
+        val s = state ?: synchronized(this) {
+            state ?: mutableStateOf(true).also { created ->
+                val cm = context.applicationContext.getSystemService(ConnectivityManager::class.java)
+                fun now() = cm.getNetworkCapabilities(cm.activeNetwork)?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
+                created.value = now()
+                cm.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {
+                    override fun onAvailable(network: Network) { created.value = true }
+                    override fun onLost(network: Network) { created.value = now() }
+                })
+                state = created
+            }
+        }
+        return s.value
+    }
 }
