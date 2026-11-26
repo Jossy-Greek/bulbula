@@ -5,7 +5,7 @@ import { site } from "./site";
  * The privacy policy (/[locale]/privacy), also linked from Google Play. It describes what the code
  * actually does; when collection changes (a new form field, a new service), update this and `UPDATED`.
  */
-export const UPDATED = "2026-11-24";
+export const UPDATED = "2026-11-26";
 
 type Section = { title: string; body: string[] };
 export type Privacy = { title: string; intro: string; updated: string; sections: Section[] };
@@ -62,6 +62,7 @@ const en: Privacy = {
       title: "Location",
       body: [
         "\"Near me\" and the distances to places use your location only on your phone, after you allow it. We never receive or store your location.",
+        "One exception you choose: on the website's Add a place form, \"Use my location\" puts the map pin where you stand. That pin is sent only if you send the form, and it is saved as the place's location, not as yours.",
       ],
     },
     {
@@ -144,7 +145,10 @@ const am: Privacy = {
     },
     {
       title: "አካባቢ (ሎኬሽን)",
-      body: ["«በአቅራቢያዬ» እና ወደ ቦታዎች ያለው ርቀት እርስዎ ከፈቀዱ በኋላ አካባቢዎን በስልክዎ ላይ ብቻ ይጠቀማሉ። አካባቢዎን በጭራሽ አንቀበልም ወይም አናስቀምጥም።"],
+      body: [
+        "«በአቅራቢያዬ» እና ወደ ቦታዎች ያለው ርቀት እርስዎ ከፈቀዱ በኋላ አካባቢዎን በስልክዎ ላይ ብቻ ይጠቀማሉ። አካባቢዎን በጭራሽ አንቀበልም ወይም አናስቀምጥም።",
+        "እርስዎ የሚመርጡት አንድ ልዩነት፦ በድረ-ገጹ «ቦታ ያክሉ» ቅጽ ላይ «አካባቢዬን ተጠቀም» የካርታውን ምልክት ባሉበት ቦታ ያደርገዋል። ምልክቱ የሚላከው ቅጹን ከላኩ ብቻ ነው፤ የሚቀመጠውም እንደ ቦታው አድራሻ እንጂ እንደ እርስዎ አካባቢ አይደለም።",
+      ],
     },
     {
       title: "የምንጠቀማቸው አገልግሎቶች",

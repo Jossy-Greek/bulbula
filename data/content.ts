@@ -135,13 +135,33 @@ export type Content = {
       landmarkHint: string;
       mapsLink: string;
       mapsLinkHint: string;
+      pin: {
+        label: string;
+        openHint: string;
+        tapHint: string;
+        dragHint: string;
+        useLocation: string;
+        locating: string;
+        locationFailed: string;
+        remove: string;
+        pinned: string;
+      };
       phone: string;
       website: string;
       facebook: string;
       instagram: string;
       telegram: string;
       hours: string;
-      hoursHint: string;
+      hoursPicker: {
+        modes: { skip: string; set: string; always: string };
+        /** Monday first. */
+        days: string[];
+        from: string;
+        to: string;
+        closed: string;
+        copyFirst: string;
+        lateHint: string;
+      };
       descriptionEn: string;
       descriptionAm: string;
       yourName: string;
@@ -371,13 +391,32 @@ const en: Content = {
       landmarkHint: "A landmark people know, e.g. “near 93 Mazoriya” or “opposite St George church”.",
       mapsLink: "Google Maps link (optional)",
       mapsLinkHint: "Open your place in Google Maps → Share → Copy link.",
+      pin: {
+        label: "Pin it on the map (optional)",
+        openHint: "Show people exactly where the door is — it puts your place on our map and makes Directions work.",
+        tapHint: "Tap the map where the entrance is.",
+        dragHint: "Drag the pin to move it, or tap somewhere else.",
+        useLocation: "I'm there now — use my location",
+        locating: "Finding you…",
+        locationFailed: "Couldn't get your location. Tap the map instead.",
+        remove: "Remove pin",
+        pinned: "Pinned ✓",
+      },
       phone: "Phone",
       website: "Website",
       facebook: "Facebook",
       instagram: "Instagram",
       telegram: "Telegram",
       hours: "Opening hours",
-      hoursHint: "e.g. Mon–Sat 8:00–20:00",
+      hoursPicker: {
+        modes: { skip: "Not sure / skip", set: "Set the hours", always: "Open 24 hours" },
+        days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+        from: "opens",
+        to: "closes",
+        closed: "Closed",
+        copyFirst: "Same hours on every open day",
+        lateHint: "Closes after midnight? Just pick the closing time.",
+      },
       descriptionEn: "Description (English)",
       descriptionAm: "Description (Amharic, optional)",
       yourName: "Your name",
@@ -643,13 +682,32 @@ const am: Content = {
       landmarkHint: "ሰዎች የሚያውቁት ምልክት፣ ለምሳሌ “93 ማዞሪያ አጠገብ”።",
       mapsLink: "የGoogle ካርታ ሊንክ (አማራጭ)",
       mapsLinkHint: "ቦታዎን በGoogle ካርታ ይክፈቱ → Share → Copy link።",
+      pin: {
+        label: "በካርታ ላይ ምልክት ያድርጉ (አማራጭ)",
+        openHint: "በሩ የት እንዳለ በትክክል ያሳዩ — ቦታዎ በካርታችን ላይ ይታያል፣ «አቅጣጫ» ቁልፉም ይሠራል።",
+        tapHint: "መግቢያው ባለበት ቦታ ካርታውን ይንኩ።",
+        dragHint: "ምልክቱን ለማንቀሳቀስ ይጎትቱት፣ ወይም ሌላ ቦታ ይንኩ።",
+        useLocation: "አሁን እዚያ ነኝ — አካባቢዬን ተጠቀም",
+        locating: "እየፈለግንዎ ነው…",
+        locationFailed: "አካባቢዎን ማግኘት አልተቻለም። ካርታውን ይንኩ።",
+        remove: "ምልክቱን አንሳ",
+        pinned: "ምልክት ተደርጓል ✓",
+      },
       phone: "ስልክ",
       website: "ድረ ገጽ",
       facebook: "Facebook",
       instagram: "Instagram",
       telegram: "Telegram",
       hours: "የስራ ሰዓት",
-      hoursHint: "ለምሳሌ ሰኞ–ቅዳሜ 2:00–2:00",
+      hoursPicker: {
+        modes: { skip: "እርግጠኛ አይደለሁም / እለፍ", set: "ሰዓቱን ልሙላ", always: "24 ሰዓት ክፍት" },
+        days: ["ሰኞ", "ማክሰኞ", "ረቡዕ", "ሐሙስ", "ዓርብ", "ቅዳሜ", "እሑድ"],
+        from: "ይከፈታል",
+        to: "ይዘጋል",
+        closed: "ዝግ",
+        copyFirst: "ክፍት በሆኑ ቀናት ሁሉ አንድ አይነት ሰዓት",
+        lateHint: "ሰዓቱ በዓለም አቀፍ አቆጣጠር ነው፤ በቅንፍ ያለው የኢትዮጵያ ሰዓት ነው።",
+      },
       descriptionEn: "መግለጫ (በእንግሊዝኛ)",
       descriptionAm: "መግለጫ (በአማርኛ፣ አማራጭ)",
       yourName: "ስምዎ",

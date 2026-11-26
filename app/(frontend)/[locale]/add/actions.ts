@@ -13,6 +13,16 @@ const PER_DAY = 5;
 
 const clean = (v: FormDataEntryValue | null, max = 300) => (typeof v === "string" ? v.trim().slice(0, max) : "");
 
+/** Roughly Addis Ababa: a pin outside it is a slip of the finger (or a bot), so it's dropped, not refused. */
+const AREA = { lat: [8.75, 9.15], lng: [38.6, 39.0] } as const;
+function pinFrom(form: FormData): { lat: number; lng: number } | null {
+  const lat = Number(form.get("lat"));
+  const lng = Number(form.get("lng"));
+  if (!form.get("lat") || !form.get("lng") || !Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  if (lat < AREA.lat[0] || lat > AREA.lat[1] || lng < AREA.lng[0] || lng > AREA.lng[1]) return null;
+  return { lat: Math.round(lat * 1e6) / 1e6, lng: Math.round(lng * 1e6) / 1e6 };
+}
+
 /** A photo of the place, up to 5 MB. The type is read from the bytes, not from what the sender says. */
 const MAX_PHOTO = 5 * 1024 * 1024;
 function photoType(b: Buffer): { mimetype: string; ext: string } | null {
@@ -40,6 +50,8 @@ export async function submitBusiness(_prev: AddState, form: FormData): Promise<A
   const facebook = clean(form.get("facebook"), 200);
   const instagram = clean(form.get("instagram"), 200);
   const telegram = clean(form.get("telegram"), 200);
+
+  const pin = pinFrom(form);
 
   const relationship = (["owner", "manager", "customer"] as const).find((r) => r === form.get("relationship")) ?? "owner";
 
@@ -97,6 +109,8 @@ export async function submitBusiness(_prev: AddState, form: FormData): Promise<A
         category,
         landmark: clean(form.get("landmark"), 200) || undefined,
         mapsLink: clean(form.get("mapsLink"), 300) || undefined,
+        lat: pin?.lat,
+        lng: pin?.lng,
         phone: phone || undefined,
         website: website || undefined,
         facebook: facebook || undefined,
@@ -132,7 +146,7 @@ export async function submitBusiness(_prev: AddState, form: FormData): Promise<A
     const cat = await payload.findByID({ collection: "categories", id: category, depth: 0 }).catch(() => null);
     const who = `${yourName} (${relationship})`;
     await notifyAdmin(
-      `🏪 ${claims ? "Claim" : "New business"}: ${nameEn}${cat ? ` — ${cat.name}` : ""}${media ? " 📷" : ""}\nFrom ${who}\nApprove or reject: ${adminUrl("#submissions")}`,
+      `🏪 ${claims ? "Claim" : "New business"}: ${nameEn}${cat ? ` — ${cat.name}` : ""}${media ? " 📷" : ""}${pin ? " 📍" : ""}\nFrom ${who}\nApprove or reject: ${adminUrl("#submissions")}`,
     );
     return { ok: true };
   } catch (e) {
