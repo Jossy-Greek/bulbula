@@ -15,6 +15,8 @@ import { SITE_URL, brand } from "@/lib/seo";
 import { site } from "@/data/site";
 import { localeHref } from "@/lib/href";
 import { getLatestReviews } from "@/lib/reviews";
+import { getProof, shown } from "@/lib/proof";
+import OwnerProof from "@/components/OwnerProof";
 
 // Admin edits refresh pages at once (lib/revalidate.ts); this is the fallback.
 export const revalidate = 300;
@@ -27,6 +29,14 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   const categories = await getCategories(locale, listings);
   const latestReviews = await getLatestReviews(locale);
   const { android } = await getSiteSettings();
+  const proof = await getProof();
+  const fmt = (n: number) => n.toLocaleString(locale === "am" ? "am-ET" : "en-US");
+  // Real usage numbers, each only once it is big enough (lib/proof.ts).
+  const liveStats = [
+    { n: shown(proof, "contacts"), label: c.proof.contacts },
+    { n: shown(proof, "reviews"), label: c.proof.reviews },
+    { n: shown(proof, "views"), label: c.proof.views },
+  ].filter((x): x is { n: number; label: string } => x.n != null);
   const withCount = categories.filter((x) => x.count > 0);
   const points = listings
     .filter((l) => l.lat != null && l.lng != null)
@@ -103,6 +113,12 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
               <dt className="text-sm text-white/65">{c.hero.stats.categories}</dt>
               <dd className="font-display text-4xl font-extrabold">{withCount.length}</dd>
             </div>
+            {liveStats.map((x) => (
+              <div key={x.label} className="flex flex-col-reverse">
+                <dt className="text-sm text-white/65">{x.label}</dt>
+                <dd className="font-display text-4xl font-extrabold">{fmt(x.n)}</dd>
+              </div>
+            ))}
           </dl>
         </div>
       </section>
@@ -202,6 +218,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                   </li>
                 ))}
               </ul>
+              <OwnerProof c={c} proof={proof} className="mt-5 text-river" />
             </div>
             <Link href={localeHref(locale, "/add")} className="btn btn-river flex-none">
               <Plus className="h-4 w-4" aria-hidden="true" /> {c.ownerBand.button} <ArrowRight className="h-4 w-4" aria-hidden="true" />
