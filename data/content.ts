@@ -112,6 +112,8 @@ export type Content = {
   newest: { eyebrow: string; title: string; link: Link };
   /** What an owner gets: only things the site really does today. */
   ownerBand: { title: string; body: string; points: string[]; button: string };
+  /** Live numbers (lib/proof.ts); each shows only once it is big enough. {n} is the number. */
+  proof: { contacts: string; reviews: string; views: string; ownerContacts: string; ownerClaimed: string };
   appBand: { title: string; body: string; button: string; note: string };
   correction: { prompt: string; message: string; contact: string; send: string; sending: string; thanks: string; error: string };
   categoryPage: { title: string; description: string; intro: string; browse: string; all: string };
@@ -323,6 +325,13 @@ const en: Content = {
       "A link to share on Telegram and WhatsApp",
     ],
     button: "Add your business",
+  },
+  proof: {
+    contacts: "calls and directions, last 30 days",
+    reviews: "reviews from visitors",
+    views: "page views, last 30 days",
+    ownerContacts: "In the last 30 days, people called a business or asked for directions {n} times through Bulbula.",
+    ownerClaimed: "{n} businesses already manage their own listing.",
   },
   appBand: {
     title: "Bulbula in your pocket",
@@ -597,6 +606,13 @@ const am: Content = {
       "በቴሌግራምና በዋትስአፕ የሚያጋሩት ሊንክ",
     ],
     button: "ንግድዎን ያክሉ",
+  },
+  proof: {
+    contacts: "ጥሪዎችና የአቅጣጫ ጥያቄዎች፣ ባለፉት 30 ቀናት",
+    reviews: "የጎብኚዎች ግምገማዎች",
+    views: "የገጽ እይታዎች፣ ባለፉት 30 ቀናት",
+    ownerContacts: "ባለፉት 30 ቀናት ሰዎች በቡልቡላ በኩል {n} ጊዜ ለንግዶች ደውለዋል ወይም አቅጣጫ ጠይቀዋል።",
+    ownerClaimed: "{n} ንግዶች ዝርዝራቸውን ራሳቸው ያስተዳድራሉ።",
   },
   appBand: {
     title: "ቡልቡላ በኪስዎ",

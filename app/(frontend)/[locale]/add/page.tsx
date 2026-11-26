@@ -5,6 +5,8 @@ import PageHero from "@/components/PageHero";
 import AddForm from "@/components/AddForm";
 import { alternates } from "@/lib/seo";
 import { getContent, isLocale } from "@/data/content";
+import OwnerProof from "@/components/OwnerProof";
+import { getProof } from "@/lib/proof";
 import { getCategories, getListing, getListings } from "@/lib/directory";
 
 // Reads ?claim=, so it renders per request.
@@ -30,6 +32,7 @@ export default async function AddPage({ params, searchParams }: PageProps<"/[loc
   const claimSlug = typeof sp.claim === "string" ? sp.claim : undefined;
   const listings = await getListings(locale);
   const categories = await getCategories(locale, listings);
+  const proof = await getProof();
   const claimed = claimSlug ? await getListing(claimSlug, locale) : null;
   const claim = claimed
     ? { slug: claimed.slug, name: claimed.name, categoryId: categories.find((x) => x.slug === claimed.category.slug)?.id }
@@ -40,6 +43,7 @@ export default async function AddPage({ params, searchParams }: PageProps<"/[loc
       <PageHero eyebrow={c.addPage.eyebrow} title={c.addPage.title} intro={c.addPage.intro} />
       <main className="py-10 sm:py-14">
         <div className="container-x max-w-3xl">
+          <OwnerProof c={c} proof={proof} className="mb-8 rounded-2xl bg-tint px-5 py-4 text-teal-text" />
           <AddForm t={c.addPage} locale={locale} categories={categories} claim={claim} />
         </div>
       </main>
