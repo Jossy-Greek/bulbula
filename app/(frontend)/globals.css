@@ -16,6 +16,11 @@
   --ink: #10242a;
   --muted: #4b5f63;
   --border: #dce5e4;
+  /* Darker "edges" under chunky buttons and cards: the 3D lip that sinks when pressed. */
+  --marigold-edge: #c98a12;
+  --river-edge: #04222a;
+  --teal-edge: #145a63;
+  --border-edge: #c6d3d1;
 }
 
 @theme inline {
@@ -108,56 +113,96 @@ body {
   color: #fff;
 }
 
-.btn {
-  display: inline-flex;
-  height: 3rem;
-  align-items: center;
-  justify-content: center;
-  gap: 0.55rem;
-  padding-inline: 1.3rem;
-  border-radius: 12px;
-  font-size: 15px;
-  font-weight: 700;
-  transition: background-color 0.2s, color 0.2s, border-color 0.2s, transform 0.15s;
-}
-.btn:active {
-  transform: scale(0.98);
-}
-.btn-marigold {
-  background: var(--marigold);
-  color: var(--ink);
-}
-.btn-marigold:hover {
-  background: #e9a218;
-}
-.btn-river {
-  background: var(--river);
-  color: #fff;
-}
-.btn-river:hover {
-  background: var(--river-soft);
-}
-.btn-outline {
-  border: 1.5px solid var(--border);
-  background: var(--raised);
-  color: var(--river);
-}
-.btn-outline:hover {
-  border-color: var(--teal);
-}
-.btn-ghost-dark {
-  border: 1.5px solid rgba(255, 255, 255, 0.35);
-  color: #fff;
-}
-.btn-ghost-dark:hover {
-  border-color: var(--marigold-soft);
-  color: var(--marigold-soft);
+/* In a layer, so a button's own utilities (size, position) still win. */
+@layer components {
+  /* Buttons: bold labels and a solid lip under each one. Pressing sinks the
+     button onto its lip, so every tap feels physical. */
+  .btn {
+    --edge: var(--border-edge);
+    display: inline-flex;
+    height: 3rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    padding-inline: 1.4rem;
+    border-radius: 16px;
+    font-size: 15px;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+    box-shadow: 0 4px 0 var(--edge);
+    transition: background-color 0.15s, color 0.15s, border-color 0.15s, transform 0.08s, box-shadow 0.08s, filter 0.15s;
+  }
+  .btn:hover {
+    filter: brightness(1.04);
+  }
+  .btn:active {
+    transform: translateY(4px);
+    box-shadow: 0 0 0 var(--edge);
+  }
+  .btn:disabled {
+    cursor: not-allowed;
+    filter: grayscale(0.4);
+    opacity: 0.6;
+    transform: none;
+  }
+  .btn-marigold {
+    --edge: var(--marigold-edge);
+    background: var(--marigold);
+    color: var(--ink);
+  }
+  .btn-river {
+    --edge: var(--river-edge);
+    background: var(--river);
+    color: #fff;
+  }
+  .btn-river:hover {
+    background: var(--river-soft);
+  }
+  .btn-teal {
+    --edge: var(--teal-edge);
+    background: var(--teal);
+    color: #fff;
+  }
+  .btn-outline {
+    border: 2px solid var(--border);
+    background: var(--raised);
+    color: var(--river);
+  }
+  .btn-outline:hover {
+    border-color: var(--teal);
+    filter: none;
+  }
+  .btn-ghost-dark {
+    --edge: rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    color: #fff;
+  }
+  .btn-ghost-dark:hover {
+    border-color: var(--marigold-soft);
+    color: var(--marigold-soft);
+  }
+  /* Small tinted action (Call, Google Maps) with the same lip. */
+  .btn-soft {
+    --edge: #cfe2e0;
+    height: 2.75rem;
+    padding-inline: 0.85rem;
+    border-radius: 12px;
+    font-size: 13.5px;
+    background: var(--tint);
+    color: var(--teal-text);
+  }
+  .btn-soft:hover {
+    --edge: var(--marigold);
+    background: var(--marigold-soft);
+    color: var(--river);
+    filter: none;
+  }
 }
 
 .field {
   width: 100%;
-  border-radius: 12px;
-  border: 1.5px solid var(--border);
+  border-radius: 14px;
+  border: 2px solid var(--border);
   background: var(--raised);
   padding: 0.7rem 0.9rem;
   font-size: 15px;
@@ -178,6 +223,138 @@ body {
   font-size: 14px;
   font-weight: 600;
   color: var(--river);
+}
+
+/* Cards: a hairline-free 2px outline with a thicker bottom edge, like a tile
+   that sits on the page. Tiles (whole-card links) lift on hover and sink on
+   press. Chips are the small rounded filters. In a layer, so a card's own
+   utilities (padding, colours) still win. */
+@layer components {
+  .card {
+    border: 2px solid var(--border);
+    border-bottom-width: 4px;
+    border-radius: 20px;
+    background: var(--raised);
+  }
+  .tile {
+    border: 2px solid var(--border);
+    border-bottom-width: 5px;
+    border-radius: 20px;
+    background: var(--raised);
+    transition: transform 0.12s, border-color 0.15s, background-color 0.15s;
+  }
+  .tile:hover {
+    border-color: var(--teal);
+    transform: translateY(-2px);
+  }
+  .tile:active {
+    border-bottom-width: 2px;
+    transform: translateY(3px);
+  }
+  .chip {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 0.5rem;
+    height: 2.75rem;
+    padding-inline: 1rem;
+    white-space: nowrap;
+    border: 2px solid var(--border);
+    border-bottom-width: 4px;
+    border-radius: 9999px;
+    background: var(--raised);
+    color: var(--river);
+    font-size: 14px;
+    font-weight: 700;
+    transition: transform 0.08s, border-color 0.15s, background-color 0.15s;
+  }
+  .chip:hover {
+    border-color: var(--teal);
+  }
+  .chip:active {
+    border-bottom-width: 2px;
+    transform: translateY(2px);
+  }
+  .chip[aria-pressed="true"],
+  .chip[aria-current="page"],
+  .chip.is-on {
+    border-color: var(--river-edge);
+    background: var(--river);
+    color: #fff;
+  }
+  /* On the dark hero. */
+  .chip-dark {
+    border-color: rgba(255, 255, 255, 0.22);
+    border-bottom-color: rgba(0, 0, 0, 0.35);
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+  }
+  .chip-dark:hover {
+    border-color: var(--marigold-soft);
+    border-bottom-color: rgba(0, 0, 0, 0.35);
+    background: rgba(255, 255, 255, 0.16);
+  }
+  /* Round icon badge for categories. */
+  .icon-badge {
+    display: grid;
+    flex: none;
+    place-items: center;
+    width: 2.9rem;
+    height: 2.9rem;
+    border-radius: 16px;
+    box-shadow: inset 0 -3px 0 rgba(0, 0, 0, 0.08);
+  }
+}
+
+/* A small celebration when something is sent: the badge pops in and a ring
+   of marigold and teal dots bursts out once. */
+@keyframes pop {
+  0% { transform: scale(0.3); opacity: 0; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@keyframes burst {
+  0% { transform: scale(0.4); opacity: 1; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+.pop {
+  animation: pop 0.45s cubic-bezier(0.3, 1.5, 0.5, 1) both;
+}
+.celebrate {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 5.5rem;
+  height: 5.5rem;
+  margin-inline: auto;
+  border-radius: 9999px;
+  background: var(--marigold);
+  color: var(--river);
+  box-shadow: 0 5px 0 var(--marigold-edge);
+  animation: pop 0.5s cubic-bezier(0.3, 1.5, 0.5, 1) both;
+}
+.celebrate::before,
+.celebrate::after {
+  content: "";
+  position: absolute;
+  inset: -1.6rem;
+  border-radius: 9999px;
+  background:
+    radial-gradient(circle at 50% 0, var(--marigold) 0 5px, transparent 6px),
+    radial-gradient(circle at 100% 50%, var(--teal) 0 5px, transparent 6px),
+    radial-gradient(circle at 50% 100%, var(--marigold) 0 5px, transparent 6px),
+    radial-gradient(circle at 0 50%, var(--teal) 0 5px, transparent 6px);
+  animation: burst 0.8s 0.25s ease-out both;
+  pointer-events: none;
+}
+.celebrate::after {
+  transform: rotate(45deg);
+  background:
+    radial-gradient(circle at 50% 0, var(--teal) 0 4px, transparent 5px),
+    radial-gradient(circle at 100% 50%, var(--marigold) 0 4px, transparent 5px),
+    radial-gradient(circle at 50% 100%, var(--teal) 0 4px, transparent 5px),
+    radial-gradient(circle at 0 50%, var(--marigold) 0 4px, transparent 5px);
+  animation-delay: 0.35s;
 }
 
 :focus-visible {
@@ -211,6 +388,13 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .rise { animation: none; }
+  .pop,
+  .celebrate { animation: none; }
+  .celebrate::before,
+  .celebrate::after { display: none; }
+  .btn,
+  .tile,
+  .chip { transition: none; }
   .photo-shimmer { animation: none; }
   html { scroll-behavior: auto; }
 }

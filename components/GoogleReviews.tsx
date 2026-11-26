@@ -193,7 +193,7 @@ export default function GoogleReviews({ placeId, hasPhone, ui, locale }: { place
   if (empty) return null;
 
   return (
-    <section ref={box} aria-labelledby="google-title" className="rounded-2xl border border-border bg-raised p-6">
+    <section ref={box} aria-labelledby="google-title" className="card p-6">
       <div className="flex flex-wrap items-baseline justify-between gap-2">
         <h2 id="google-title" className="font-display text-xl font-bold text-river">
           {ui.googleTitle}

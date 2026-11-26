@@ -12,7 +12,7 @@ import type { Content } from "@/data/content";
 export default function ShareButtons({ name, ui }: { name: string; ui: Content["ui"] }) {
   const [copied, setCopied] = useState(false);
   const url = () => window.location.href;
-  const btn = "inline-flex h-10 items-center gap-2 rounded-xl border border-border bg-raised px-3.5 text-sm font-semibold text-river hover:border-teal";
+  const btn = "chip h-11 rounded-2xl px-3.5 text-sm";
 
   return (
     <div className="flex flex-wrap gap-2">

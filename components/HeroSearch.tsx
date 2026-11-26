@@ -60,7 +60,7 @@ export default function HeroSearch({ locale, ui, places, categories }: { locale:
       onBlur={(e) => {
         if (!box.current?.contains(e.relatedTarget as Node)) setOpen(false);
       }}
-      className="relative flex max-w-2xl gap-2 rounded-2xl bg-white p-2 shadow-[0_24px_60px_-30px_rgba(0,0,0,0.6)]"
+      className="relative flex max-w-2xl gap-2 rounded-[22px] bg-white p-2 shadow-[0_6px_0_rgba(0,0,0,0.28)]"
     >
       <label className="relative flex-1">
         <span className="sr-only">{ui.search}</span>
@@ -103,7 +103,7 @@ export default function HeroSearch({ locale, ui, places, categories }: { locale:
         <ul
           id={`${id}-list`}
           role="listbox"
-          className="absolute inset-x-0 top-[calc(100%+8px)] z-50 max-h-[60vh] overflow-auto rounded-2xl border border-border bg-raised p-1.5 text-left shadow-[0_24px_60px_-24px_rgba(14,61,71,0.55)]"
+          className="absolute inset-x-0 top-[calc(100%+8px)] z-50 max-h-[60vh] overflow-auto card p-1.5 text-left shadow-[0_24px_60px_-24px_rgba(14,61,71,0.55)]"
         >
           {options.map((o, i) => (
             <li

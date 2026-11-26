@@ -5,7 +5,7 @@ import type { Listing } from "@/lib/directory";
 export default function MenuSection({ menu, source, ui, locale }: { menu: Listing["menu"]; source: string | null; ui: Content["ui"]; locale: Content["locale"] }) {
   const fmt = new Intl.NumberFormat("en");
   return (
-    <section aria-labelledby="menu-title" className="rounded-2xl border border-border bg-raised p-6">
+    <section aria-labelledby="menu-title" className="card p-6">
       <h2 id="menu-title" className="font-display text-xl font-bold text-river">
         {ui.menu}
       </h2>

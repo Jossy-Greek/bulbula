@@ -16,7 +16,7 @@ export default function CorrectionForm({ slug, t, label }: { slug: string; t: Co
   if (state.ok) {
     return (
       <p className="flex items-start gap-2 rounded-xl bg-tint px-4 py-3 text-sm font-semibold text-teal-text" role="status">
-        <CheckCircle2 className="mt-0.5 h-4 w-4 flex-none" aria-hidden="true" /> {t.thanks}
+        <span className="pop grid h-7 w-7 flex-none place-items-center rounded-full bg-marigold text-river shadow-[0_3px_0_var(--marigold-edge)]"><CheckCircle2 className="h-4 w-4" strokeWidth={2.75} aria-hidden="true" /></span> <span className="pt-1">{t.thanks}</span>
       </p>
     );
   }
@@ -28,7 +28,7 @@ export default function CorrectionForm({ slug, t, label }: { slug: string; t: Co
     );
   }
   return (
-    <form action={action} className="space-y-3 rounded-2xl border border-border bg-raised p-4">
+    <form action={action} className="space-y-3 card p-4">
       <input type="hidden" name="slug" value={slug} />
       {/* Honeypot: hidden from people, filled in by simple bots. */}
       <input type="text" name="company" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />

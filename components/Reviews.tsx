@@ -8,7 +8,7 @@ import Stars from "./Stars";
 export default function Reviews({ slug, summary, c }: { slug: string; summary: ReviewSummary; c: Content }) {
   const t = c.reviews;
   return (
-    <section id="reviews" aria-labelledby="reviews-title" className="scroll-mt-24 rounded-2xl border border-border bg-raised p-6">
+    <section id="reviews" aria-labelledby="reviews-title" className="scroll-mt-24 card p-6">
       <h2 id="reviews-title" className="font-display text-xl font-bold text-river">
         {t.title}
       </h2>

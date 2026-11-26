@@ -86,7 +86,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                   <Link
                     href={`${localeHref(locale, "/businesses")}?c=${x.slug}`}
                     prefetch={false}
-                    className="inline-flex h-11 items-center gap-2 whitespace-nowrap rounded-full bg-white/10 px-4 text-sm font-semibold text-white ring-1 ring-white/20 hover:bg-white/20"
+                    className="chip chip-dark"
                   >
                     <CategoryIcon name={x.icon} className="h-4 w-4 text-marigold" /> {x.name}
                   </Link>
@@ -123,12 +123,12 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
                         <Link
                           href={`${localeHref(locale, "/businesses")}?c=${x.slug}`}
                           prefetch={false}
-                          className="group flex h-full flex-col gap-3 rounded-2xl border border-border bg-raised p-4 transition-colors hover:border-teal"
+                          className="tile group flex h-full flex-col gap-3 p-4"
                         >
-                          <span className={`grid h-11 w-11 place-items-center rounded-xl transition-colors ${group === "community" ? "bg-river text-white" : "bg-tint text-teal-text group-hover:bg-marigold group-hover:text-ink"}`}>
+                          <span className={`icon-badge transition-[transform,background-color] group-hover:-rotate-6 group-hover:scale-110 ${group === "community" ? "bg-river text-white" : "bg-tint text-teal-text group-hover:bg-marigold group-hover:text-ink"}`}>
                             <CategoryIcon name={x.icon} />
                           </span>
-                          <span className="font-display text-[15px] font-bold leading-snug text-river">{x.name}</span>
+                          <span className="font-display text-[15px] font-extrabold leading-snug text-river">{x.name}</span>
                           <span className="mt-auto text-xs text-muted">{x.count === 1 ? c.ui.resultOne : c.ui.results.replace("{n}", String(x.count))}</span>
                         </Link>
                       </li>
@@ -166,7 +166,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
           <section className="ripples relative overflow-hidden bg-river text-white">
             <div className="container-x relative flex flex-col gap-6 py-12 sm:py-14 lg:flex-row lg:items-center lg:justify-between">
               <div className="flex items-start gap-4">
-                <span className="grid h-12 w-12 flex-none place-items-center rounded-2xl bg-marigold text-river">
+                <span className="icon-badge h-12 w-12 bg-marigold text-river">
                   <Smartphone className="h-6 w-6" aria-hidden="true" />
                 </span>
                 <div>

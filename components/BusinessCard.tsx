@@ -38,7 +38,7 @@ export default function BusinessCard({
       data-slug={l.slug}
       onMouseEnter={onActive ? () => onActive(l.slug) : undefined}
       onMouseLeave={onActive ? () => onActive(null) : undefined}
-      className={`group relative flex flex-col overflow-hidden rounded-2xl border bg-raised transition-all duration-200 hover:-translate-y-0.5 hover:border-teal/40 hover:shadow-[0_18px_40px_-26px_rgba(14,61,71,0.5)] ${active ? "border-teal ring-2 ring-teal/30" : "border-border"}`}
+      className={`tile group relative flex flex-col overflow-hidden ${active ? "border-teal! ring-2 ring-teal/30" : ""}`}
     >
       {l.photo ? (
         <div className="photo-shimmer relative aspect-[16/9]">
@@ -47,11 +47,11 @@ export default function BusinessCard({
       ) : null}
       <div className="flex flex-1 flex-col p-5">
         <div className="flex items-start gap-3">
-          <span className={`grid h-11 w-11 flex-none place-items-center rounded-xl ${l.category.group === "community" ? "bg-river text-white" : "bg-tint text-teal-text"}`}>
+          <span className={`icon-badge ${l.category.group === "community" ? "bg-river text-white" : "bg-tint text-teal-text"}`}>
             <CategoryIcon name={l.category.icon} />
           </span>
           <div className="min-w-0">
-            <h3 className="font-display text-[17px] font-bold leading-snug text-river">
+            <h3 className="font-display text-[17px] font-extrabold leading-snug text-river">
               <Link href={localeHref(c.locale, `/b/${l.slug}`)} className="after:absolute after:inset-0">
                 {l.name}
               </Link>
@@ -100,13 +100,13 @@ export default function BusinessCard({
             </li>
           ) : null}
         </ul>
-        <div className="relative z-10 mt-4 flex flex-wrap items-center gap-2 border-t border-border pt-3">
+        <div className="relative z-10 mt-4 flex flex-wrap items-center gap-2 border-t-2 border-border pt-3">
           {l.phone ? (
-            <a href={telHref(l.phone)} className="inline-flex h-11 items-center gap-1.5 rounded-lg bg-tint px-3 text-[13px] font-semibold text-teal-text hover:bg-marigold-soft hover:text-river">
+            <a href={telHref(l.phone)} className="btn btn-soft">
               <Phone className="h-3.5 w-3.5" aria-hidden="true" /> {c.ui.call}
             </a>
           ) : null}
-          <a href={l.mapsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex h-11 items-center gap-1.5 rounded-lg bg-tint px-3 text-[13px] font-semibold text-teal-text hover:bg-marigold-soft hover:text-river">
+          <a href={l.mapsUrl} target="_blank" rel="noopener noreferrer" className="btn btn-soft">
             <MapIcon className="h-3.5 w-3.5" aria-hidden="true" /> Google Maps
           </a>
           {/* One status only: the tick (claimed) above, or this. Unclaimed-but-checked places say nothing; their page invites a claim. */}
