@@ -70,6 +70,7 @@ export interface Config {
     businesses: Business;
     reviews: Review;
     corrections: Correction;
+    payments: Payment;
     players: Player;
     categories: Category;
     media: Media;
@@ -85,6 +86,7 @@ export interface Config {
     businesses: BusinessesSelect<false> | BusinessesSelect<true>;
     reviews: ReviewsSelect<false> | ReviewsSelect<true>;
     corrections: CorrectionsSelect<false> | CorrectionsSelect<true>;
+    payments: PaymentsSelect<false> | PaymentsSelect<true>;
     players: PlayersSelect<false> | PlayersSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -251,7 +253,22 @@ export interface Business {
    * Published from research (Google Maps etc.) without a call or visit. The site shows “Not yet confirmed”. Untick once checked.
    */
   unconfirmed?: boolean | null;
+  /**
+   * Shown first and labelled Featured. Recording a Featured payment ticks this and sets the end date.
+   */
   featured?: boolean | null;
+  /**
+   * Last day of the paid period; after it the place is no longer featured. Empty = until unticked.
+   */
+  featuredUntil?: string | null;
+  /**
+   * A short line on the card, e.g. “10% off coffee this week”. Paid extra, or included with Featured.
+   */
+  offer?: string | null;
+  /**
+   * Last day the offer shows. Empty = until cleared.
+   */
+  offerUntil?: string | null;
   googleRating?: number | null;
   googleReviewCount?: number | null;
   googleStars?:
@@ -340,8 +357,6 @@ export interface Category {
 export interface Media {
   id: number;
   alt?: string | null;
-  prefix?: string | null;
-  _objectKey?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -473,6 +488,37 @@ export interface Correction {
   createdAt: string;
 }
 /**
+ * Every payment from an owner. Featured and Offer payments switch the place on until the end date.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments".
+ */
+export interface Payment {
+  id: number;
+  business: number | Business;
+  product: 'featured' | 'offer' | 'shoutout' | 'sponsor' | 'other';
+  /**
+   * Birr.
+   */
+  amount: number;
+  method: 'telebirr' | 'cbe' | 'cash' | 'other';
+  /**
+   * Transaction reference from the SMS or receipt.
+   */
+  reference?: string | null;
+  /**
+   * First day it covers.
+   */
+  from?: string | null;
+  /**
+   * Last day it covers.
+   */
+  until?: string | null;
+  note?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -571,6 +617,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'corrections';
         value: number | Correction;
+      } | null)
+    | ({
+        relationTo: 'payments';
+        value: number | Payment;
       } | null)
     | ({
         relationTo: 'players';
@@ -681,6 +731,9 @@ export interface BusinessesSelect<T extends boolean = true> {
   statsKey?: T;
   unconfirmed?: T;
   featured?: T;
+  featuredUntil?: T;
+  offer?: T;
+  offerUntil?: T;
   googleRating?: T;
   googleReviewCount?: T;
   googleStars?: T;
@@ -733,6 +786,22 @@ export interface CorrectionsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payments_select".
+ */
+export interface PaymentsSelect<T extends boolean = true> {
+  business?: T;
+  product?: T;
+  amount?: T;
+  method?: T;
+  reference?: T;
+  from?: T;
+  until?: T;
+  note?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "players_select".
  */
 export interface PlayersSelect<T extends boolean = true> {
@@ -768,8 +837,6 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
-  prefix?: T;
-  _objectKey?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

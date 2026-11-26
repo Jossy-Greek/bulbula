@@ -236,7 +236,39 @@ export const Businesses: CollectionConfig = {
         description: "Published from research (Google Maps etc.) without a call or visit. The site shows “Not yet confirmed”. Untick once checked.",
       },
     },
-    { name: "featured", type: "checkbox", defaultValue: false, admin: { position: "sidebar" } },
+    {
+      name: "featured",
+      type: "checkbox",
+      defaultValue: false,
+      admin: { position: "sidebar", description: "Shown first and labelled Featured. Recording a Featured payment ticks this and sets the end date." },
+    },
+    {
+      name: "featuredUntil",
+      type: "date",
+      admin: {
+        position: "sidebar",
+        date: { pickerAppearance: "dayOnly", displayFormat: "d MMM yyyy" },
+        description: "Last day of the paid period; after it the place is no longer featured. Empty = until unticked.",
+        condition: (data) => Boolean(data?.featured),
+      },
+    },
+    {
+      name: "offer",
+      type: "text",
+      localized: true,
+      maxLength: 80,
+      admin: { position: "sidebar", description: "A short line on the card, e.g. “10% off coffee this week”. Paid extra, or included with Featured." },
+    },
+    {
+      name: "offerUntil",
+      type: "date",
+      admin: {
+        position: "sidebar",
+        date: { pickerAppearance: "dayOnly", displayFormat: "d MMM yyyy" },
+        description: "Last day the offer shows. Empty = until cleared.",
+        condition: (data) => Boolean(data?.offer),
+      },
+    },
     // A copy of the Google Maps rating, refreshed by scripts/import-google-details.ts.
     { name: "googleRating", type: "number", min: 1, max: 5, admin: { position: "sidebar", step: 0.1 } },
     { name: "googleReviewCount", type: "number", min: 0, admin: { position: "sidebar" } },

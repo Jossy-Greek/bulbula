@@ -4,6 +4,7 @@ import config from "@payload-config";
 import type { Locale } from "@/data/content";
 import type { Service } from "@/data/services";
 import type { Business, Category, Media } from "@/payload-types";
+import { activeUntil } from "./featured";
 
 /** What the public pages need about a listing — serialisable, so client components can take it. */
 export type Listing = {
@@ -39,7 +40,10 @@ export type Listing = {
   /** Published from research, not yet checked by phone or visit. */
   unconfirmed: boolean;
   source: "osm" | "owner" | "admin";
+  /** Paid (or given) top placement, still within its end date; labelled Featured. */
   featured: boolean;
+  /** A short offer line ("10% off coffee this week") while it runs. */
+  offer: string | null;
   services: Service[];
   priceRange: string | null;
   menuLink: string | null;
@@ -130,7 +134,8 @@ function toListing(b: Business, locale: Locale): Listing {
     claimed: Boolean(b.claimed),
     unconfirmed: Boolean(b.unconfirmed),
     source: (b.source as Listing["source"]) ?? "admin",
-    featured: Boolean(b.featured),
+    featured: activeUntil(Boolean(b.featured), b.featuredUntil),
+    offer: activeUntil(Boolean(b.offer?.trim()), b.offerUntil) ? b.offer!.trim() : null,
     services: (b.services ?? []) as Service[],
     priceRange: b.priceRange ?? null,
     menuLink: b.menuLink ?? null,

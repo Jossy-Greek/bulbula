@@ -3,6 +3,7 @@ import type { Payload } from "payload";
 import type { LucideIcon } from "lucide-react";
 import {
   ArrowUpRight,
+  Banknote,
   BarChart3,
   Bell,
   CheckCircle2,
@@ -20,6 +21,7 @@ import {
 import type { Business, Category, Media, Review } from "@/payload-types";
 import ReviewButtons from "./ReviewButtons";
 import ModerateReview from "./ModerateReview";
+import { activeUntil, daysLeft, shortDate } from "@/lib/featured";
 
 const ADMIN = "/admin/collections";
 const DAY = 86_400_000;
@@ -159,6 +161,11 @@ export default async function DirectoryDashboard({ payload, user }: { payload: P
   ];
   const perCat = (cats.docs as Category[]).map((c) => ({ c, n: published.filter((b) => catOf(b)?.id === c.id).length }));
   const maxCat = Math.max(1, ...perCat.map((x) => x.n));
+  // Paid placements: what's featured now, and what ends within a week (renew or let it lapse).
+  const featuredNow = published
+    .filter((b) => activeUntil(Boolean(b.featured), b.featuredUntil))
+    .sort((a, b) => (a.featuredUntil ?? "9999").localeCompare(b.featuredUntil ?? "9999"));
+  const endingSoon = featuredNow.filter((b) => (daysLeft(b.featuredUntil) ?? 99) <= 7);
   const recent = [...docs].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 6);
 
   // Only real, non-zero work appears here, most urgent first.
@@ -178,6 +185,11 @@ export default async function DirectoryDashboard({ payload, user }: { payload: P
       detail: `${plural(leads.length, "place", "places")} found on maps and directories. Call or visit, then publish.`,
       href: "#leads",
     },
+    endingSoon.length > 0 && {
+      title: "Featured ending soon",
+      detail: `${plural(endingSoon.length, "paid place ends", "paid places end")} within a week. Ask the owner to renew.`,
+      href: "#featured",
+    },
     gaps[0].items.length > 0 && {
       title: "Add contact details",
       detail: `${plural(gaps[0].items.length, "live place has", "live places have")} no phone, website or social link.`,
@@ -190,6 +202,7 @@ export default async function DirectoryDashboard({ payload, user }: { payload: P
   const quick: { label: string; href: string; icon: LucideIcon; external?: boolean }[] = [
     { label: "Add a place", href: `${ADMIN}/businesses/create`, icon: Plus },
     { label: "Analytics", href: "/admin/analytics", icon: BarChart3 },
+    { label: "Record a payment", href: `${ADMIN}/payments/create`, icon: Banknote },
     { label: "All listings", href: `${ADMIN}/businesses`, icon: Store },
     { label: "All reviews", href: `${ADMIN}/reviews`, icon: MessageSquareText },
     { label: "Categories", href: `${ADMIN}/categories`, icon: FolderTree },
@@ -249,6 +262,28 @@ export default async function DirectoryDashboard({ payload, user }: { payload: P
               </p>
             )}
           </section>
+
+          {featuredNow.length ? (
+            <Card id="featured" title="Featured places" intro="Paid placements, soonest ending first. Record a payment to extend one.">
+              <ul className="bb-queue">
+                {featuredNow.map((b) => {
+                  const left = daysLeft(b.featuredUntil);
+                  return (
+                    <li key={b.id}>
+                      <div className="bb-queue__main">
+                        <Link href={`${ADMIN}/businesses/${b.id}`} className="bb-queue__name">
+                          {b.name}
+                        </Link>
+                        <span className={left !== null && left <= 7 ? "bb-error" : "bb-note"}>
+                          {b.featuredUntil ? `Until ${shortDate(b.featuredUntil)} · ${left === 0 ? "ends today" : plural(left ?? 0, "day left", "days left")}` : "No end date"}
+                        </span>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            </Card>
+          ) : null}
 
           {submissions.length ? (
             <Card id="submissions" title="New businesses" intro="From the “Add your business” form. Nothing goes live until you approve it.">

@@ -31,7 +31,9 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
   const points = listings
     .filter((l) => l.lat != null && l.lng != null)
     .map((l) => ({ slug: l.slug, name: l.name, category: l.category.name, group: l.category.group, claimed: l.claimed, lat: l.lat!, lng: l.lng!, mapsUrl: googleMapsUrl(l) }));
-  const showcase = pickShowcase(listings);
+  // Paid places get their own labelled row (up to six), and aren't repeated below it.
+  const featured = listings.filter((l) => l.featured).slice(0, 6);
+  const showcase = pickShowcase(listings.filter((l) => !featured.includes(l)));
 
   // For Google: the site, its search box (sitelinks search), and who runs it.
   const jsonLd = {
@@ -148,6 +150,20 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             <p className="mt-2 text-xs text-muted">{c.ui.osmCredit}</p>
           </div>
         </section>
+
+        {featured.length ? (
+          <section className="bg-marigold-soft/40 py-14 sm:py-20">
+            <div className="container-x">
+              <SectionHeader eyebrow={c.featuredSection.eyebrow} title={c.featuredSection.title} locale={locale} />
+              <p className="-mt-4 mb-6 text-muted">{c.featuredSection.body}</p>
+              <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {featured.map((l) => (
+                  <BusinessCard key={l.id} l={l} c={c} />
+                ))}
+              </ul>
+            </div>
+          </section>
+        ) : null}
 
         <section className="py-14 sm:py-20">
           <div className="container-x">

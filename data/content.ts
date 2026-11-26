@@ -30,6 +30,9 @@ export type Content = {
     unconfirmed: string;
     unconfirmedHint: string;
     verified: string;
+    /** Label on a paid (featured) place: paid placement is always marked. */
+    featured: string;
+    offerLabel: string;
     call: string;
     website: string;
     directions: string;
@@ -114,6 +117,7 @@ export type Content = {
   categoriesSection: { eyebrow: string; title: string };
   mapSection: { eyebrow: string; title: string; body: string };
   newest: { eyebrow: string; title: string; link: Link };
+  featuredSection: { eyebrow: string; title: string; body: string };
   ownerBand: { title: string; body: string; button: string };
   appBand: { title: string; body: string; button: string; note: string };
   correction: { prompt: string; message: string; contact: string; send: string; sending: string; thanks: string; error: string };
@@ -218,6 +222,8 @@ const en: Content = {
     unconfirmed: "Not yet confirmed",
     unconfirmedHint: "Found on Google Maps and not checked yet — call ahead or open it in Google Maps for details. Is this your business? Claim it to add your phone and hours.",
     verified: "Confirmed by owner",
+    featured: "Featured",
+    offerLabel: "Offer",
     call: "Call",
     website: "Website",
     directions: "Directions",
@@ -320,6 +326,7 @@ const en: Content = {
   categoriesSection: { eyebrow: "Browse", title: "What are you looking for?" },
   mapSection: { eyebrow: "On the map", title: "Bulbula at a glance", body: "Every listing with a known location. Tap a pin for details." },
   newest: { eyebrow: "In the directory", title: "Places in Bulbula", link: { label: "See all", href: "/businesses" } },
+  featuredSection: { eyebrow: "Featured", title: "Featured in Bulbula", body: "These places pay to be shown first, which keeps the directory free for everyone." },
   ownerBand: {
     title: "Own a business in Bulbula?",
     body: "Add it for free, or claim your listing to add a description, photos, hours and your website. We review every submission before it goes live.",
@@ -490,6 +497,8 @@ const am: Content = {
     unconfirmed: "ገና ያልተረጋገጠ",
     unconfirmedHint: "ከGoogle ካርታ የተገኘ እና ገና ያልተረጋገጠ — ከመሄድዎ በፊት ይደውሉ ወይም በGoogle ካርታ ይክፈቱ። የእርስዎ ንግድ ነው? ስልክና የሥራ ሰዓት ለመጨመር ይረከቡት።",
     verified: "በባለቤቱ የተረጋገጠ",
+    featured: "ተለይቶ የቀረበ",
+    offerLabel: "ቅናሽ",
     call: "ይደውሉ",
     website: "ድረ ገጽ",
     directions: "አቅጣጫ",
@@ -592,6 +601,7 @@ const am: Content = {
   categoriesSection: { eyebrow: "ያስሱ", title: "ምን እየፈለጉ ነው?" },
   mapSection: { eyebrow: "በካርታ ላይ", title: "ቡልቡላ በጨረፍታ", body: "ቦታው የሚታወቅ እያንዳንዱ ዝርዝር። ለዝርዝር ምልክቱን ይንኩ።" },
   newest: { eyebrow: "በማውጫው", title: "በቡልቡላ ያሉ ቦታዎች", link: { label: "ሁሉንም ይመልከቱ", href: "/businesses" } },
+  featuredSection: { eyebrow: "ተለይተው የቀረቡ", title: "በቡልቡላ ተለይተው የቀረቡ", body: "እነዚህ ቦታዎች ቀድመው እንዲታዩ ይከፍላሉ፤ ይህም ማውጫውን ለሁሉም ነጻ ያደርገዋል።" },
   ownerBand: {
     title: "በቡልቡላ ንግድ አለዎት?",
     body: "በነፃ ያክሉት፣ ወይም ዝርዝርዎን ተረክበው መግለጫ፣ ፎቶ፣ ሰዓትና ድረ ገጽ ያክሉ። እያንዳንዱን ማመልከቻ ከመታተሙ በፊት እንገመግማለን።",
