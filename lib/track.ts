@@ -31,6 +31,8 @@ export function track(e: Event) {
   try {
     if (typeof window === "undefined" || localStorage.getItem(OPT_OUT_KEY) === "1") return;
     const path = location.pathname;
+    // An owner's private stats page: its address is a secret, so it never goes into analytics.
+    if (/^\/[a-z]{2}\/stats\//.test(path)) return;
     if (e.type === "pageview") {
       // One view per path change (React may run the effect twice in development).
       if (lastView.path === path && Date.now() - lastView.at < 2000) return;

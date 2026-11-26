@@ -5,7 +5,7 @@ import { site } from "./site";
  * The privacy policy (/[locale]/privacy), also linked from Google Play. It describes what the code
  * actually does; when collection changes (a new form field, a new service), update this and `UPDATED`.
  */
-export const UPDATED = "2026-11-24";
+export const UPDATED = "2026-11-26";
 
 type Section = { title: string; body: string[] };
 export type Privacy = { title: string; intro: string; updated: string; sections: Section[] };
@@ -36,6 +36,7 @@ const en: Privacy = {
       body: [
         "To see which places and features are useful, we count page and place views; taps on Call, Directions, Website and Share; and searches and category filters (including the words searched). With each one we keep the language, the kind of device, the country and where the visit came from (for example Telegram or Google).",
         "We don't use cookies or advertising IDs for this. To count each visitor once a day, the server makes a code from your internet address and browser or app version together with a secret that changes every day. The code can't be traced back to you or followed from one day to the next, and your internet address itself is not stored.",
+        "A place's owner can see totals for their own place on a private page: how many people visited it and tapped Call, Directions or their links. Only numbers: never who you are.",
       ],
     },
     {
@@ -120,6 +121,7 @@ const am: Privacy = {
       body: [
         "የትኞቹ ቦታዎችና ባህሪያት ጠቃሚ እንደሆኑ ለማወቅ የገጽና የቦታ ጉብኝቶችን፣ በ«ደውል»፣ «አቅጣጫ»፣ «ድረ-ገጽ» እና «አጋራ» ላይ የሚደረጉ ንክኪዎችን፣ እንዲሁም ፍለጋዎችንና የምድብ ማጣሪያዎችን (የተፈለጉትን ቃላት ጨምሮ) እንቆጥራለን። ከእያንዳንዱ ጋር ቋንቋውን፣ የመሣሪያውን ዓይነት፣ አገሩንና ጉብኝቱ ከየት እንደመጣ (ለምሳሌ ከቴሌግራም ወይም ከGoogle) እናስቀምጣለን።",
         "ለዚህ ኩኪ ወይም የማስታወቂያ መለያ አንጠቀምም። እያንዳንዱን ጎብኚ በቀን አንድ ጊዜ ለመቁጠር አገልጋዩ ከኢንተርኔት አድራሻዎ፣ ከብራውዘርዎ ወይም ከመተግበሪያው ስሪት እና በየቀኑ ከሚቀየር ሚስጥር ኮድ ይሠራል። ይህ ኮድ ወደ እርስዎ ሊመለስ ወይም ከአንድ ቀን ወደ ሌላው ሊከተልዎ አይችልም፤ የኢንተርኔት አድራሻዎ ራሱ አይቀመጥም።",
+        "የአንድ ቦታ ባለቤት ስለ ራሱ ቦታ ድምሮችን በግል ገጽ ማየት ይችላል፦ ስንት ሰዎች እንደጎበኙትና «ደውል»፣ «አቅጣጫ» ወይም ሊንኮቹን እንደነኩ። ቁጥሮች ብቻ ናቸው፤ እርስዎ ማን እንደሆኑ በጭራሽ አይታይም።",
       ],
     },
     {

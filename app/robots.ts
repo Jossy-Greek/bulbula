@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     // Not "/e": robots rules match by prefix, so that blocked every /en page. The /e
     // endpoint only takes POSTs, which crawlers never send.
-    rules: [{ userAgent: "*", allow: "/", disallow: ["/admin", "/api"] }],
+    rules: [{ userAgent: "*", allow: "/", disallow: ["/admin", "/api", "/en/stats/", "/am/stats/"] }],
     sitemap: `${site}/sitemap.xml`,
   };
 }

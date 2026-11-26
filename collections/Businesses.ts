@@ -219,6 +219,15 @@ export const Businesses: CollectionConfig = {
       },
     },
     {
+      // The secret in the owner's private stats link (/en/stats/<key>). Anyone with the
+      // link sees the numbers, so it is long and random, and a new one cancels the old.
+      name: "statsKey",
+      type: "text",
+      unique: true,
+      access: { read: personal, create: personal, update: personal },
+      admin: { position: "sidebar", components: { Field: "/components/admin/OwnerStatsLink" } },
+    },
+    {
       name: "unconfirmed",
       type: "checkbox",
       defaultValue: false,

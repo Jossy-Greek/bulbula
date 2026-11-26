@@ -1445,3 +1445,29 @@ a.bb-queue__name:hover {
 .bb-cell-stars span {
   color: var(--bb-border);
 }
+
+/* Owner stats link, in a listing's sidebar (components/admin/OwnerStatsLink.tsx). */
+.bb-stats-link {
+  display: grid;
+  gap: 0.5rem;
+}
+.bb-stats-link__url {
+  font-size: 12px;
+  opacity: 0.75;
+}
+.bb-stats-link__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.bb-stats-link__reset {
+  justify-self: start;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--theme-elevation-600);
+  font-size: 12px;
+  text-align: left;
+  text-decoration: underline;
+  cursor: pointer;
+}
