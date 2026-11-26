@@ -4,6 +4,7 @@ import { startTransition, useActionState, useState } from "react";
 import { CheckCircle2, PenLine, Star } from "lucide-react";
 import type { Content } from "@/data/content";
 import { submitReview, type ReviewState } from "@/app/(frontend)/[locale]/b/[slug]/actions";
+import TermsNote from "./TermsNote";
 import { track } from "@/lib/track";
 
 type Props = { slug: string; t: Content["reviews"]; locale: Content["locale"] };
@@ -109,6 +110,7 @@ export default function ReviewForm({ slug, t, locale }: Props) {
         </button>
         <p className="text-xs text-muted">{t.moderated}</p>
       </div>
+      <TermsNote locale={locale} />
     </form>
   );
 }

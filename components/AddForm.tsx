@@ -6,6 +6,7 @@ import { CheckCircle2, ImagePlus, Send } from "lucide-react";
 import type { Content } from "@/data/content";
 import type { CategoryInfo } from "@/lib/directory";
 import { submitBusiness, type AddState } from "@/app/(frontend)/[locale]/add/actions";
+import TermsNote from "./TermsNote";
 import { localeHref } from "@/lib/href";
 
 type Props = {
@@ -235,6 +236,7 @@ export default function AddForm({ t, locale, categories, claim }: Props) {
       <button type="submit" disabled={pending} className="btn btn-river w-full sm:w-auto">
         <Send className="h-4 w-4" aria-hidden="true" /> {pending ? t.sending : t.submit}
       </button>
+      <TermsNote locale={locale} className="-mt-3" />
     </form>
   );
 }

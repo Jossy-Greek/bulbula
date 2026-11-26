@@ -69,6 +69,9 @@ export default async function Footer({ c }: { c: Content }) {
           <Link href={localeHref(c.locale, "/privacy")} className="font-semibold text-white/75 hover:text-marigold-soft">
             {c.footer.privacy}
           </Link>
+          <Link href={localeHref(c.locale, "/terms")} className="font-semibold text-white/75 hover:text-marigold-soft">
+            {c.footer.terms}
+          </Link>
         </p>
       </div>
     </footer>
