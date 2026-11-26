@@ -80,13 +80,9 @@ export type Content = {
     priceRange: string;
     menu: string;
     /** "{n}" = number of reviews. Shown next to a rating copied from Google Maps. */
-    onGoogle: string;
-    onGoogleOne: string;
-    googleBoxTitle: string;
     /** "{n}" = star count. */
     starsRow: string;
     peopleMention: string;
-    readReviewsOnGoogle: string;
     /** "{source}" = e.g. "Google Maps photo, Dec 2023". */
     menuFrom: string;
     birr: string;
@@ -114,7 +110,8 @@ export type Content = {
   categoriesSection: { eyebrow: string; title: string };
   mapSection: { eyebrow: string; title: string; body: string };
   newest: { eyebrow: string; title: string; link: Link };
-  ownerBand: { title: string; body: string; button: string };
+  /** What an owner gets: only things the site really does today. */
+  ownerBand: { title: string; body: string; points: string[]; button: string };
   appBand: { title: string; body: string; button: string; note: string };
   correction: { prompt: string; message: string; contact: string; send: string; sending: string; thanks: string; error: string };
   categoryPage: { title: string; description: string; intro: string; browse: string; all: string };
@@ -264,12 +261,8 @@ const en: Content = {
     servicesTitle: "Services",
     priceRange: "Prices",
     menu: "Menu",
-    onGoogle: "{n} reviews on Google",
-    onGoogleOne: "1 review on Google",
-    googleBoxTitle: "On Google Maps",
     starsRow: "{n} stars",
     peopleMention: "People mention",
-    readReviewsOnGoogle: "Read the reviews on Google Maps",
     menuFrom: "From {source}. Prices may have changed — check with the place.",
     birr: "Br",
     googlePhotos: "Photos",
@@ -322,7 +315,13 @@ const en: Content = {
   newest: { eyebrow: "In the directory", title: "Places in Bulbula", link: { label: "See all", href: "/businesses" } },
   ownerBand: {
     title: "Own a business in Bulbula?",
-    body: "Add it for free, or claim your listing to add a description, photos, hours and your website. We review every submission before it goes live.",
+    body: "Help customers find you. Add your business for free, or claim it if it's already listed. We check every submission before it goes live.",
+    points: [
+      "Your own page, free: photos, hours, menu and map pin, in English and Amharic",
+      "Customers call you or get directions in one tap",
+      "A verified tick and reviews from your customers",
+      "A link to share on Telegram and WhatsApp",
+    ],
     button: "Add your business",
   },
   appBand: {
@@ -536,12 +535,8 @@ const am: Content = {
     servicesTitle: "አገልግሎቶች",
     priceRange: "ዋጋ",
     menu: "ሜኑ",
-    onGoogle: "{n} ግምገማዎች በGoogle",
-    onGoogleOne: "1 ግምገማ በGoogle",
-    googleBoxTitle: "በGoogle ካርታ",
     starsRow: "{n} ኮከብ",
     peopleMention: "ሰዎች የሚጠቅሱት",
-    readReviewsOnGoogle: "ግምገማዎቹን በGoogle ካርታ ያንብቡ",
     menuFrom: "ምንጭ፦ {source}። ዋጋዎች ተለውጠው ሊሆን ይችላል — ቦታውን ይጠይቁ።",
     birr: "ብር",
     googlePhotos: "ፎቶዎች",
@@ -594,7 +589,13 @@ const am: Content = {
   newest: { eyebrow: "በማውጫው", title: "በቡልቡላ ያሉ ቦታዎች", link: { label: "ሁሉንም ይመልከቱ", href: "/businesses" } },
   ownerBand: {
     title: "በቡልቡላ ንግድ አለዎት?",
-    body: "በነፃ ያክሉት፣ ወይም ዝርዝርዎን ተረክበው መግለጫ፣ ፎቶ፣ ሰዓትና ድረ ገጽ ያክሉ። እያንዳንዱን ማመልከቻ ከመታተሙ በፊት እንገመግማለን።",
+    body: "ደንበኞች እንዲያገኙዎት ያድርጉ። ንግድዎን በነፃ ያክሉ፣ ቀድሞ ከተመዘገበ ደግሞ ይረከቡት። እያንዳንዱን ማመልከቻ ከመታተሙ በፊት እንገመግማለን።",
+    points: [
+      "የራስዎ ገጽ በነፃ፦ ፎቶ፣ የስራ ሰዓት፣ ሜኑና የካርታ ቦታ፣ በእንግሊዝኛና በአማርኛ",
+      "ደንበኞች በአንድ ንክኪ ይደውሉልዎታል ወይም አቅጣጫ ያገኛሉ",
+      "የተረጋገጠ ምልክትና የደንበኞችዎ ግምገማዎች",
+      "በቴሌግራምና በዋትስአፕ የሚያጋሩት ሊንክ",
+    ],
     button: "ንግድዎን ያክሉ",
   },
   appBand: {

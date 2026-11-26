@@ -12,8 +12,6 @@ import CorrectionForm from "@/components/CorrectionForm";
 import ShareButtons from "@/components/ShareButtons";
 import GoogleReviews from "@/components/GoogleReviews";
 import Reviews from "@/components/Reviews";
-import Stars from "@/components/Stars";
-import GoogleSummary from "@/components/GoogleSummary";
 import MenuSection from "@/components/MenuSection";
 import { services as serviceNames } from "@/data/services";
 import { getContent, isLocale, locales } from "@/data/content";
@@ -126,18 +124,6 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
                     )}
                   </p>
                 ) : null}
-                {l.google ? (
-                  <a
-                    href={maps}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/20 hover:bg-white/15"
-                  >
-                    <span className="text-sm font-extrabold text-white">{l.google.rating.toFixed(1)}</span>
-                    <Stars value={l.google.rating} size={12} />
-                    <span className="text-white/80">{(l.google.count === 1 ? c.ui.onGoogleOne : c.ui.onGoogle.replace("{n}", String(l.google.count)))}</span>
-                  </a>
-                ) : null}
               </div>
             </div>
           </div>
@@ -188,7 +174,6 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
             ) : null}
             {showMenus && l.menu.length ? <MenuSection menu={l.menu} source={l.menuSource} ui={c.ui} locale={locale} /> : null}
             <Reviews slug={l.slug} summary={summary} c={c} />
-            {l.google ? <GoogleSummary google={l.google} mapsUrl={maps} ui={c.ui} /> : null}
             <GoogleReviews placeId={l.googlePlaceId} hasPhone={Boolean(l.phone)} ui={c.ui} locale={locale} />
             {l.lat != null && l.lng != null ? (
               <div>

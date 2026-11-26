@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, Download, Plus, Smartphone } from "lucide-react";
+import { ArrowRight, Check, Download, Plus, Smartphone } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import SectionHeader from "@/components/SectionHeader";
@@ -188,10 +188,20 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
         ) : null}
 
         <section className="bg-marigold">
-          <div className="container-x flex flex-col gap-6 py-12 lg:flex-row lg:items-center lg:justify-between">
+          <div className="container-x flex flex-col gap-6 py-12 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <h2 className="font-display text-3xl font-extrabold tracking-tight text-river sm:text-4xl">{c.ownerBand.title}</h2>
               <p className="mt-2 max-w-2xl text-ink/80">{c.ownerBand.body}</p>
+              <ul className="mt-5 grid max-w-3xl gap-x-6 gap-y-2.5 sm:grid-cols-2">
+                {c.ownerBand.points.map((p) => (
+                  <li key={p} className="flex items-start gap-2.5 text-[15px] font-semibold text-river">
+                    <span className="mt-0.5 grid h-5 w-5 flex-none place-items-center rounded-full bg-river text-marigold">
+                      <Check className="h-3 w-3" strokeWidth={3.5} aria-hidden="true" />
+                    </span>
+                    {p}
+                  </li>
+                ))}
+              </ul>
             </div>
             <Link href={localeHref(locale, "/add")} className="btn btn-river flex-none">
               <Plus className="h-4 w-4" aria-hidden="true" /> {c.ownerBand.button} <ArrowRight className="h-4 w-4" aria-hidden="true" />
