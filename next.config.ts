@@ -18,10 +18,17 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
-  // "/" shows the English home directly (its canonical is /en): a redirect cost visitors who
-  // open the bare link, the one shared most, an extra round trip (~1 s on a phone).
+  // "/" shows a home directly (a redirect cost visitors who open the bare link, the one shared
+  // most, an extra round trip, ~1 s on a phone): Amharic when the phone's first language is
+  // Amharic ("am", "am-ET", "am;q=…"), English otherwise. Each page's canonical stays /en or /am.
+  // No cookie: the privacy policy promises none, and the EN/AM switch links to /en and /am anyway.
   async rewrites() {
-    return { beforeFiles: [{ source: "/", destination: "/en" }] };
+    return {
+      beforeFiles: [
+        { source: "/", has: [{ type: "header", key: "accept-language", value: "\\s*[Aa][Mm](-[A-Za-z]+)?\\s*([;,].*)?" }], destination: "/am" },
+        { source: "/", destination: "/en" },
+      ],
+    };
   },
   // "Add your business" can carry a photo; the browser shrinks it first, so this is headroom
   // (Vercel's own request limit is 4.5 MB).

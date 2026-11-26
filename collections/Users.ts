@@ -1,9 +1,17 @@
 import type { CollectionConfig } from "payload";
+import { clearLogins, limitLogins } from "@/lib/login-guard";
 
 /** Admin accounts. Anyone signed in can manage the menu; only admins manage accounts. */
 export const Users: CollectionConfig = {
   slug: "users",
-  auth: true,
+  auth: {
+    // Payload's defaults, written out: 5 wrong passwords lock the account for 10 minutes.
+    maxLoginAttempts: 5,
+    lockTime: 10 * 60_000,
+    // The session cookie only travels over HTTPS on the live site (local dev is plain http).
+    cookies: { secure: process.env.NODE_ENV === "production", sameSite: "Lax" },
+  },
+  hooks: { beforeOperation: [limitLogins], afterLogin: [clearLogins] },
   admin: { useAsTitle: "email", group: "Settings" },
   access: {
     read: ({ req }) => Boolean(req.user),
