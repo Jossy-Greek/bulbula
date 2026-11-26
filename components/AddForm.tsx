@@ -7,6 +7,8 @@ import type { Content } from "@/data/content";
 import type { CategoryInfo } from "@/lib/directory";
 import { submitBusiness, type AddState } from "@/app/(frontend)/[locale]/add/actions";
 import { localeHref } from "@/lib/href";
+import HoursPicker from "./HoursPicker";
+import PinField from "./PinField";
 
 type Props = {
   t: Content["addPage"];
@@ -133,6 +135,7 @@ export default function AddForm({ t, locale, categories, claim }: Props) {
               <input name="mapsLink" type="url" maxLength={300} placeholder="https://maps.app.goo.gl/…" className="field" />
             </Field>
           </div>
+          <PinField t={f.pin} />
         </div>
       </section>
 
@@ -154,9 +157,7 @@ export default function AddForm({ t, locale, categories, claim }: Props) {
           <Field label={f.telegram}>
             <input name="telegram" maxLength={200} placeholder="t.me/…" className="field" />
           </Field>
-          <Field label={f.hours} hint={f.hoursHint}>
-            <input name="hours" maxLength={120} className="field" />
-          </Field>
+          <HoursPicker t={f.hoursPicker} label={f.hours} ethiopian={locale === "am"} />
         </div>
       </section>
 

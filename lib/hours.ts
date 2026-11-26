@@ -96,3 +96,35 @@ export const clock = (mins: number) => {
   const m = ((mins % 1440) + 1440) % 1440;
   return `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
 };
+
+/** One day in the Add-a-place hours picker. Times are "HH:MM", 24-hour. */
+export type DayHours = { open: boolean; from: string; to: string };
+
+/**
+ * Turns the picker's seven days (Monday first) into the spec parseHours reads,
+ * joining neighbouring days with the same hours: "Mo-Sa 08:00-18:00; Su off".
+ * Empty when every day is closed (we'd rather show nothing than "closed all week").
+ */
+export function hoursSpec(days: DayHours[]): string {
+  if (!days.some((d) => d.open && d.from && d.to)) return "";
+  const body = (d: DayHours) => (d.open && d.from && d.to ? `${d.from}-${d.to}` : "off");
+  const rules: string[] = [];
+  for (let i = 0; i < 7; ) {
+    let j = i;
+    while (j + 1 < 7 && body(days[j + 1]) === body(days[i])) j++;
+    rules.push(`${i === j ? DAY_KEYS[i] : `${DAY_KEYS[i]}-${DAY_KEYS[j]}`} ${body(days[i])}`);
+    i = j + 1;
+  }
+  return rules.join("; ");
+}
+
+/**
+ * The Ethiopian clock for an "HH:MM" time: hours count from 6 a.m./6 p.m.,
+ * so 08:00 is "2:00" in the morning. Used as a hint on the Amharic form.
+ */
+export function ethiopianClock(time: string): string {
+  const [h, m] = time.split(":").map(Number);
+  if (Number.isNaN(h) || Number.isNaN(m)) return "";
+  const part = h < 6 ? "ሌሊት" : h < 12 ? "ጠዋት" : h < 18 ? "ከሰዓት" : "ምሽት";
+  return `${(h + 6) % 12 || 12}:${String(m).padStart(2, "0")} ${part}`;
+}
