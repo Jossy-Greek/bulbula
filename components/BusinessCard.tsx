@@ -9,7 +9,7 @@ import { telHref } from "@/lib/links";
 import { formatDistance } from "@/lib/geo";
 import CategoryIcon from "./CategoryIcon";
 import type { Content } from "@/data/content";
-import type { Listing } from "@/lib/directory";
+import type { CardListing } from "@/lib/directory";
 import { localeHref } from "@/lib/href";
 
 
@@ -26,7 +26,7 @@ export default function BusinessCard({
   active = false,
   onActive,
 }: {
-  l: Listing;
+  l: CardListing;
   c: Pick<Content, "locale" | "ui">;
   distance?: number | null;
   active?: boolean;

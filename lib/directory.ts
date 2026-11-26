@@ -47,6 +47,40 @@ export type Listing = {
   menuSource: string | null;
 };
 
+/**
+ * The part of a listing that a card, the directory search and its map use. The directory page
+ * sends every place to the browser, so it sends only this (about a fifth of a full Listing):
+ * no menu, gallery, services or social links, and only a short description.
+ */
+export type CardListing = Pick<
+  Listing,
+  "id" | "slug" | "name" | "category" | "description" | "generated" | "landmark" | "address" | "lat" | "lng" | "phone" | "mapsUrl" | "hoursSpec" | "hours" | "photo" | "claimed" | "unconfirmed"
+>;
+
+/** A card's share of a listing. Auto-written descriptions are dropped (cards hide them anyway). */
+export function toCard(l: Listing): CardListing {
+  const description = l.description && !l.generated ? (l.description.length > 240 ? `${l.description.slice(0, 239).trimEnd()}…` : l.description) : null;
+  return {
+    id: l.id,
+    slug: l.slug,
+    name: l.name,
+    category: l.category,
+    description,
+    generated: l.generated,
+    landmark: l.landmark,
+    address: l.address,
+    lat: l.lat,
+    lng: l.lng,
+    phone: l.phone,
+    mapsUrl: l.mapsUrl,
+    hoursSpec: l.hoursSpec,
+    hours: l.hours,
+    photo: l.photo,
+    claimed: l.claimed,
+    unconfirmed: l.unconfirmed,
+  };
+}
+
 export type CategoryInfo = { id: number; slug: string; name: string; group: "business" | "community"; icon: string; count: number };
 
 const DAYS: Record<Locale, Record<string, string>> = {

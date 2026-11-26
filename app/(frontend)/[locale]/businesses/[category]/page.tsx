@@ -8,7 +8,7 @@ import CategoryLinks from "@/components/CategoryLinks";
 import { SITE_URL, alternates } from "@/lib/seo";
 import { localeHref } from "@/lib/href";
 import { getContent, isLocale, locales } from "@/data/content";
-import { getCategories, getListings } from "@/lib/directory";
+import { getCategories, getListings, toCard } from "@/lib/directory";
 
 export const revalidate = 300;
 
@@ -69,7 +69,7 @@ export default async function CategoryPage({ params }: PageProps<"/[locale]/busi
         <div className="container-x">
           <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {places.map((l) => (
-              <BusinessCard key={l.slug} l={l} c={{ locale, ui: c.ui }} />
+              <BusinessCard key={l.slug} l={toCard(l)} c={{ locale, ui: c.ui }} />
             ))}
           </ul>
           <p className="mt-8">
