@@ -182,7 +182,7 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
             ) : null}
             {/* Only the place's own description; the auto-written one stays in the meta description for search engines. */}
             {l.description && !l.generated ? (
-              <div className="rounded-2xl border border-border bg-raised p-6">
+              <div className="card p-6">
                 <p className="text-[17px] leading-relaxed text-ink">{l.description}</p>
               </div>
             ) : null}
@@ -214,7 +214,7 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
 
           <aside className="space-y-6 lg:col-span-5">
             {/* Each row: one div holding its dt and dd (the only nesting <dl> allows); the icon sits in the dt. */}
-            <dl className="divide-y divide-border rounded-2xl border border-border bg-raised">
+            <dl className="divide-y divide-border card">
               {l.landmark || l.address ? (
                 <div className="relative min-w-0 p-5 pl-13">
                   <dt className="text-xs font-semibold uppercase tracking-wide text-muted">
@@ -308,7 +308,7 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
                   {socials.length ? (
                     <dd className="mt-2 flex gap-2">
                       {socials.map(([p, u]) => (
-                        <a key={p} href={externalUrl(u)} target="_blank" rel="noopener noreferrer" aria-label={p} className="grid h-10 w-10 place-items-center rounded-xl border border-border text-river hover:border-teal">
+                        <a key={p} href={externalUrl(u)} target="_blank" rel="noopener noreferrer" aria-label={p} className="chip h-11 w-11 justify-center rounded-2xl px-0">
                           <SocialIcon platform={p} className="h-4 w-4" />
                         </a>
                       ))}
@@ -358,7 +358,7 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
                 <li key={o.slug} className="min-w-0">
                   <Link
                     href={localeHref(locale, `/b/${o.slug}`)}
-                    className="flex h-full items-center gap-3 rounded-2xl border border-border bg-raised p-4 transition-colors hover:border-teal"
+                    className="flex h-full items-center gap-3 tile p-4"
                   >
                     <span className={`grid h-11 w-11 flex-none place-items-center rounded-xl ${o.category.group === "community" ? "bg-river text-white" : "bg-tint text-teal-text"}`}>
                       <CategoryIcon name={o.category.icon} />
@@ -383,14 +383,14 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
         style={{ paddingBottom: "max(0.75rem, env(safe-area-inset-bottom))" }}
       >
         {l.phone ? (
-          <a href={telHref(l.phone)} className="flex h-12 items-center justify-center gap-2 rounded-xl bg-marigold text-[15px] font-bold text-ink">
+          <a href={telHref(l.phone)} className="btn btn-marigold h-12 px-2">
             <Phone className="h-4 w-4" aria-hidden="true" /> {c.ui.call}
           </a>
         ) : null}
-        <a href={maps} target="_blank" rel="noopener noreferrer" className="flex h-12 items-center justify-center gap-2 rounded-xl bg-tint text-[15px] font-bold text-teal-text">
+        <a href={maps} target="_blank" rel="noopener noreferrer" className="btn btn-soft h-12 px-2 text-[15px]">
           <MapIcon className="h-4 w-4" aria-hidden="true" /> {c.ui.showMap}
         </a>
-        <a href={directionsUrl(l)} target="_blank" rel="noopener noreferrer" className="flex h-12 items-center justify-center gap-2 rounded-xl bg-river text-[15px] font-bold text-white">
+        <a href={directionsUrl(l)} target="_blank" rel="noopener noreferrer" className="btn btn-river h-12 px-2">
           <Navigation className="h-4 w-4" aria-hidden="true" /> {c.ui.directions}
         </a>
       </nav>

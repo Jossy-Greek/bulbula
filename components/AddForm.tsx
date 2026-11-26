@@ -65,8 +65,10 @@ export default function AddForm({ t, locale, categories, claim }: Props) {
 
   if (state.ok) {
     return (
-      <div className="rounded-2xl border border-border bg-raised p-8 text-center">
-        <CheckCircle2 className="mx-auto h-12 w-12 text-teal" aria-hidden="true" />
+      <div className="card p-8 text-center" role="status">
+        <span className="celebrate">
+          <CheckCircle2 className="h-11 w-11" strokeWidth={2.5} aria-hidden="true" />
+        </span>
         <h2 className="font-display mt-4 text-2xl font-extrabold text-river">{t.successTitle}</h2>
         <p className="mx-auto mt-2 max-w-md text-muted">{t.successBody}</p>
         <Link href={localeHref(locale, "/add")} className="action-link mt-6">
@@ -76,7 +78,7 @@ export default function AddForm({ t, locale, categories, claim }: Props) {
     );
   }
 
-  const card = "rounded-2xl border border-border bg-raised p-6 sm:p-8";
+  const card = "card p-6 sm:p-8";
   const h = "font-display mb-5 text-xl font-bold text-river";
   return (
     <form
@@ -212,7 +214,7 @@ export default function AddForm({ t, locale, categories, claim }: Props) {
             <legend className="label">{f.relationship}</legend>
             <div className="flex flex-wrap gap-2">
               {(claim ? (["owner", "manager"] as const) : (["owner", "manager", "customer"] as const)).map((r, i) => (
-                <label key={r} className="flex cursor-pointer items-center gap-2 rounded-xl border border-border px-4 py-2.5 has-[:checked]:border-teal has-[:checked]:bg-tint">
+                <label key={r} className="flex cursor-pointer items-center gap-2 rounded-2xl border-2 border-b-4 border-border px-4 py-2.5 font-semibold transition-colors hover:border-teal has-[:checked]:border-teal has-[:checked]:bg-tint">
                   <input type="radio" name="relationship" value={r} defaultChecked={i === 0} onChange={() => setRelationship(r)} className="accent-[#1f7a85]" />
                   {f[r]}
                 </label>

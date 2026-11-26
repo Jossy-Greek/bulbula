@@ -21,7 +21,7 @@ function matches(l: Listing, q: string) {
 
 
 const chip = (on: boolean) =>
-  `flex h-11 flex-none items-center gap-2 whitespace-nowrap rounded-full px-4 text-[14px] font-semibold ring-1 transition-colors ${on ? "bg-river text-white ring-river" : "bg-raised text-river ring-border hover:ring-teal"}`;
+  `chip ${on ? "is-on" : ""}`;
 
 /**
  * Search, filters and the list + map view. Patterns from Google Maps, Yelp and
@@ -206,7 +206,7 @@ export default function DirectoryBrowser({ listings, categories, c }: { listings
               <div className="mb-3 flex items-center justify-between gap-3">
                 <p className="text-sm text-muted">{c.ui.showing.replace("{n}", String(visible.length)).replace("{t}", String(shown.length))}</p>
                 {!me ? (
-                  <div className="inline-flex rounded-xl border border-border bg-raised p-1" role="group" aria-label="Sort">
+                  <div className="inline-flex rounded-2xl border-2 border-b-4 border-border bg-raised p-1" role="group" aria-label="Sort">
                     {(["recommended", "az"] as const).map((k) => (
                       <button
                         key={k}
@@ -237,7 +237,7 @@ export default function DirectoryBrowser({ listings, categories, c }: { listings
               ) : null}
             </>
           ) : (
-            <div className="rounded-2xl border border-dashed border-border bg-raised p-8 text-center">
+            <div className="card border-dashed p-8 text-center">
               <p className="text-muted">{c.ui.noResults}</p>
               <div className="mt-4 flex flex-wrap justify-center gap-2">
                 <button
@@ -285,7 +285,7 @@ export default function DirectoryBrowser({ listings, categories, c }: { listings
           // Bring the map (or the top of the list) under the filters into view.
           requestAnimationFrame(() => (next === "map" ? mapBox.current : document.querySelector("main"))?.scrollIntoView({ behavior: "smooth", block: "start" }));
         }}
-        className="fixed bottom-5 left-1/2 z-[900] inline-flex -translate-x-1/2 items-center gap-2 rounded-full bg-river px-5 py-3 text-[15px] font-bold text-white shadow-[0_14px_30px_-12px_rgba(14,61,71,0.8)] lg:hidden"
+        className="btn btn-river fixed bottom-5 left-1/2 z-[900] -translate-x-1/2 rounded-full px-6 lg:hidden"
       >
         {view === "list" ? (
           <>

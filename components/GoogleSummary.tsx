@@ -11,7 +11,7 @@ import type { Listing } from "@/lib/directory";
 export default function GoogleSummary({ google, mapsUrl, ui }: { google: NonNullable<Listing["google"]>; mapsUrl: string; ui: Content["ui"] }) {
   const max = Math.max(1, ...(google.stars ?? []));
   return (
-    <section aria-labelledby="google-summary" className="rounded-2xl border border-border bg-raised p-6">
+    <section aria-labelledby="google-summary" className="card p-6">
       <h2 id="google-summary" className="font-display text-xl font-bold text-river">
         {ui.googleBoxTitle}
       </h2>

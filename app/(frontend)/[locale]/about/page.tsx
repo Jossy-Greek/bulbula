@@ -32,7 +32,7 @@ export default async function AboutPage({ params }: PageProps<"/[locale]/about">
       <main className="py-12 sm:py-16">
         <div className="container-x grid gap-6 lg:grid-cols-3">
           {a.sections.map((s) => (
-            <section key={s.title} className="rounded-2xl border border-border bg-raised p-7">
+            <section key={s.title} className="card p-7">
               <h2 className="font-display text-xl font-bold text-river">{s.title}</h2>
               <p className="mt-3 leading-relaxed text-muted">{s.body}</p>
             </section>

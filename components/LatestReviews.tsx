@@ -19,7 +19,7 @@ export default function LatestReviews({ reviews, c }: { reviews: Review[]; c: Co
             <li key={r.id} className="w-[85%] flex-none snap-start sm:w-auto">
               <Link
                 href={`${localeHref(c.locale, `/b/${r.business!.slug}`)}#reviews`}
-                className="flex h-full flex-col rounded-2xl border border-border bg-page p-5 transition-colors hover:border-teal"
+                className="flex h-full flex-col tile bg-page! p-5"
               >
                 <span className="flex items-center gap-2">
                   <Stars value={r.rating} size={14} />
