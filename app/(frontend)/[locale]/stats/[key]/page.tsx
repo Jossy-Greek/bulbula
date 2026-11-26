@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowUpRight, Globe, Lock, Navigation, Phone, Star, Users } from "lucide-react";
+import { ArrowUpRight, Globe, Lock, Navigation, Phone, Sparkles, Star, Users } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import PageHero from "@/components/PageHero";
@@ -10,6 +10,7 @@ import { ownerStats } from "@/data/owner-stats";
 import { site } from "@/data/site";
 import { localeHref } from "@/lib/href";
 import { SITE_URL } from "@/lib/seo";
+import { activeUntil, shortDate } from "@/lib/featured";
 import { findByStatsKey, getOwnerStats, type Window } from "@/lib/owner-stats";
 
 // The key is checked on every visit, so a replaced link stops working at once.
@@ -51,7 +52,14 @@ export default async function OwnerStatsPage({ params }: PageProps<"/[locale]/st
   return (
     <>
       <Nav c={c} />
-      <PageHero eyebrow={t.eyebrow} title={name} intro={t.intro} />
+      <PageHero eyebrow={t.eyebrow} title={name} intro={t.intro}>
+        {activeUntil(Boolean(place.featured), place.featuredUntil) ? (
+          <p className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-marigold px-3 py-1 text-xs font-bold uppercase tracking-wide text-river">
+            <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
+            {place.featuredUntil ? fill(t.featuredUntil, { d: shortDate(place.featuredUntil) }) : t.featuredOn}
+          </p>
+        ) : null}
+      </PageHero>
       <main className="py-12 sm:py-16">
         <div className="container-x max-w-4xl space-y-10">
           {stats.now.visits === 0 ? <p className="rounded-xl bg-marigold-soft/60 px-4 py-3 text-ink ring-1 ring-marigold/40">{t.empty}</p> : null}

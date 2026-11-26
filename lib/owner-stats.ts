@@ -41,7 +41,7 @@ export async function findByStatsKey(key: string, locale: "en" | "am") {
     depth: 0,
     locale,
     overrideAccess: true,
-    select: { slug: true, name: true, createdAt: true, claimed: true },
+    select: { slug: true, name: true, createdAt: true, claimed: true, featured: true, featuredUntil: true },
   });
   return res.docs[0] ?? null;
 }

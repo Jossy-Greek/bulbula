@@ -13,6 +13,7 @@ import { AnalyticsEvents } from "./collections/AnalyticsEvents";
 import { Businesses } from "./collections/Businesses";
 import { Categories } from "./collections/Categories";
 import { Corrections } from "./collections/Corrections";
+import { Payments } from "./collections/Payments";
 import { Media } from "./collections/Media";
 import { Players } from "./collections/Players";
 import { Reviews } from "./collections/Reviews";
@@ -62,7 +63,7 @@ export default buildConfig({
       },
     },
   },
-  collections: [Businesses, Reviews, Corrections, Players, Categories, Media, Users, AnalyticsEvents],
+  collections: [Businesses, Reviews, Corrections, Payments, Players, Categories, Media, Users, AnalyticsEvents],
   globals: [SiteSettings],
   localization: {
     locales: [

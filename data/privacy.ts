@@ -26,7 +26,7 @@ const en: Privacy = {
     {
       title: "In short",
       body: [
-        "No ads, no cookies for tracking, and we never sell or rent your information.",
+        "No ads from ad networks, no cookies for tracking, and we never sell or rent your information. Places can pay to be shown first; they are always labelled Featured.",
         "You can use the website and the app without an account. Signing in with Google is optional.",
         "Your location stays on your phone.",
       ],
@@ -111,7 +111,7 @@ const am: Privacy = {
     {
       title: "በአጭሩ",
       body: [
-        "ማስታወቂያ የለም፣ ለክትትል ኩኪ አንጠቀምም፣ መረጃዎን በጭራሽ አንሸጥም ወይም አናከራይም።",
+        "ከማስታወቂያ ድርጅቶች ማስታወቂያ የለም፣ ለክትትል ኩኪ አንጠቀምም፣ መረጃዎን በጭራሽ አንሸጥም ወይም አናከራይም። ቦታዎች ቀድመው እንዲታዩ መክፈል ይችላሉ፤ ሁልጊዜም «ተለይቶ የቀረበ» የሚል ምልክት አላቸው።",
         "ድረ-ገጹንና መተግበሪያውን ያለ መለያ መጠቀም ይችላሉ። በGoogle መግባት አማራጭ ነው።",
         "አካባቢዎ (ሎኬሽን) በስልክዎ ላይ ብቻ ይቀራል።",
       ],

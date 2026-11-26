@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, BadgeCheck, Banknote, Clock, ExternalLink, Globe, ListChecks, Map as MapIcon, MapPin, Navigation, Phone, UtensilsCrossed } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, BadgeCheck, Banknote, Clock, ExternalLink, Globe, ListChecks, Map as MapIcon, MapPin, Navigation, Phone, Sparkles, Tag, UtensilsCrossed } from "lucide-react";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import CategoryIcon from "@/components/CategoryIcon";
@@ -115,6 +115,11 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
               <p className="text-sm font-semibold text-marigold-soft">{l.category.name}</p>
               <h1 className="font-display mt-1 text-[2.1rem] font-extrabold leading-tight tracking-tight sm:text-5xl">{l.name}</h1>
               <div className="mt-3 flex flex-wrap items-center gap-2">
+                {l.featured ? (
+                  <p className="inline-flex items-center gap-1 rounded-full bg-marigold px-3 py-1 text-xs font-bold uppercase tracking-wide text-river">
+                    <Sparkles className="h-3.5 w-3.5" aria-hidden="true" /> {c.ui.featured}
+                  </p>
+                ) : null}
                 {l.claimed || l.unconfirmed ? (
                   <p className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 text-xs font-semibold ring-1 ring-white/20">
                     {l.claimed ? (
@@ -139,6 +144,15 @@ export default async function BusinessPage({ params }: PageProps<"/[locale]/b/[s
                   </a>
                 ) : null}
               </div>
+              {l.offer ? (
+                <p className="mt-4 inline-flex items-start gap-2 rounded-xl bg-marigold-soft px-4 py-2.5 text-[15px] font-semibold text-river">
+                  <Tag className="mt-0.5 h-4 w-4 flex-none" aria-hidden="true" />
+                  <span>
+                    <span className="sr-only">{c.ui.offerLabel}: </span>
+                    {l.offer}
+                  </span>
+                </p>
+              ) : null}
             </div>
           </div>
           {/* On phones the sticky bottom bar carries these. */}

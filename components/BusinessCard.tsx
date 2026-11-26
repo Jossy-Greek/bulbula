@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { BadgeCheck, Clock, Map as MapIcon, MapPin, Navigation2, Phone, Star } from "lucide-react";
+import { BadgeCheck, Clock, Map as MapIcon, MapPin, Navigation2, Phone, Sparkles, Star, Tag } from "lucide-react";
 import OpenBadge from "./OpenBadge";
 import { parseHours } from "@/lib/hours";
 import { telHref } from "@/lib/links";
@@ -75,6 +75,20 @@ export default function BusinessCard({
             <BadgeCheck className="ml-auto h-5 w-5 flex-none text-teal" aria-label={c.ui.verified} />
           ) : null}
         </div>
+        {l.featured ? (
+          <p className="mt-3 inline-flex w-fit items-center gap-1 rounded-full bg-marigold px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-river">
+            <Sparkles className="h-3 w-3" aria-hidden="true" /> {c.ui.featured}
+          </p>
+        ) : null}
+        {l.offer ? (
+          <p className="mt-3 flex items-start gap-2 rounded-xl bg-marigold-soft/60 px-3 py-2 text-[13px] font-semibold text-ink">
+            <Tag className="mt-0.5 h-3.5 w-3.5 flex-none text-river" aria-hidden="true" />
+            <span>
+              <span className="sr-only">{c.ui.offerLabel}: </span>
+              {l.offer}
+            </span>
+          </p>
+        ) : null}
         {/* An auto-written line ("Banks — Bulbula.") only repeats the card; show the place's own words only. */}
         {l.description && !l.generated ? <p className="mt-3 line-clamp-2 text-[14px] leading-relaxed text-ink/85">{l.description}</p> : null}
         <ul className="mt-auto space-y-1.5 pt-4 text-[13px] text-muted">

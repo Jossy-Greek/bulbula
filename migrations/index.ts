@@ -15,6 +15,7 @@ import * as migration_20261124_051134_media_storage_prefix from './20261124_0511
 import * as migration_20261124_083649_corrections_and_submission_limits from './20261124_083649_corrections_and_submission_limits';
 import * as migration_20261124_112823_users_reviewer_role from './20261124_112823_users_reviewer_role';
 import * as migration_20261126_111306_owner_stats_key from './20261126_111306_owner_stats_key';
+import * as migration_20261126_114241_featured_tools from './20261126_114241_featured_tools';
 
 export const migrations = [
   {
@@ -100,6 +101,11 @@ export const migrations = [
   {
     up: migration_20261126_111306_owner_stats_key.up,
     down: migration_20261126_111306_owner_stats_key.down,
-    name: '20261126_111306_owner_stats_key'
+    name: '20261126_111306_owner_stats_key',
+  },
+  {
+    up: migration_20261126_114241_featured_tools.up,
+    down: migration_20261126_114241_featured_tools.down,
+    name: '20261126_114241_featured_tools'
   },
 ];

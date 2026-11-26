@@ -3,6 +3,8 @@ import type { Locale } from "./content";
 /** Text of the owner's private stats page (app/(frontend)/[locale]/stats/[key]). */
 export type OwnerStatsText = {
   eyebrow: string;
+  featuredUntil: string; // "{d}"
+  featuredOn: string;
   intro: string;
   cards: { visits: string; calls: string; directions: string; links: string };
   hints: { visits: string; calls: string; directions: string; links: string };
@@ -32,6 +34,8 @@ export type OwnerStatsText = {
 export const ownerStats: Record<Locale, OwnerStatsText> = {
   en: {
     eyebrow: "Your stats · last 30 days",
+    featuredUntil: "Featured until {d}",
+    featuredOn: "Featured",
     intro: "What people did with your listing on Bulbula Directory and its apps. Updated a few times a day.",
     cards: { visits: "Visits to your page", calls: "Calls", directions: "Directions", links: "Website & social taps" },
     hints: {
@@ -69,6 +73,8 @@ export const ownerStats: Record<Locale, OwnerStatsText> = {
   },
   am: {
     eyebrow: "የእርስዎ ቁጥሮች · ያለፉት 30 ቀናት",
+    featuredUntil: "እስከ {d} ተለይቶ የቀረበ",
+    featuredOn: "ተለይቶ የቀረበ",
     intro: "ሰዎች በቡልቡላ ማውጫ ድረ-ገጽና መተግበሪያዎች ላይ በገጽዎ ምን እንዳደረጉ። በቀን ጥቂት ጊዜ ይታደሳል።",
     cards: { visits: "ገጽዎን የጎበኙ", calls: "ጥሪዎች", directions: "አቅጣጫ የጠየቁ", links: "ድረ-ገጽና ማኅበራዊ ሚዲያ" },
     hints: {
