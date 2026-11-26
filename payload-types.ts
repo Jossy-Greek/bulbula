@@ -246,6 +246,7 @@ export interface Business {
    * The business has confirmed this listing.
    */
   claimed?: boolean | null;
+  statsKey?: string | null;
   /**
    * Published from research (Google Maps etc.) without a call or visit. The site shows “Not yet confirmed”. Untick once checked.
    */
@@ -677,6 +678,7 @@ export interface BusinessesSelect<T extends boolean = true> {
   gallery?: T;
   status?: T;
   claimed?: T;
+  statsKey?: T;
   unconfirmed?: T;
   featured?: T;
   googleRating?: T;
