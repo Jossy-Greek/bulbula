@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Mail, Phone, Smartphone } from "lucide-react";
-import { Wordmark } from "./Nav";
+import Wordmark from "./Wordmark";
 import SocialIcon from "./SocialIcon";
 import type { Content } from "@/data/content";
 import { site } from "@/data/site";
@@ -17,7 +17,7 @@ export default async function Footer({ c }: { c: Content }) {
       <div className="container-x relative py-12">
         <div className="grid gap-10 md:grid-cols-12">
           <div className="md:col-span-5">
-            <Wordmark c={c} dark />
+            <Wordmark locale={c.locale} dark />
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/75">{c.footer.blurb}</p>
             {android ? (
               <a

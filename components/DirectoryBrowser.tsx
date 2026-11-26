@@ -8,14 +8,14 @@ import CategoryIcon from "./CategoryIcon";
 import MapLoader from "./MapLoader";
 import { isOpen, useMinute } from "./OpenBadge";
 import type { Content } from "@/data/content";
-import type { CategoryInfo, Listing } from "@/lib/directory";
+import type { CardListing, CategoryInfo } from "@/lib/directory";
 import { track } from "@/lib/track";
 import { matchesQuery } from "@/lib/search";
 import { metres } from "@/lib/geo";
 import { localeHref } from "@/lib/href";
 import Link from "next/link";
 
-function matches(l: Listing, q: string) {
+function matches(l: CardListing, q: string) {
   return matchesQuery(`${l.name} ${l.category.name} ${l.landmark ?? ""} ${l.address ?? ""} ${l.description ?? ""}`, q);
 }
 
@@ -30,7 +30,7 @@ const chip = (on: boolean) =>
  * a Map/List switch on phones. Query, category and "open now" live in the URL
  * (?q=&c=&open=1) so a filtered view can be shared.
  */
-export default function DirectoryBrowser({ listings, categories, c }: { listings: Listing[]; categories: CategoryInfo[]; c: Pick<Content, "locale" | "ui"> }) {
+export default function DirectoryBrowser({ listings, categories, c }: { listings: CardListing[]; categories: CategoryInfo[]; c: Pick<Content, "locale" | "ui"> }) {
   const router = useRouter();
   const params = useSearchParams();
   const [q, setQ] = useState(params.get("q") ?? "");

@@ -10,7 +10,7 @@ import MapLoader from "@/components/MapLoader";
 import HeroSearch from "@/components/HeroSearch";
 import LatestReviews from "@/components/LatestReviews";
 import { getContent, isLocale } from "@/data/content";
-import { getCategories, getListings, getSiteSettings, googleMapsUrl } from "@/lib/directory";
+import { getCategories, getListings, getSiteSettings, googleMapsUrl, toCard } from "@/lib/directory";
 import { SITE_URL, brand } from "@/lib/seo";
 import { site } from "@/data/site";
 import { localeHref } from "@/lib/href";
@@ -170,7 +170,7 @@ export default async function Home({ params }: PageProps<"/[locale]">) {
             <SectionHeader eyebrow={c.newest.eyebrow} title={c.newest.title} link={c.newest.link} locale={locale} />
             <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {showcase.map((l) => (
-                <BusinessCard key={l.id} l={l} c={c} />
+                <BusinessCard key={l.id} l={toCard(l)} c={{ locale, ui: c.ui }} />
               ))}
             </ul>
           </div>

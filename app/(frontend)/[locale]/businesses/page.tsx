@@ -8,7 +8,7 @@ import BusinessCard from "@/components/BusinessCard";
 import CategoryLinks from "@/components/CategoryLinks";
 import { alternates } from "@/lib/seo";
 import { getContent, isLocale } from "@/data/content";
-import { getCategories, getListings } from "@/lib/directory";
+import { getCategories, getListings, toCard } from "@/lib/directory";
 
 export const revalidate = 300;
 
@@ -30,6 +30,8 @@ export default async function BusinessesPage({ params }: PageProps<"/[locale]/bu
   const c = getContent(locale);
   const listings = await getListings(locale);
   const categories = await getCategories(locale, listings);
+  // Every place goes to the browser for search, filters and the map: only what a card needs.
+  const cards = listings.map(toCard);
   return (
     <>
       <Nav c={c} />
@@ -41,13 +43,13 @@ export default async function BusinessesPage({ params }: PageProps<"/[locale]/bu
           <Suspense
             fallback={
               <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {listings.slice(0, 24).map((l) => (
+                {cards.slice(0, 24).map((l) => (
                   <BusinessCard key={l.slug} l={l} c={{ locale, ui: c.ui }} />
                 ))}
               </ul>
             }
           >
-            <DirectoryBrowser listings={listings} categories={categories} c={{ locale, ui: c.ui }} />
+            <DirectoryBrowser listings={cards} categories={categories} c={{ locale, ui: c.ui }} />
           </Suspense>
           <CategoryLinks locale={locale} categories={categories} title={c.categoryPage.browse} />
         </div>
