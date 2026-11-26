@@ -12,7 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const listings = await getListings("en");
   const categories = (await getCategories("en", listings)).filter((x) => x.count > 0);
   const alternates = (path: string) => ({ languages: Object.fromEntries(locales.map((l) => [l, `${site}/${l}${path}`])) });
-  const pages = ["", "/businesses", "/add", "/about", "/privacy"];
+  const pages = ["", "/businesses", "/add", "/about", "/privacy", "/terms"];
   return [
     ...pages.flatMap((p) => locales.map((l) => ({ url: `${site}/${l}${p}`, changeFrequency: "daily" as const, priority: p === "" ? 1 : 0.7, alternates: alternates(p) }))),
     ...categories.flatMap((x) =>

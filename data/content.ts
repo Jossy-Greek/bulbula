@@ -166,7 +166,7 @@ export type Content = {
     errors: { required: string; contact: string; consent: string; photo: string; failed: string };
   };
   aboutPage: { eyebrow: string; title: string; intro: string; sections: { title: string; body: string }[]; contactTitle: string; privacy: string };
-  footer: { blurb: string; explore: string; contact: string; rights: string; androidApp: string; privacy: string };
+  footer: { blurb: string; explore: string; contact: string; rights: string; androidApp: string; privacy: string; terms: string };
   reviews: {
     title: string;
     /** "{n}" = number of reviews. */
@@ -434,6 +434,7 @@ const en: Content = {
     rights: "Map data © OpenStreetMap contributors.",
     androidApp: "Get the Android app",
     privacy: "Privacy",
+    terms: "Terms of use",
   },
   reviews: {
     title: "Reviews",
@@ -706,6 +707,7 @@ const am: Content = {
     rights: "የካርታ መረጃ © OpenStreetMap አበርካቾች።",
     androidApp: "የአንድሮይድ መተግበሪያውን ያግኙ",
     privacy: "ግላዊነት",
+    terms: "የአጠቃቀም ደንቦች",
   },
   reviews: {
     title: "ግምገማዎች",
