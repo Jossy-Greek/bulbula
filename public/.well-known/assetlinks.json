@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "et.bulbula.directory",
+      "sha256_cert_fingerprints": [
+        "81:DF:37:31:20:E9:31:AA:96:11:FA:8B:25:2B:8C:9E:48:D0:C7:26:27:B1:5A:BD:61:59:E4:86:C2:32:4B:1B"
+      ]
+    }
+  }
+]

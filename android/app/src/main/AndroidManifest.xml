@@ -25,8 +25,10 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!-- Listing links from the website (/en/b/<slug>, /am/b/<slug>) open in the app. -->
-            <intent-filter>
+            <!-- Listing links from the website (/en/b/<slug>, /am/b/<slug>) open in the app.
+                 autoVerify: Android checks /.well-known/assetlinks.json on the site, then opens
+                 these links straight in the app instead of showing a chooser. -->
+            <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
